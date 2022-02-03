@@ -1,4 +1,4 @@
-package users;
+package moodle.users;
 
 public abstract class User {
     private String name;

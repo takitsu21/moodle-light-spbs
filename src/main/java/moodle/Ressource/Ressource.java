@@ -1,7 +1,7 @@
-package Ressource;
+package moodle.Ressource;
 
-import Ressource.Cours.Cours;
-import Ressource.Exercices.Questionnaire;
+import moodle.Ressource.Cours.Cours;
+import moodle.Ressource.Exercices.Questionnaire;
 
 import java.util.List;
 

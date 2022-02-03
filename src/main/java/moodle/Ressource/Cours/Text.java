@@ -1,4 +1,4 @@
-package Ressource.Cours;
+package moodle.Ressource.Cours;
 
 public class Text {
     private int number;

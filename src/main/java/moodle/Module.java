@@ -1,5 +1,7 @@
-import Ressource.Ressource;
-import users.User;
+package moodle;
+
+import moodle.Ressource.Ressource;
+import moodle.users.User;
 
 import java.util.List;
 

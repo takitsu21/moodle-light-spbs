@@ -1,6 +1,6 @@
-package Ressource.Exercices;
+package moodle.Ressource.Exercices;
 
-import Ressource.Ressource;
+import moodle.Ressource.Ressource;
 
 import java.util.List;
 

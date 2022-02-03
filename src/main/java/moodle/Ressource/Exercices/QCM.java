@@ -1,4 +1,4 @@
-package Ressource.Exercices;
+package moodle.Ressource.Exercices;
 
 public class QCM extends Question {
     private String[] possibleAnswers;

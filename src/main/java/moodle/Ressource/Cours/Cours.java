@@ -1,6 +1,6 @@
-package Ressource.Cours;
+package moodle.Ressource.Cours;
 
-import Ressource.Ressource;
+import moodle.Ressource.Ressource;
 
 import java.util.List;
 

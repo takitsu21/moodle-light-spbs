@@ -1,4 +1,4 @@
-package Ressource.Exercices;
+package moodle.Ressource.Exercices;
 
 public class CodeRunner extends Question {
 
