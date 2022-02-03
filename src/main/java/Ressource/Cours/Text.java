@@ -1,8 +1,8 @@
 package Ressource.Cours;
 
 public class Text {
-    int number;
-    String content;
+    private int number;
+    private String content;
 
     public Text(int number, String content) {
         this.number = number;

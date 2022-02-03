@@ -1,9 +1,9 @@
 package Ressource.Exercices;
 
 public class Question {
-    int number;
-    String name;
-    String description;
+    private int number;
+    private String name;
+    private String description;
 
     public Question(int number, String name, String description) {
         this.number = number;
