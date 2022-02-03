@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Module {
     private List<Ressource> resources;
-    private List<User> users;
+    private User teacher;
+    private List<User> students;
     private String name;
 
     public Module(List<Ressource> resources, String name) {
