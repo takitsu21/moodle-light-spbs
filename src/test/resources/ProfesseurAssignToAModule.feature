@@ -4,7 +4,7 @@
 Fonctionnalité: En tant que professeur je veux pouvoir m'assigner un module
 
   Contexte:
-    Etant donné un professeur "Paul" avec le mot de passe "123" voulant s'assigner au module "Maths" qui n'a pas de professeur et au module "Chimie" qui a un professeur assigné
+    Etant donné un professeur "Paul" avec le mot de passe "123" voulant s assigner au module "Maths" qui n'a pas de professeur et au module "Chimie" qui a un professeur assigné
 
 
   Scénario: Le module "Maths" n'a pas de professeur assigné
