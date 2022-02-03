@@ -10,13 +10,4 @@ public class Teacher extends User {
         super(name, password);
     }
 
-    public boolean assignAModule(Module module){
-        if (module.getTeachers()==null){
-            module.setTeachers(List.of(this));
-            return true;
-        }
-        return false;
-    }
-
-
 }
