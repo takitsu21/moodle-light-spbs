@@ -1,20 +1,16 @@
 package moodle;
 
-import moodle.Ressource.Cours.Cours;
 import moodle.Ressource.Ressource;
 import moodle.users.Student;
 import moodle.users.Teacher;
-import moodle.users.Teacher;
-import moodle.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Module {
-    private List<Ressource> resources=new ArrayList<>();
-    private final List<Teacher> teacher = new ArrayList<>();
-    private final List<Student> students = new ArrayList<>();
+    private List<Ressource> resources = new ArrayList<>();
+    private List<Teacher> teachers = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
     private String name;
 
     public Module(String name, List<Ressource> resources) {
@@ -35,7 +31,7 @@ public class Module {
     }
 
     public List<Teacher> getTeacher() {
-        return teacher;
+        return teachers;
     }
 
     public List<Student> getStudents() {
@@ -50,28 +46,24 @@ public class Module {
         this.name = name;
     }
 
-    public boolean assignTeacher(Teacher teacher){
+    public boolean assignTeacher(Teacher teacher) {
         return assignTeacher(null, teacher);
     }
 
-    public boolean assignTeacher(Teacher teacherAssign, Teacher teacherToAssign){
-        if ((teachers.isEmpty() && teacherAssign==null) || teachers.contains(teacherToAssign)){
+    public boolean assignTeacher(Teacher teacherAssign, Teacher teacherToAssign) {
+        if ((teachers.isEmpty() && teacherAssign == null) || teachers.contains(teacherToAssign)) {
             teachers = List.of(teacherToAssign);
             return true;
         }
         return false;
     }
 
-    public List<User> getTeachers() {
+    public List<Teacher> getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(List<User> teacher) {
+    public void setTeachers(List<Teacher> teacher) {
         this.teachers = teacher;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean addStudent(Student student) {
