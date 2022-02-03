@@ -4,14 +4,14 @@
 Fonctionnalité: Ajouté ou enlever un étudiant d'un module
 
   Contexte:
-    Etant donné un module "math"
-    Et un étudiant "Marcel"
+    Etant donné Un enseignant "Jacques" avec le mot de passe "admin"
+      Et un étudiant "Jean"
+      Et un module "Math" et "Français" de ressource vide
 
+  Scénario: Ajout d'un étudiant a un module
+    Quand L'enseignant ajoute "Jean" au module de "Français"
+    Alors L'élève est ajouter au module
 
-  Scénario: Ajout d'un étudiant
-    Quand "Marcel" n'est pas inscrit dans le module "math"
-    Alors "Marcel" est ajouté au module "math"
-
-  Scénario: Enlever un étudiant
-    Quand "Marcel" est déjà inscrit dans le module "math"
-    Alors "Marcel" est enlever du module "math"
+  Scénario: Enlever un étudiant d'un module
+    Quand L'enseignant veut enlever "Jean" du module de "Math"
+    Alors L'élève est enlever du module
