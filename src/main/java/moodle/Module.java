@@ -3,15 +3,45 @@ package moodle;
 import moodle.Ressource.Ressource;
 import moodle.users.Student;
 import moodle.users.Teacher;
+import moodle.users.User;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+@Entity
+@Table(name = "modules")
 public class Module {
-    private List<Ressource> resources = new ArrayList<>();
-    private List<Teacher> teachers = new ArrayList<>();
-    private List<Student> students = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
     private String name;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "user_modules",
+            joinColumns = @JoinColumn(name = "module_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> students;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "user_modules",
+            joinColumns = @JoinColumn(name = "module_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> teachers;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "ressource_modules",
+            joinColumns = @JoinColumn(name = "module_id"),
+            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
+    private List<Ressource> resources;
+
+    public Module() {
+
+    }
 
     public Module(String name, List<Ressource> resources) {
         this.resources = resources;
@@ -30,11 +60,11 @@ public class Module {
         this.resources = resources;
     }
 
-    public List<Teacher> getTeacher() {
+    public List<User> getTeacher() {
         return teachers;
     }
 
-    public List<Student> getStudents() {
+    public List<User> getStudents() {
         return students;
     }
 
@@ -58,11 +88,11 @@ public class Module {
         return false;
     }
 
-    public List<Teacher> getTeachers() {
+    public List<User> getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(List<Teacher> teacher) {
+    public void setTeachers(List<User> teacher) {
         this.teachers = teacher;
     }
 
