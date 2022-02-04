@@ -62,6 +62,7 @@ public class Module {
     public boolean changeVisibilityOfRessource(Teacher teacher, String ressource, boolean visibility){
         if (teachers.contains(teacher)){
             resources.get(ressource).setVisibility(visibility);
+            return true;
         }
         return false;
     }
@@ -88,5 +89,9 @@ public class Module {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Map<String, Ressource> getResources() {
+        return resources;
     }
 }
