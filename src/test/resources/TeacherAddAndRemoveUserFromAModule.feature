@@ -25,3 +25,19 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer des ut
   Scénario: Le professeur "Jean" retire le professeur "Marie" au module "Chimie"
     Quand le professeur "Jean" essaie de retirer le professeur "Marie" au module "Chimie"
     Alors le professeur ne reussi pas à l'assigner
+
+  Scénario: Le professeur "Paul" assigne l'élève "Dylann" au module "Maths"
+    Quand le professeur "Paul" essaie d assigner l élève "Dylann" au module "Maths"
+    Alors le professeur reussi à l'assigner
+
+  Scénario: Le professeur "Jean" assigne l'élève "Dylann" au module "Maths"
+    Quand le professeur "Jean" essaie d assigner l élève "Dylann" au module "Maths"
+    Alors le professeur ne reussi pas à l'assigner
+
+  Scénario: Le professeur "Paul" retire l'élève "Dylann" au module "Chimie"
+    Quand le professeur "Paul" essaie de retirer l élève "Dylann" au module "Chimie"
+    Alors le professeur reussi à l'assigner
+
+  Scénario: Le professeur "Jean" retire l'élève "Dylann" au module "Chimie"
+    Quand le professeur "Jean" essaie de retirer l élève "Dylann" au module "Chimie"
+    Alors le professeur ne reussi pas à l'assigner

@@ -47,17 +47,29 @@ public class TeacherAddAnsRemoveUserFromAModuleTest {
 
     @Quand("le professeur {string} essaie d'assigner le professeur {string} au module {string}")
     public void leProfesseurEssaieDAssignerLeProfesseurAuModule(String arg0, String arg1, String arg2) {
-        success=modules.get(arg2).assignTeacher(teachers.get(arg0), teachers.get(arg1));
+        success=modules.get(arg2).assignUser(teachers.get(arg0), teachers.get(arg1));
     }
 
     @Quand("le professeur {string} essaie de retirer le professeur {string} au module {string}")
     public void leProfesseurEssaieDeRetirerLeProfesseurAuModule(String arg0, String arg1, String arg2) {
-        success=modules.get(arg2).deleteTeacher(teachers.get(arg0), teachers.get(arg1));
+        success=modules.get(arg2).removeUser(teachers.get(arg0), teachers.get(arg1));
+    }
+
+    @Quand("le professeur {string} essaie d assigner l élève {string} au module {string}")
+    public void leProfesseurEssaieDAssignerLÉlèveAuModule(String arg0, String arg1, String arg2) {
+        success=modules.get(arg2).assignUser(teachers.get(arg0), students.get(arg1));
+    }
+
+
+    @Quand("le professeur {string} essaie de retirer l élève {string} au module {string}")
+    public void leProfesseurEssaieDeRetirerLÉlèveAuModule(String arg0, String arg1, String arg2) {
+        success=modules.get(arg2).removeUser(teachers.get(arg0), students.get(arg1));
     }
 
     @Alors("le professeur reussi à l'assigner")
     public void leProfesseurReussiÀLAssigner() {
         assertTrue(success);
+
     }
 
     @Alors("le professeur ne reussi pas à l'assigner")

@@ -6,7 +6,6 @@ import moodle.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Module {
     private List<Ressource> resources=new ArrayList<>();
@@ -19,7 +18,7 @@ public class Module {
         this.name = name;
     }
 
-    public boolean assignTeacher(Teacher teacher){
+    public boolean assignUser(Teacher teacher){
         if (teachers.isEmpty()){
             teachers.add(teacher);
             return true;
@@ -27,21 +26,32 @@ public class Module {
         return false;
     }
 
-    public boolean assignTeacher(Teacher teacherAssign, Teacher teacherToAssign){
+    public boolean assignUser(Teacher teacherAssign, User toAssign){
         if (teacherAssign!=null && teachers.contains(teacherAssign)){
-            teachers.add(teacherToAssign);
+            if(toAssign instanceof Teacher) {
+                teachers.add(toAssign);
+            }
+            else{
+                students.add(toAssign);
+            }
             return true;
         }
         return false;
     }
 
-    public boolean deleteTeacher(Teacher teacherAssign, Teacher teacherToAssign){
+    public boolean removeUser(Teacher teacherAssign, User toRemove){
         if (teacherAssign!=null && teachers.contains(teacherAssign)){
-            teachers.remove(teacherToAssign);
+            if(toRemove instanceof Teacher) {
+                teachers.remove(toRemove);
+            }
+            else {
+                students.remove(toRemove);
+            }
             return true;
         }
         return false;
     }
+
 
     public List<User> getTeachers() {
         return teachers;
