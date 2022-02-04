@@ -9,9 +9,9 @@ Fonctionnalité: En tant que professeur je veux pouvoir m'assigner un module
 
   Scénario: Le module "Maths" n'a pas de professeur assigné
     Quand le professeur essaie de s'assigner au module "Maths"
-    Alors le professeu reussi à s'assigner
+    Alors le professeur reussi à s'assigner
 
-  Scénario: Le module "Maths" a déja un professeur assigné
+  Scénario: Le module "Chimie" a déja un professeur assigné
     Quand le professeur essaie de s'assigner au module "Chimie"
     Alors le professeur ne reussi pas à s'assigner
 

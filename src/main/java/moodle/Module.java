@@ -20,12 +20,24 @@ public class Module {
     }
 
     public boolean assignTeacher(Teacher teacher){
-        return assignTeacher(null, teacher);
+        if (teachers.isEmpty()){
+            teachers.add(teacher);
+            return true;
+        }
+        return false;
     }
 
     public boolean assignTeacher(Teacher teacherAssign, Teacher teacherToAssign){
-        if ((teachers.isEmpty() && teacherAssign==null) || teachers.contains(teacherToAssign)){
-            teachers = List.of(teacherToAssign);
+        if (teacherAssign!=null && teachers.contains(teacherAssign)){
+            teachers.add(teacherToAssign);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteTeacher(Teacher teacherAssign, Teacher teacherToAssign){
+        if (teacherAssign!=null && teachers.contains(teacherAssign)){
+            teachers.remove(teacherToAssign);
             return true;
         }
         return false;
@@ -37,6 +49,14 @@ public class Module {
 
     public void setTeachers(List<User> teacher) {
         this.teachers = teacher;
+    }
+
+    public List<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<User> students) {
+        this.students = students;
     }
 
     public String getName() {
