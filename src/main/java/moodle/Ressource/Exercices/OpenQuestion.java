@@ -25,16 +25,29 @@ public class OpenQuestion extends Question {
         return true;
     }
 
-    public void addAnswer(Student student, int answer){
-        if (! studentsAnswer.get(student).contains(answer)){
+    public void addStudentAnswer(Student student, int answer){
+        if (! studentsAnswer.containsKey(student)){
+            studentsAnswer.put(student, new ArrayList<>());
+        }
+        if (!studentsAnswer.get(student).contains(answer)){
             studentsAnswer.get(student).add(answer);
         }
     }
 
-    public void removeAnswer(Student student, int answer){
-        studentsAnswer.get(student).remove(answer);
+    public void removeStudentAnswer(Student student, int answer){
+        if (! studentsAnswer.containsKey(student)){
+            studentsAnswer.put(student, new ArrayList<>());
+        }
+        studentsAnswer.get(student).remove((Integer) answer);
     }
 
+    public int[] getAnswers(){
+        return answers;
+    }
+
+    public List<Integer> getStudentAnswers(Student student){
+        return studentsAnswer.get(student);
+    }
 
 
 

@@ -2,9 +2,7 @@ package moodle.Ressource.Exercices;
 
 import moodle.users.Student;
 
-import java.util.HashMap;
-
-public class Question {
+public abstract class Question {
     private int number;
     private String name;
     private String description;
@@ -14,5 +12,7 @@ public class Question {
         this.name = name;
         this.description = description;
     }
+
+    public abstract boolean succeedQuestion(Student student);
 
 }

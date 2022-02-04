@@ -10,11 +10,11 @@ public class Questionnaire extends Ressource {
     private List<Question> questionnaire;
     private HashMap<Student, Integer> grades;
 
-    public Questionnaire(String name, String description, List<Question> questionnaire, List<Student> sutdents) {
+    public Questionnaire(String name, String description, List<Question> questionnaire, List<Student> students) {
         super(name, description);
         this.questionnaire = questionnaire;
         this.grades = new HashMap<>();
-        for (Student student : sutdents.toArray(new Student[0])){
+        for (Student student : students.toArray(new Student[0])){
             grades.put(student, null);
         }
     }
@@ -23,12 +23,23 @@ public class Questionnaire extends Ressource {
         return questionnaire;
     }
 
+    public void addQuestion(Question question){
+        questionnaire.add(question);
+    }
+
     public HashMap<Student, Integer> getGrades() {
         return grades;
     }
 
     public void validateQuestionnaire(Student student){
-        // calculer la note avec les résultats des question
+        int nbQuestion = questionnaire.size();
+        int result = 0;
+        for (Question question : questionnaire) {
+            if (question.succeedQuestion(student)) {
+                result += 1;
+            }
+        }
+        grades.put(student, result/nbQuestion);
     }
 
     public boolean isValidateBy(Student student){

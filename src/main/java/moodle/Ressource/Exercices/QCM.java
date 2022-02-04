@@ -16,7 +16,7 @@ public class QCM extends Question {
         this.studentsAnswer = new HashMap<Student, Integer>();
     }
 
-    public void setAnswer(Student student, int answer){
+    public void setStudentAnswer(Student student, int answer){
         this.studentsAnswer.put(student, answer);
     }
 
@@ -24,4 +24,13 @@ public class QCM extends Question {
         return answer == studentsAnswer.get(student);
     }
 
+    public int getAnswer() { return answer; }
+
+    public void setAnswer(int newAnswer){
+        this.answer = newAnswer;
+    }
+
+    public int getStudentsAnswer(Student student) {
+        return studentsAnswer.get(student);
+    }
 }
