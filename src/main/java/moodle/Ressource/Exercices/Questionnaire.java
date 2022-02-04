@@ -27,6 +27,10 @@ public class Questionnaire extends Ressource {
         questionnaire.add(question);
     }
 
+    public void addStudent(Student student){
+        grades.put(student,null);
+    }
+
     public HashMap<Student, Integer> getGrades() {
         return grades;
     }
