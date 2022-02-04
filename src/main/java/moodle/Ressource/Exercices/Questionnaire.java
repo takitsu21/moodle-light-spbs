@@ -28,8 +28,18 @@ public class Questionnaire extends Ressource {
     }
 
     public void validateQuestionnaire(Student student){
-
+        // calculer la note avec les résultats des question
     }
+
+    public boolean isValidateBy(Student student){
+        return grades.get(student) != null;
+    }
+
+    public int getGrade(Student student){
+        return grades.get(student);
+    }
+
+
 
 }
 

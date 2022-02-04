@@ -7,11 +7,21 @@ import java.util.HashMap;
 public class QCM extends Question {
     private String[] possibleAnswers;
     private int answer;
-    private HashMap<Student, Integer> sut;
+    private HashMap<Student, Integer> studentsAnswer;
 
-    public QCM(int number, String name, String description, String[] possibleAnswers, String answer) {
+    public QCM(int number, String name, String description, String[] possibleAnswers, int answer) {
         super(number, name, description);
         this.possibleAnswers = possibleAnswers;
         this.answer = answer;
+        this.studentsAnswer = new HashMap<Student, Integer>();
     }
+
+    public void setAnswer(Student student, int answer){
+        this.studentsAnswer.put(student, answer);
+    }
+
+    public boolean succeedQuestion(Student student){
+        return answer == studentsAnswer.get(student);
+    }
+
 }

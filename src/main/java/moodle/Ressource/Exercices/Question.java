@@ -1,5 +1,9 @@
 package moodle.Ressource.Exercices;
 
+import moodle.users.Student;
+
+import java.util.HashMap;
+
 public class Question {
     private int number;
     private String name;
@@ -10,4 +14,5 @@ public class Question {
         this.name = name;
         this.description = description;
     }
+
 }
