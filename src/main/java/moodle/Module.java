@@ -6,24 +6,24 @@ import moodle.users.Teacher;
 import moodle.users.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Module {
-    private List<Ressource> resources = new ArrayList<>();
+    private Map<String, Ressource> resources = new HashMap<>();
     private List<Teacher> teachers = new ArrayList<>();
     private List<Student> students = new ArrayList<>();
     private String name;
 
-    public Module(String name, List<Ressource> resources) {
+    public Module(String name, Map<String, Ressource> resources) {
         this.resources = resources;
         this.name = name;
     }
 
     public Module(String name) {
-        this(name, new ArrayList<>());
+        this(name, new HashMap<>());
     }
-
-
 
     public boolean assignTeacher(Teacher teacher){
         if (teachers.isEmpty()){
@@ -49,12 +49,19 @@ public class Module {
     public boolean removeUser(Teacher teacherAssign, User toRemove){
         if (teacherAssign!=null && teachers.contains(teacherAssign)){
             if(toRemove instanceof Teacher) {
-                teachers.remove(toRemove);
+                teachers.remove((Teacher) toRemove);
             }
             else {
-                students.remove(toRemove);
+                students.remove((Student) toRemove);
             }
             return true;
+        }
+        return false;
+    }
+
+    public boolean changeVisibilityOfRessource(Teacher teacher, String ressource, boolean visibility){
+        if (teachers.contains(teacher)){
+            resources.get(ressource).setVisibility(visibility);
         }
         return false;
     }
@@ -65,14 +72,6 @@ public class Module {
 
     public void setTeachers(List<Teacher> teacher) {
         this.teachers = teacher;
-    }
-
-    public List<Ressource> getResources() {
-        return resources;
-    }
-
-    public void setResources(List<Ressource> resources) {
-        this.resources = resources;
     }
 
     public List<Teacher> getTeacher() {
