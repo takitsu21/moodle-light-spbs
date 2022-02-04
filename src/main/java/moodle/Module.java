@@ -3,6 +3,7 @@ package moodle;
 import moodle.Ressource.Ressource;
 import moodle.users.Student;
 import moodle.users.Teacher;
+import moodle.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,50 @@ public class Module {
 
     public Module(String name) {
         this(name, new ArrayList<>());
+    }
+
+
+
+    public boolean assignTeacher(Teacher teacher){
+        if (teachers.isEmpty()){
+            teachers.add(teacher);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean assignUser(Teacher teacherAssign, User toAssign){
+        if (teacherAssign!=null && teachers.contains(teacherAssign)){
+            if(toAssign instanceof Teacher) {
+                teachers.add((Teacher) toAssign);
+            }
+            else{
+                students.add((Student) toAssign);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeUser(Teacher teacherAssign, User toRemove){
+        if (teacherAssign!=null && teachers.contains(teacherAssign)){
+            if(toRemove instanceof Teacher) {
+                teachers.remove(toRemove);
+            }
+            else {
+                students.remove(toRemove);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teacher) {
+        this.teachers = teacher;
     }
 
     public List<Ressource> getResources() {
@@ -44,63 +89,5 @@ public class Module {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean assignTeacher(Teacher teacher) {
-        return assignTeacher(null, teacher);
-    public boolean assignUser(Teacher teacher){
-        if (teachers.isEmpty()){
-            teachers.add(teacher);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean assignUser(Teacher teacherAssign, User toAssign){
-        if (teacherAssign!=null && teachers.contains(teacherAssign)){
-            if(toAssign instanceof Teacher) {
-                teachers.add(toAssign);
-            }
-            else{
-                students.add(toAssign);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public boolean assignTeacher(Teacher teacherAssign, Teacher teacherToAssign) {
-        if ((teachers.isEmpty() && teacherAssign == null) || teachers.contains(teacherToAssign)) {
-            teachers = List.of(teacherToAssign);
-    public boolean removeUser(Teacher teacherAssign, User toRemove){
-        if (teacherAssign!=null && teachers.contains(teacherAssign)){
-            if(toRemove instanceof Teacher) {
-                teachers.remove(toRemove);
-            }
-            else {
-                students.remove(toRemove);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public List<Teacher> getTeachers() {
-        return teachers;
-    }
-
-    public void setTeachers(List<Teacher> teacher) {
-        this.teachers = teacher;
-    }
-
-    public boolean addStudent(Student student) {
-        if (!students.contains(student)) {
-            return students.add(student);
-        }
-        return false;
-    }
-
-    public boolean removeStudent(Student student) {
-        return students.remove(student);
     }
 }

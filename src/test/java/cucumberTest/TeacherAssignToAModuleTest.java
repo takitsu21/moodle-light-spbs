@@ -30,7 +30,7 @@ public class TeacherAssignToAModuleTest {
     @Quand("le professeur essaie de s'assigner au module {string}")
     public void leProfesseurEssaieDeSAssignerAuModule(String arg0) {
         assertEquals(arg0, modules.get(arg0).getName());
-        success=modules.get(arg0).assignUser(teacher);
+        success=modules.get(arg0).assignTeacher(teacher);
     }
 
     @Alors("le professeur reussi à s'assigner")
