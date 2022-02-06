@@ -66,11 +66,6 @@ public class Questionnaire extends Ressource {
     }
 
 
-
-}
-
-    }
-
     public Questionnaire() {
 
     }

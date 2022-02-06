@@ -1,5 +1,7 @@
 package moodle.Ressource.Exercices;
 
+import moodle.users.Student;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
