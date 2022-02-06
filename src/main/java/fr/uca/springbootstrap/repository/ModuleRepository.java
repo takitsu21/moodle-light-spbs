@@ -8,11 +8,11 @@ import java.util.Optional;
 
 @Repository
 public interface ModuleRepository extends JpaRepository<Module, Long> {
-  Optional<Module> findByName(String name);
-  Optional<Module> findById(long id);
+    Optional<Module> findByName(String name);
 
-  Boolean existsByName(String name);
-  Boolean existsById(long id);
+    Optional<Module> findById(long id);
 
+    Boolean existsByName(String name);
 
+    Boolean existsById(long id);
 }
