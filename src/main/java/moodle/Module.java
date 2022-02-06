@@ -5,66 +5,81 @@ import moodle.users.Student;
 import moodle.users.Teacher;
 import moodle.users.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-@Entity
-@Table(name = "modules")
 public class Module {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotBlank
+    private Map<String, Ressource> resources = new HashMap<>();
+    private List<Teacher> teachers = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "user_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> students;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "user_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> teachers;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "ressource_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-    private List<Ressource> resources;
-
-    public Module() {
-
-    }
-
-    public Module(String name, List<Ressource> resources) {
+    public Module(String name, Map<String, Ressource> resources) {
         this.resources = resources;
         this.name = name;
     }
 
     public Module(String name) {
-        this(name, new ArrayList<>());
+        this(name, new HashMap<>());
     }
 
-    public List<Ressource> getResources() {
-        return resources;
+    public boolean assignTeacher(Teacher teacher){
+        if (teachers.isEmpty()){
+            teachers.add(teacher);
+            return true;
+        }
+        return false;
     }
 
-    public void setResources(List<Ressource> resources) {
-        this.resources = resources;
+    public boolean assignUser(Teacher teacherAssign, User toAssign){
+        if (teacherAssign!=null && teachers.contains(teacherAssign)){
+            if(toAssign instanceof Teacher) {
+                teachers.add((Teacher) toAssign);
+            }
+            else{
+                students.add((Student) toAssign);
+            }
+            return true;
+        }
+        return false;
     }
 
-    public List<User> getTeacher() {
+    public boolean removeUser(Teacher teacherAssign, User toRemove){
+        if (teacherAssign!=null && teachers.contains(teacherAssign)){
+            if(toRemove instanceof Teacher) {
+                teachers.remove((Teacher) toRemove);
+            }
+            else {
+                students.remove((Student) toRemove);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean changeVisibilityOfRessource(Teacher teacher, String ressource, boolean visibility){
+        if (teachers.contains(teacher)){
+            resources.get(ressource).setVisibility(visibility);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Teacher> getTeachers() {
         return teachers;
     }
 
-    public List<User> getStudents() {
+    public void setTeachers(List<Teacher> teacher) {
+        this.teachers = teacher;
+    }
+
+    public List<Teacher> getTeacher() {
+        return teachers;
+    }
+
+    public List<Student> getStudents() {
         return students;
     }
 
@@ -76,34 +91,7 @@ public class Module {
         this.name = name;
     }
 
-    public boolean assignTeacher(Teacher teacher) {
-        return assignTeacher(null, teacher);
-    }
-
-    public boolean assignTeacher(Teacher teacherAssign, Teacher teacherToAssign) {
-        if ((teachers.isEmpty() && teacherAssign == null) || teachers.contains(teacherToAssign)) {
-            teachers = List.of(teacherToAssign);
-            return true;
-        }
-        return false;
-    }
-
-    public List<User> getTeachers() {
-        return teachers;
-    }
-
-    public void setTeachers(List<User> teacher) {
-        this.teachers = teacher;
-    }
-
-    public boolean addStudent(Student student) {
-        if (!students.contains(student)) {
-            return students.add(student);
-        }
-        return false;
-    }
-
-    public boolean removeStudent(Student student) {
-        return students.remove(student);
+    public Map<String, Ressource> getResources() {
+        return resources;
     }
 }
