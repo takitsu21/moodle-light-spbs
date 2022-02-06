@@ -79,6 +79,51 @@ public class ModuleController {
 		return ResponseEntity.ok(new MessageResponse("User successfully added to module!"));
 	}
 
+	@DeleteMapping("/{id}/participants/{userid}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> remvoveUser(Principal principal, @PathVariable long id, @PathVariable long userid) {
+		Optional<Module> omodule = moduleRepository.findById(id);
+		Optional<User> ouser = userRepository.findById(userid);
+		if (!omodule.isPresent()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+		if (!ouser.isPresent()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such user!"));
+		}
+
+		Module module = omodule.get();
+		User user = ouser.get();
+		User actor = userRepository.findByUsername(principal.getName()).get();
+
+		Set<User> participants = module.getParticipants();
+		if (!participants.isEmpty()
+				&& participants.contains(user)
+				&& participants.contains(actor)) {
+			participants.remove(user);
+		} else {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Not allowed to add user!"));
+		}
+		moduleRepository.save(module);
+		return ResponseEntity.ok(new MessageResponse("User successfully removed to module!"));
+	}
+
+	@GetMapping("/{id}/participants")
+	public ResponseEntity<?> getParticipants(Principal principal, @PathVariable long id) {
+		Module module = moduleRepository.findById(id).get();
+		System.out.println(module.getParticipants());
+		for (User participant : module.getParticipants()) {
+			System.out.println(participant.getUsername());
+		}
+		return ResponseEntity.ok(new MessageResponse("success"));
+
+	}
+
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
 	public ResponseEntity<?> createModule(@Valid @RequestBody ModuleRequest moduleRequest) {
