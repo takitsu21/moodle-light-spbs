@@ -1,8 +1,7 @@
-package cucumberTest;
+package moodle.light;
 
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Etantdonné;
-import io.cucumber.java.fr.Etque;
 import io.cucumber.java.fr.Quand;
 import moodle.Module;
 import moodle.users.Teacher;
@@ -14,7 +13,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class ProfesseurAssignToAModuleTest {
+public class TeacherAssignToAModuleTest {
     private Teacher teacher;
     private final Map<String, Module> modules= new HashMap<>();
     private boolean success;
@@ -34,8 +33,8 @@ public class ProfesseurAssignToAModuleTest {
         success=modules.get(arg0).assignTeacher(teacher);
     }
 
-    @Alors("le professeu reussi à s'assigner")
-    public void leProfesseuReussiÀSAssigner() {
+    @Alors("le professeur reussi à s'assigner")
+    public void leProfesseurReussiÀSAssigner() {
         assertTrue(success);
     }
 
@@ -43,5 +42,6 @@ public class ProfesseurAssignToAModuleTest {
     public void leProfesseurNeReussiPasÀSAssigner() {
         assertFalse(success);
     }
+
 
 }

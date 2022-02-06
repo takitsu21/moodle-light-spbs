@@ -7,6 +7,8 @@ Fonctionnalité: Ajouté ou enlever un étudiant d'un module
     Etant donné Un enseignant "Jacques" avec le mot de passe "admin"
       Et un étudiant "Jean"
       Et un module "Math" et "Français" de ressource vide
+      Et l'étudiant est assigné aux cours de "Math"
+      Et l'enseignant est assigné aux cours de "Math" et de "Français"
 
   Scénario: Ajout d'un étudiant a un module
     Quand L'enseignant ajoute "Jean" au module de "Français"

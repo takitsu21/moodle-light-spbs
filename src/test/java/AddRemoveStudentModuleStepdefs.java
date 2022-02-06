@@ -30,7 +30,14 @@ public class AddRemoveStudentModuleStepdefs {
     public void unModuleEtDeRessourceVide(String arg0, String arg1) {
         moduleMath = new Module(arg0);
         moduleFr = new Module(arg1);
-        moduleMath.addStudent(student);
+    }
+    @Et("l'étudiant est assigné aux cours de {string}")
+    public void lÉtudiantEstAssignéAuxCoursDe(String arg0) {
+        moduleMath.getStudents().add(student);
+    }
+
+    @Et("l'enseignant est assigné aux cours de {string} et de {string}")
+    public void lEnseignantEstAssignéAuxCoursDeEtDe(String arg0, String arg1) {
         moduleFr.getTeacher().add(teacher);
         moduleMath.getTeacher().add(teacher);
     }
@@ -39,7 +46,7 @@ public class AddRemoveStudentModuleStepdefs {
     public void lEnseignantAjouteAuModuleDe(String arg0, String arg1) {
         assertEquals(arg0, student.getName());
         assertEquals(arg1, moduleFr.getName());
-        assertTrue(moduleFr.addStudent(student));
+        assertTrue(moduleFr.assignUser(teacher, student));
     }
 
     @Alors("L'élève est ajouter au module")
@@ -52,11 +59,13 @@ public class AddRemoveStudentModuleStepdefs {
     public void lEnseignantVeutEnleverDuModuleDe(String arg0, String arg1) {
         assertEquals(arg0, student.getName());
         assertEquals(arg1, moduleMath.getName());
-        assertTrue(moduleMath.removeStudent(student));
+        assertTrue(moduleMath.removeUser(teacher, student));
     }
 
     @Alors("L'élève est enlever du module")
     public void lÉlèveEstEnleverDuModule() {
         assertFalse(moduleMath.getStudents().contains(student));
     }
+
+
 }

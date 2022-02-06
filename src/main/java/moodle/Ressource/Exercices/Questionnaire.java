@@ -3,10 +3,21 @@ package moodle.Ressource.Exercices;
 import moodle.Ressource.Ressource;
 import moodle.users.Student;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
 
+@Entity
+@Table(	name = "questionnaires")
 public class Questionnaire extends Ressource {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "suestion_questionnaires",
+            joinColumns = @JoinColumn(name = "questionnaire_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id"))
     private List<Question> questionnaire;
     private HashMap<Student, Integer> grades;
 
@@ -58,3 +69,9 @@ public class Questionnaire extends Ressource {
 
 }
 
+    }
+
+    public Questionnaire() {
+
+    }
+}
