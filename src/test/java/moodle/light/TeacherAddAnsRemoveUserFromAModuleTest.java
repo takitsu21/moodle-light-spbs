@@ -1,4 +1,4 @@
-package cucumberTest;
+package moodle.light;
 
 import io.cucumber.java.fr.*;
 import moodle.Module;
