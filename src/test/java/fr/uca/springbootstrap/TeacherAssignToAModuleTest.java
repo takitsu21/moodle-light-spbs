@@ -65,7 +65,7 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
         userRepository.save(user2);
 
         Module module2 = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-        module2.setParticipants(new HashSet<>(){{add(user2); }});
+        module2.getParticipants().add(user2);
         moduleRepository.save(module2);
     }
 

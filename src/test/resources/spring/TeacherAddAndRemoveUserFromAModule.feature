@@ -10,38 +10,34 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer des ut
     Et le professeur "Jean" qui n'est assigné a aucun module
     Et l'élève "Dylann" assigné au cours de "Chimie"
 
-  Scénario: Le professeur "Paul" assigne le professeur "Marie" au module "Maths"
-    Quand le professeur "Paul" essaie d'assigner le professeur "Marie" au module "Maths"
-    Et 1le dernier status de request est 200
-    Alors "Marie" est assigner à "Maths"
 
   Scénario: Le professeur "Jean" assigne le professeur "Marie" au module "Maths"
     Quand le professeur "Jean" essaie d'assigner le professeur "Marie" au module "Maths"
     Et 1le dernier status de request est 400
     Alors "Marie" n'est pas assigner à "Maths"
 
-  Scénario: Le professeur "Paul" retire le professeur "Marie" au module "Chimie"
-    Quand le professeur "Paul" essaie de retirer le professeur "Marie" au module "Chimie"
+  Scénario: Le professeur "Paul" assigne le professeur "Marie" au module "Maths"
+    Quand le professeur "Paul" essaie d'assigner le professeur "Marie" au module "Maths"
     Et 1le dernier status de request est 200
-    Alors "Marie" n'est pas assigner à "Chimie"
+    Alors "Marie" est assigner à "Maths"
 
-  Scénario: Le professeur "Jean" retire le professeur "Marie" au module "Chimie"
-    Quand le professeur "Jean" essaie de retirer le professeur "Marie" au module "Chimie"
+  Scénario: Le professeur "Jean" assigne l'élève "Dylann" au module "Maths"
+    Quand le professeur "Jean" essaie d assigner l élève "Dylann" au module "Maths"
     Et 1le dernier status de request est 400
-    Alors "Marie" est assigner à "Chimie"
+    Alors "Dylann" n'est pas assigner à "Maths"
 
   Scénario: Le professeur "Paul" assigne l'élève "Dylann" au module "Maths"
     Quand le professeur "Paul" essaie d assigner l élève "Dylann" au module "Maths"
     Et 1le dernier status de request est 200
     Alors "Dylann" est assigner à "Maths"
 
-  Scénario: Le professeur "Jean" assigne l'élève "Dylann" au module "Maths"
-    Quand le professeur "Jean" essaie d assigner l élève "Dylann" au module "Maths"
+  Scénario: Le professeur "Jean" retire le professeur "Marie" au module "Chimie"
+    Quand le professeur "Jean" essaie de retirer le professeur "Marie" au module "Chimie"
     Et 1le dernier status de request est 400
-    Alors "Marie" n'est pas assigner à "Maths"
+    Alors "Marie" est assigner à "Chimie"
 
-  Scénario: Le professeur "Paul" retire l'élève "Dylann" au module "Chimie"
-    Quand le professeur "Paul" essaie de retirer l élève "Dylann" au module "Chimie"
+  Scénario: Le professeur "Paul" retire le professeur "Marie" au module "Chimie"
+    Quand le professeur "Paul" essaie de retirer le professeur "Marie" au module "Chimie"
     Et 1le dernier status de request est 200
     Alors "Marie" n'est pas assigner à "Chimie"
 
@@ -49,3 +45,9 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer des ut
     Quand le professeur "Jean" essaie de retirer l élève "Dylann" au module "Chimie"
     Et 1le dernier status de request est 400
     Alors "Dylann" est assigner à "Chimie"
+
+  Scénario: Le professeur "Paul" retire l'élève "Dylann" au module "Chimie"
+    Quand le professeur "Paul" essaie de retirer l élève "Dylann" au module "Chimie"
+    Et 1le dernier status de request est 200
+    Alors "Dylann" n'est pas assigner à "Chimie"
+

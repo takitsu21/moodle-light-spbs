@@ -69,6 +69,8 @@ public class ModuleController {
 		Set<User> participants = module.getParticipants();
 		if ((participants.isEmpty() && actor.equals(user))
 				|| participants.contains(actor)) {
+			System.out.println(user.getUsername());
+			System.out.println(actor.getUsername());
 			participants.add(user);
 		} else {
 			return ResponseEntity
@@ -100,9 +102,16 @@ public class ModuleController {
 		User actor = userRepository.findByUsername(principal.getName()).get();
 
 		Set<User> participants = module.getParticipants();
+		System.out.println("ok");
+		System.out.println(user.getUsername());
+		System.out.println(actor.getUsername());
+		System.out.println(module.getName());
+		System.out.println(module.getParticipants());
+		System.out.println(participants.contains(user));
 		if (!participants.isEmpty()
 				&& participants.contains(user)
 				&& participants.contains(actor)) {
+			System.out.println("esrgdhfjghjk");
 			participants.remove(user);
 		} else {
 			return ResponseEntity

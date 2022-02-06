@@ -39,28 +39,30 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
     PasswordEncoder encoder;
 
     @Etantdonné("le professeur {string} assigné au module de {string}")
-    public void leProfesseurAssignéAuModuleDe(String arg0, String arg1) {
+    public void leProfesseurAssignéAuModuleDe(String arg0, String arg1) throws IOException {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
                 orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
         userRepository.save(user);
 
-        Module module = moduleRepository.findByName(arg1).orElse(new fr.uca.springbootstrap.models.Module(arg1));
-        module.setParticipants(new HashSet<>(){{add(user); }});
+        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
+        module.getParticipants().add(user);
         moduleRepository.save(module);
+
+        assertTrue(module.getParticipants().contains(user));
     }
 
     @Et("l'élève {string} assigné au cours de {string}")
-    public void lÉlèveAssignéAuCoursDe(String arg0, String arg1) {
+    public void lÉlèveAssignéAuCoursDe(String arg0, String arg1) throws IOException {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_STUDENT).
                 orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
         userRepository.save(user);
 
-        Module module = moduleRepository.findByName(arg1).orElse(new fr.uca.springbootstrap.models.Module(arg1));
-        module.setParticipants(new HashSet<>(){{add(user); }});
+        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
+        module.getParticipants().add(user);
         moduleRepository.save(module);
     }
 
@@ -83,8 +85,14 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
     }
 
     @Quand("le professeur {string} essaie de retirer le professeur {string} au module {string}")
-    public void leProfesseurEssaieDeRetirerLeProfesseurAuModule(String arg0, String arg1, String arg2) {
-//        success=modules.get(arg2).removeUser(teachers.get(arg0), teachers.get(arg1));
+    public void leProfesseurEssaieDeRetirerLeProfesseurAuModule(String arg0, String arg1, String arg2) throws IOException {
+        Module module = moduleRepository.findByName(arg2).get();
+        User teacher = userRepository.findByUsername(arg0).get();
+        User student = userRepository.findByUsername(arg1).get();
+
+        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+
+        executeDelete("http://localhost:8080/api/module/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Quand("le professeur {string} essaie d assigner l élève {string} au module {string}")
@@ -98,8 +106,14 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
 
 
     @Quand("le professeur {string} essaie de retirer l élève {string} au module {string}")
-    public void leProfesseurEssaieDeRetirerLÉlèveAuModule(String arg0, String arg1, String arg2) {
-//        success=modules.get(arg2).removeUser(teachers.get(arg0), students.get(arg1));
+    public void leProfesseurEssaieDeRetirerLÉlèveAuModule(String arg0, String arg1, String arg2) throws IOException {
+        Module module = moduleRepository.findByName(arg2).get();
+        User teacher = userRepository.findByUsername(arg0).get();
+        User student = userRepository.findByUsername(arg1).get();
+
+        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+
+        executeDelete("http://localhost:8080/api/module/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Alors("{string} est assigner à {string}")
@@ -120,5 +134,4 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
     public void leDernierStatusDeRequestEst(int arg0) {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
-
 }
