@@ -15,10 +15,11 @@ public class Questionnaire extends Ressource {
     private Long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "suestion_questionnaires",
+    @JoinTable(	name = "question_questionnaires",
             joinColumns = @JoinColumn(name = "questionnaire_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id"))
     private List<Question> questionnaire;
+
     private HashMap<Student, Integer> grades;
 
     public Questionnaire(String name, String description, List<Question> questionnaire, List<Student> students) {
@@ -64,6 +65,8 @@ public class Questionnaire extends Ressource {
     public int getGrade(Student student){
         return grades.get(student);
     }
+
+
 
 
     public Questionnaire() {

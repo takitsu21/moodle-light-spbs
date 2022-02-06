@@ -32,6 +32,7 @@ public abstract class Question {
     public abstract boolean succeedQuestion(Student student);
 
 
+
     public Question() {
 
     }
