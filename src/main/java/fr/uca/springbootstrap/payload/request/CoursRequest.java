@@ -9,10 +9,6 @@ public class CoursRequest {
     @Size(min=2, max=20)
     private String name;
 
-    @NotBlank
-    @Size(min=2, max=255)
-    private String description;
-
     private Set<String> text;
 
     public String getName() {
@@ -21,14 +17,6 @@ public class CoursRequest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Set<String> getText() {

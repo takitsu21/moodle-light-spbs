@@ -31,12 +31,6 @@ public class Module {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "ressources_modules",
             joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "cours_id"))
-    private Set<Cours> cours;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "ressources_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "ressource_id"))
     private Set<Ressource> ressources;
 
@@ -61,13 +55,5 @@ public class Module {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<Cours> getCours() {
-        return cours;
-    }
-
-    public void setCours(Set<Cours> cours) {
-        this.cours = cours;
     }
 }

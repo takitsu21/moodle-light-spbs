@@ -2,6 +2,7 @@ package fr.uca.springbootstrap.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class Ressource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     private Integer num;
 
     @NotBlank

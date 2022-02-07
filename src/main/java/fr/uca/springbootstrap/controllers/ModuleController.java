@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -71,6 +72,11 @@ public class ModuleController {
 		User actor = userRepository.findByUsername(principal.getName()).get();
 
 		Set<User> participants = module.getParticipants();
+		if (participants.contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: User already registered in this module!"));
+		}
 		if ((participants.isEmpty() && actor.equals(user))
 				|| participants.contains(actor)) {
 			participants.add(user);
@@ -129,7 +135,7 @@ public class ModuleController {
 	}
 
 	@PostMapping("/create")
-	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> createModule(@Valid @RequestBody ModuleRequest moduleRequest) {
 		if (moduleRepository.existsByName(moduleRequest.getName())) {
 			return ResponseEntity
@@ -141,6 +147,16 @@ public class ModuleController {
 		Module module = new Module(moduleRequest.getName());
 		moduleRepository.save(module);
 		return ResponseEntity.ok(new MessageResponse("Module created successfully!"));
+	}
+
+	@GetMapping("/")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> getModules() {
+		List<Module> modules = moduleRepository.findAll();
+
+
+
+		return ResponseEntity.ok(modules);
 	}
 
 	@DeleteMapping("/delete/{id}")
