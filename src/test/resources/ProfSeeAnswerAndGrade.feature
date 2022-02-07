@@ -15,31 +15,31 @@ Fonctionnalité: En tant que prof je veux pouvoir voir les réponses et les note
     Et un élève "Jean-Batiste" n'ayant pas le cours "TER"
 
     Scénario: Regarder la notes d'un élève dans dans le cours
-      Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "Test"
-      Alors le status de la dernière requète est 200
-      Et "Michèle" voit la note 10
+      Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "Test" sag1
+      Alors le status de la dernière requète est 200 sag2
+      Et "Michèle" voit la note 10 sag3
 
     Scénario: Regarder la réponse a une question d'un élève
-      Quand "Michèle" regarde la réponse à "Q2" du questionnaire "Test"
-      Alors le status de la dernière requète est 200
-      Et "Michèle" voit la réponse 1
+      Quand "Michèle" regarde la réponse à "Q2" du questionnaire "Test" sag4
+      Alors le status de la dernière requète est 200 sag5
+      Et "Michèle" voit la réponse 1 sag6
 
     Scénario: Regarder la réponse d'une question qui n'est pas dans le test
-      Quand "Michèle" regarde la réponse à "Q3" du questionnaire "Test"
-      Alors le status de la dernière reuqète est 400
-      Et "Michèle" n'as pas de réponse
+      Quand "Michèle" regarde la réponse à "Q3" du questionnaire "Test" sag7
+      Alors le status de la dernière reuqète est 400 sag8
+      Et "Michèle" n'as pas de réponse sag9
 
     Scénario: Regarder la note d'un élève d'un cours qu'on n'a pas
-      Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "CC" du cours "Génie Logiciel"
-      Alors le status de la dernière requète est 400
-      Et "Michèle" n'a pas de réponse
+      Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "CC" du cours "Génie Logiciel" sag10
+      Alors le status de la dernière requète est 400 sag11
+      Et "Michèle" n'a pas de réponse sag12
 
     Scénario: Regarder la note d'un élève n'ayant pas valider le test
-      Quand "Michèle" regarde la note de "Léa" sur le questionnaire "Test"
-      Alors le status de la dernière requète est 400
-      Et "Michèle" n'a pas de réponse
+      Quand "Michèle" regarde la note de "Léa" sur le questionnaire "Test" sag13
+      Alors le status de la dernière requète est 400 sag14
+      Et "Michèle" n'a pas de réponse sag15
 
     Scénario: Regarder la note d'un élève ne possédant pas la matière
-      Quand "Michèle" regarde la note de "Jean-Batiste" sur le questionnaire "Test"
-      Alors le status de la dernière requète est 400
-      Et "Michèle" n'a pas de réponse
+      Quand "Michèle" regarde la note de "Jean-Batiste" sur le questionnaire "Test" sag16
+      Alors le status de la dernière requète est 400 sag17
+      Et "Michèle" n'a pas de réponse sag18
