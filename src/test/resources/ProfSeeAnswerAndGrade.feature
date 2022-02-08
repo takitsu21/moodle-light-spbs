@@ -1,7 +1,7 @@
 # language: fr
 # encoding: utf-8
 
-Fonctionnalité: En tant que prof je veux pouvoir voir les réponses et les notes des élèves inscrit a mon cours
+Fonctionnalité: En tant que prof je veux pouvoir voir les réponses et les notes des élèves inscrit a mon module
 
   Contexte:
     Etant donné un professeur "Michèle" ayant comme module "TER" mais pas le module "Génie Logiciel"
