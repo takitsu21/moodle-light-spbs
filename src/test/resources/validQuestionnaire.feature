@@ -4,12 +4,12 @@
 Fonctionnalité: En tant qu'élève je veux pouvoir valider un questionnaire
 
   Contexte:
-    Etant donné un élève "Antoine" ayant pris le cours "Génie Logiciel"
-    Et un élève "Léa" n'ayant pas le cours "Génie Logiciel"
-    Et un questionnaire rempli "Test" appartenant au cours "Génie Locigiel"
+    Etant donné un élève "Antoine" ayant pris le module "Génie Logiciel"
+    Et un élève "Léa" n'ayant pas le module "Génie Logiciel"
+    Et un questionnaire rempli "Test" appartenant au module "Génie Locigiel"
 
     Scénario: L'élève valide un questionnaire
-      Quand l'élève "Antoine" valide un questionnaire
+      Quand l'élève "Antoine" valide un questionnaire vq1
       Alors le status de la dernière requète est 200 vq1
       Et le questionnaire est validé vq1
 

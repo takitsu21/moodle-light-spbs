@@ -4,8 +4,8 @@
   Fonctionnalité: Ajouter ou modifier une réponse d'une question
 
     Contexte:
-      Etant donné Un élève "Antoine" ayant le cours "Gestion de projet"
-      Et un élève "Léa" n'ayant pas le cours "Gestion de projet"
+      Etant donné Un élève "Antoine" ayant le module "Gestion de projet"
+      Et un élève "Léa" n'ayant pas le module "Gestion de projet"
       Et un questionnaire "Test1" appartenant à un module "Gestion de projet"
       Et une question QCM "Q1" appartenant au questionnaire "Test1" possédant 4 réponses possible
       Et une question open "Q2" appartenant au questionnaire "Test1", avec la réponse 2 choisie ayant 4 réponses possible
@@ -21,7 +21,7 @@
       Et La réponse est enlevé des réponses donnée par l'élève à la question amq6
 
     Scénario: Choisir une réponse à une question QCM
-      Quand "Antoine" choisi la réponse 1 à la question "Q1" du questinnaire "Test1" amq7
+      Quand "Antoine" choisi la réponse 1 à la question "Q1" du questionnaire "Test1" amq7
       Alors le status de la dernière requète est 200 amq8
       Et La réponse choisi est la réponse 1 amq9
 
