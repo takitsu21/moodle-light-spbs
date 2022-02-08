@@ -40,17 +40,17 @@
       Alors le status de la requète est 400 amq17
       Et "Antoine" n'arrive pas a choisir cette réponse amq18
 
-    Scénario: Vouloir répondre a un QCM appartenant a un cours non pris par l'élève
+    Scénario: Vouloir répondre a un QCM appartenant a un module non pris par l'élève
       Quand "Léa" choisis la réponse 1 à la question "Q1" amq19
       Alors le status de la dernière requète est 400 amq20
       Et "Léa" ne réussi pas à répondre amq21
 
-    Scénario: Vouloir ajouter une réponse a une question ouverte appartenant a un cours non pris par l'élève
+    Scénario: Vouloir ajouter une réponse a une question ouverte appartenant a un module non pris par l'élève
       Quand "Léa" choisis d'ajouter la réponse 1 à la question "Q1" amq22
       Alors le status de la dernière requète est 400 amq23
       Et "Léa" ne réussi pas à répondre amq24
 
-    Scénario: Vouloir enlever une réponse a une question ouverte appartenant a un cours non pris par l'élève
+    Scénario: Vouloir enlever une réponse a une question ouverte appartenant a un module non pris par l'élève
       Quand "Léa" choisis d'ajouter la réponse 1 à la question "Q1" amq25
       Alors le status de la dernière requète est 400 amq26
       Et "Léa" ne réussi pas à répondre amq26

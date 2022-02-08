@@ -14,7 +14,7 @@ Fonctionnalité: En tant que prof je veux pouvoir voir les réponses et les note
     Et un élève "Léa" n'ayant pas validé son questionnaire "Test"
     Et un élève "Jean-Batiste" n'ayant pas le module "TER"
 
-    Scénario: Regarder la notes d'un élève dans dans le cours
+    Scénario: Regarder la notes d'un élève dans dans le module
       Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "Test" sag1
       Alors le status de la dernière requète est 200 sag2
       Et "Michèle" voit la note 10 sag3
@@ -29,8 +29,8 @@ Fonctionnalité: En tant que prof je veux pouvoir voir les réponses et les note
       Alors le status de la dernière requète est 400 sag8
       Et "Michèle" n'as pas de réponse sag9
 
-    Scénario: Regarder la note d'un élève d'un cours qu'on n'a pas
-      Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "CC" du cours "Génie Logiciel" sag10
+    Scénario: Regarder la note d'un élève d'un module qu'on n'a pas
+      Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "CC" du module "Génie Logiciel" sag10
       Alors le status de la dernière requète est 400 sag11
       Et "Michèle" n'a pas de réponse sag12
 
