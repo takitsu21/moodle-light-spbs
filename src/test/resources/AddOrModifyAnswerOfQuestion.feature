@@ -46,7 +46,7 @@
       Et "Léa" ne réussi pas à répondre amq21
 
     Scénario: Vouloir ajouter une réponse a une question ouverte appartenant a un module non pris par l'élève
-      Quand "Léa" choisis d'ajouter la réponse 1 à la question "Q1" amq22
+      Quand "Léa" choisis d'ajouter la réponse 1 à la question "Q2" amq22
       Alors le status de la dernière requète est 400 amq23
       Et "Léa" ne réussi pas à répondre amq24
 
