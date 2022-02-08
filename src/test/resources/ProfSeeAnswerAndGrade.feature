@@ -17,7 +17,7 @@ Fonctionnalité: En tant que prof je veux pouvoir voir les réponses et les note
     Scénario: Regarder la notes d'un élève dans dans le module
       Quand "Michèle" regarde la note de "Antoine" sur le questionnaire "Test" sag1
       Alors le status de la dernière requète est 200 sag2
-      Et "Michèle" voit la note 10 sag3
+      Et "Michèle" voit la note 1 sag3
 
     Scénario: Regarder la réponse a une question d'un élève
       Quand "Michèle" regarde la réponse à "Q2" du questionnaire "Test" de l'élève "Antoine" sag4
