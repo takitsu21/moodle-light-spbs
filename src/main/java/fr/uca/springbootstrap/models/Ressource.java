@@ -6,23 +6,24 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name="ressources")
+//@Table(name="ressources")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private Integer num;
-
     @NotBlank
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "cours_ressources",
-            joinColumns = @JoinColumn(name = "cours_id"),
-            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-    private Set<Cours> cours;
+    @NotBlank
+    private String description;
+
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinTable(	name = "cours_ressources",
+//            joinColumns = @JoinColumn(name = "cours_id"),
+//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
+//    private Set<Cours> cours;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "ressources_modules",
@@ -33,8 +34,9 @@ public class Ressource {
     public Ressource() {
     }
 
-    public Ressource(String name) {
+    public Ressource(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public Long getId() {
@@ -53,12 +55,12 @@ public class Ressource {
         this.name = name;
     }
 
-    public Set<Cours> getCours() {
-        return cours;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCours(Set<Cours> cours) {
-        this.cours = cours;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<Module> getModules() {
@@ -67,13 +69,5 @@ public class Ressource {
 
     public void setModules(Set<Module> modules) {
         this.modules = modules;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
     }
 }

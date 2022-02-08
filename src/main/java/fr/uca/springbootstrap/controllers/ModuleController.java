@@ -174,16 +174,53 @@ public class ModuleController {
 		return ResponseEntity.ok(new MessageResponse("Module deleted successfully!"));
 	}
 
-	@PostMapping("/{module_id}/ressource/{ressource_id}/cours")
+	@PostMapping("/{module_id}/cours")
 	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> addCours(Principal principal,
-									  @Valid @RequestBody CoursRequest coursRequest,
-									  @PathVariable long moduleId,
-									  @PathVariable long ressourceId) {
+									  @Valid @RequestBody RessourceRequest ressourceRequest,
+									  @PathVariable("module_id") long moduleId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
+		Optional<User> ouser = userRepository.findByUsername(principal.getName());
+
+		if (omodule.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+		if (ouser.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such user!"));
+		}
+
+		if (!moduleRepository.existsById(moduleId)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Module doesn't exists!"));
+		}
+		Module module = omodule.get();
+		User user = ouser.get();
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to add courses!"));
+		}
+		Ressource ressource = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription());
+
+		ressourceRepository.save(ressource);
+		return ResponseEntity.ok(new MessageResponse("Course added to the module successfully!"));
+	}
+
+	@DeleteMapping("/{module_id}/cours/{cours_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> deleteCours(Principal principal,
+									  @PathVariable("module_id") long moduleId,
+										 @PathVariable("cours_id") long coursId) {
 
 		Optional<Module> omodule = moduleRepository.findById(moduleId);
 		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Ressource> oressource = ressourceRepository.findById(ressourceId);
+		Optional<Ressource> oressource = ressourceRepository.findById(coursId);
+
 		if (omodule.isEmpty()) {
 			return ResponseEntity
 					.badRequest()
@@ -197,7 +234,7 @@ public class ModuleController {
 		if (oressource.isEmpty()) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: No such ressource!"));
+					.body(new MessageResponse("Error: No such cours!"));
 		}
 
 		if (!moduleRepository.existsById(moduleId)) {
@@ -213,53 +250,10 @@ public class ModuleController {
 		if (!module.getParticipants().contains(user)) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: You do not belong to this module!"));
+					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
 		}
 
-
-
-
-		return ResponseEntity.ok(new MessageResponse("Cours added to the module successfully!"));
+		ressourceRepository.delete(ressource);
+		return ResponseEntity.ok(new MessageResponse("Course removed from the module successfully!"));
 	}
-
-	@PostMapping("/{module_id}/ressource")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> addRessource(Principal principal,
-									  @Valid @RequestBody RessourceRequest ressourceRequest,
-									  @PathVariable long moduleId) {
-
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-		Module module = omodule.get();
-		User user = ouser.get();
-		Ressource ressource = new Ressource(ressourceRequest.getName());
-
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You do not belong to this module!"));
-		}
-
-		ressourceRepository.save(ressource);
-		return ResponseEntity.ok(new MessageResponse("Cours added to the module successfully!"));
-	}
-
 }
