@@ -264,7 +264,6 @@ public class ModuleController {
 		Optional<User> ouser = userRepository.findByUsername(principal.getName());
 		Optional<Ressource> oressource = ressourceRepository.findById(ressource_id);
 
-		System.out.println("dedans");
 		if (omodule.isEmpty()) {
 			return ResponseEntity
 					.badRequest()
@@ -280,24 +279,20 @@ public class ModuleController {
 					.badRequest()
 					.body(new MessageResponse("Error: No such ressource!"));
 		}
-
 		if (!moduleRepository.existsById(module_id)) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Module doesn't exists!"));
 		}
-		System.out.println("truc simple");
 		Module module = omodule.get();
 		Ressource ressource = oressource.get();
 		User user = ouser.get();
 		if (!module.getParticipants().contains(user)) {
-			System.out.println("ok1");
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: You are not allowed to modify ressource visibility!"));
 		}
 		if (!module.getRessources().contains(ressource)) {
-			System.out.println("ok");
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Ressource not in Module!"));
@@ -339,13 +334,11 @@ public class ModuleController {
 		Ressource ressource = oressource.get();
 		User user = ouser.get();
 		if (!module.getParticipants().contains(user)) {
-			System.out.println("ok1");
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: You are not allowed to modify ressource visibility!"));
 		}
 		if (!module.getRessources().contains(ressource)) {
-			System.out.println("ok");
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Ressource not in Module!"));

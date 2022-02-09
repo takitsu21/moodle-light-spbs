@@ -19,8 +19,7 @@ public abstract class Ressource {
     @NotBlank
     private String description;
 
-    @NotBlank
-    private boolean visibility;
+    private boolean visibility=false;
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",

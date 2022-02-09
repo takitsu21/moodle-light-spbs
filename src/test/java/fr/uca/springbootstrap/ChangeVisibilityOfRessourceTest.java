@@ -52,7 +52,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
                 orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
         userRepository.save(user);
 
-        fr.uca.springbootstrap.models.Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
+        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
         module.getParticipants().add(user);
         moduleRepository.save(module);
         
