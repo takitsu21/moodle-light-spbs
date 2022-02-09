@@ -33,6 +33,17 @@ public abstract class Question {
     @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
 
+    public Question(int number, String name, String description, Questionnaire questionnaire){
+        this.description = description;
+        this.questionnaire = questionnaire;
+        this.name = name;
+        this.number = number;
+    }
+
+    public Question() {
+
+    }
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 

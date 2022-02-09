@@ -1,4 +1,4 @@
-package fr.uca.springbootstrap.repository;
+package fr.uca.springbootstrap.repository.question;
 
 import fr.uca.springbootstrap.models.questions.Question;
 import org.springframework.data.jpa.repository.JpaRepository;

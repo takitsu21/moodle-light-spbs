@@ -1,14 +1,12 @@
 package fr.uca.springbootstrap.models.questions;
 
 import fr.uca.springbootstrap.models.User;
-import fr.uca.springbootstrap.models.questions.Answer;
-import fr.uca.springbootstrap.models.questions.OpenQuestion;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class StudentAnswerOpenQuestion {
+public class AnswerOpenQuestion {
 
     @Id
     @GeneratedValue
@@ -25,6 +23,15 @@ public class StudentAnswerOpenQuestion {
     @JoinColumn(name = "open_question")
     private OpenQuestion openQuestion;
 
+    public AnswerOpenQuestion(){
+
+    }
+
+    public AnswerOpenQuestion(Set<Answer> answers, User student, OpenQuestion openQuestion){
+        this.answers = answers;
+        this.student = student;
+        this.openQuestion = openQuestion;
+    }
 
     public void setId(Long id) { this.id = id; }
     public Long getId() { return id; }

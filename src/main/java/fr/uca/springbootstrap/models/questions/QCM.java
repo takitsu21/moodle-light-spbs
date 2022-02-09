@@ -1,5 +1,6 @@
 package fr.uca.springbootstrap.models.questions;
 
+import fr.uca.springbootstrap.models.Questionnaire;
 import fr.uca.springbootstrap.models.User;
 
 import javax.persistence.*;
@@ -23,6 +24,14 @@ public class QCM extends Question {
             joinColumns = @JoinColumn(name = "student"),
             inverseJoinColumns = @JoinColumn(name = "answer"))
     private Set<User> studentsAnswers;
+
+    public QCM(int number, String name, String description, Questionnaire questionnaire) {
+        super(number, name, description, questionnaire);
+    }
+
+    public QCM() {
+        super();
+    }
 
     public Answer getAnswer() { return answer; }
     public void setAnswer(Answer answer) { this.answer = answer; }

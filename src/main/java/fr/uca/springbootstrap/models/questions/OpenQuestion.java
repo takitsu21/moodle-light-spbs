@@ -1,5 +1,7 @@
 package fr.uca.springbootstrap.models.questions;
 
+import fr.uca.springbootstrap.models.Questionnaire;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -23,13 +25,28 @@ public class OpenQuestion extends Question {
     @JoinTable(name = "students_anwser",
             joinColumns = @JoinColumn(name = "open_question"),
             inverseJoinColumns = @JoinColumn(name = "student_anwser_open_question"))
-    private Set<StudentAnswerOpenQuestion> studentAnswerOpenQuestionSet;
+    private Set<AnswerOpenQuestion> answerOpenQuestionSet;
+
+
+    public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> answerOpenQuestionSet,
+                        Set<Answer> possibleAnswers, String name, String description,
+                        int number, Questionnaire questionnaire){
+        super(number, name, description, questionnaire);
+        this.answers = answers;
+        this.answerOpenQuestionSet = answerOpenQuestionSet;
+        this.possibleAnswers =  possibleAnswers;
+    }
+
+
+    public OpenQuestion() {
+        super();
+    }
 
     public Set<Answer> getAnswers() { return answers; }
     public void setAnswers(Set<Answer> answers) { this.answers = answers; }
 
-    public Set<StudentAnswerOpenQuestion> getStudentAnswerOpenQuestionSet() { return studentAnswerOpenQuestionSet; }
-    public void setStudentAnswerOpenQuestionSet(Set<StudentAnswerOpenQuestion> studentAnswerOpenQuestionSet) { this.studentAnswerOpenQuestionSet = studentAnswerOpenQuestionSet; }
+    public Set<AnswerOpenQuestion> getStudentAnswerOpenQuestionSet() { return answerOpenQuestionSet; }
+    public void setStudentAnswerOpenQuestionSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.answerOpenQuestionSet = answerOpenQuestionSet; }
 
     public Set<Answer> getPossibleAnswers() { return possibleAnswers; }
     public void setPossibleAnswers(Set<Answer> possibleAnswers) { this.possibleAnswers = possibleAnswers; }
