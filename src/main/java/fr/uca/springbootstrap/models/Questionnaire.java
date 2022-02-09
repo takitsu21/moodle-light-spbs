@@ -11,29 +11,29 @@ public class Questionnaire {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "questionnaire_id", nullable = false)
     private long id;
 
     @NotBlank
     @Size(max = 50)
+    @Column(name = "questionnaire_name")
     private String name;
 
     @NotBlank
     @Size(max = 1024)
+    @Column(name = "questionnaire_description")
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "questionnaire_question",
-            joinColumns = @JoinColumn(name = "questionnaire_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questionSet = new HashSet<>();
 
     public Questionnaire(){
 
     }
 
-    public Questionnaire(String name, String descritpion){
+    public Questionnaire(String name, String description){
         this.name = name;
-        this.description = descritpion;
+        this.description = description;
     }
 
     public long getId() { return id; }

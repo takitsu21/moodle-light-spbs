@@ -4,20 +4,26 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table( name = "question")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "question_type",
+                    discriminatorType = DiscriminatorType.STRING)
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "question_id", nullable = false)
     private long id;
 
+    @Column(name = "question_nb")
     private int number;
 
     @NotBlank
     @Size(max = 50)
+    @Column(name = "question_nam")
     private String name;
 
     @NotBlank
     @Size(max = 120)
+    @Column(name = "question_description")
     private String description;
 
     @ManyToOne
