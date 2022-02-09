@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,8 +51,8 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
         assertTrue(module.getParticipants().contains(user));
     }
 
-    @Et("l'élève {string} assigné au cours de {string}")
-    public void lÉlèveAssignéAuCoursDe(String arg0, String arg1) throws IOException {
+    @Et("l'élève {string} assigné au module de {string}")
+    public void lÉlèveAssignéAuModuleDe(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_STUDENT).
