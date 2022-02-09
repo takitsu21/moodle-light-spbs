@@ -28,6 +28,12 @@ public class Module {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> participants;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "ressources_modules",
+            joinColumns = @JoinColumn(name = "module_id"),
+            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
+    private Set<Ressource> ressources;
+
     public Module() {
     }
 
