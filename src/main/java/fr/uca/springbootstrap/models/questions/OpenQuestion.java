@@ -20,6 +20,9 @@ public class OpenQuestion extends Question {
     private Set<Answer> answers;
 
     @ManyToMany
+    @JoinTable(name = "students_anwser",
+            joinColumns = @JoinColumn(name = "open_question"),
+            inverseJoinColumns = @JoinColumn(name = "student_anwser_open_question"))
     private Set<StudentAnswerOpenQuestion> studentAnswerOpenQuestionSet;
 
     public Set<Answer> getAnswers() { return answers; }
