@@ -7,10 +7,6 @@ import java.util.Set;
 @DiscriminatorValue("qcm")
 public class QCM extends Question {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     @ManyToMany
     @JoinTable( name = "possible_answers",
             joinColumns = @JoinColumn(name ="open_question"),

@@ -1,17 +1,15 @@
 package fr.uca.springbootstrap.models;
 
 import moodle.users.Student;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue("open")
 public class OpenQuestion extends Question {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
     @ManyToMany
     @JoinTable( name = "possible_answers",
