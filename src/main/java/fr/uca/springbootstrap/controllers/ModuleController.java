@@ -12,6 +12,7 @@ import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import fr.uca.springbootstrap.security.jwt.JwtUtils;
+import moodle.users.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -131,7 +132,6 @@ public class ModuleController {
 			System.out.println(participant.getUsername());
 		}
 		return ResponseEntity.ok(new MessageResponse("success"));
-
 	}
 
 	@PostMapping("/create")
@@ -153,9 +153,6 @@ public class ModuleController {
 	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> getModules() {
 		List<Module> modules = moduleRepository.findAll();
-
-
-
 		return ResponseEntity.ok(modules);
 	}
 
@@ -346,5 +343,18 @@ public class ModuleController {
 		ressource.setVisibility(false);
 		ressourceRepository.save(ressource);
 		return ResponseEntity.ok(new MessageResponse("Ressource visibility change successfully!"));
+	}
+
+	@GetMapping("/{id}/ressources")
+	public ResponseEntity<?> getRessourcess(Principal principal, @PathVariable long id) {
+		Module module = moduleRepository.findById(id).get();
+		User user = userRepository.findByUsername(principal.getName()).get();
+
+		for (Ressource ressource : module.getRessources()) {
+			if(ressource.isVisibility() || (module.getParticipants().contains(user) && user.hasTeacher())) {
+				System.out.println(ressource.getName());
+			}
+		}
+		return ResponseEntity.ok(new MessageResponse("success"));
 	}
 }
