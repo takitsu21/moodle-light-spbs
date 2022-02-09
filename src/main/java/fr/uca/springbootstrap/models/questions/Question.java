@@ -1,29 +1,48 @@
-package fr.uca.springbootstrap.models;
+package fr.uca.springbootstrap.models.questions;
+
+import fr.uca.springbootstrap.models.Questionnaire;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table( name = "question")
-public class Question {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "question_type",
+                    discriminatorType = DiscriminatorType.STRING)
+public abstract class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "question_id", nullable = false)
     private long id;
-    
+
     @NotNull
+    @Column(name = "question_nb")
     private int number;
 
     @NotBlank
     @Size(max = 50)
+    @Column(name = "question_name")
     private String name;
 
     @NotBlank
     @Size(max = 120)
+    @Column(name = "question_description")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
+
+    public Question(int number, String name, String description, Questionnaire questionnaire){
+        this.description = description;
+        this.questionnaire = questionnaire;
+        this.name = name;
+        this.number = number;
+    }
+
+    public Question() {
+
+    }
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
