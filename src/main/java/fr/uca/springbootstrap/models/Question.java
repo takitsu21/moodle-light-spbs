@@ -9,7 +9,8 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    
+    @NotNull
     private int number;
 
     @NotBlank
