@@ -1,10 +1,6 @@
-package fr.uca.springbootstrap.models;
-
-import moodle.users.Student;
-import org.springframework.beans.factory.annotation.Value;
+package fr.uca.springbootstrap.models.questions;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity

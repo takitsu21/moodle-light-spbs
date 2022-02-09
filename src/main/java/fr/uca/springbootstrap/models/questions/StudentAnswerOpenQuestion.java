@@ -1,4 +1,8 @@
-package fr.uca.springbootstrap.models;
+package fr.uca.springbootstrap.models.questions;
+
+import fr.uca.springbootstrap.models.User;
+import fr.uca.springbootstrap.models.questions.Answer;
+import fr.uca.springbootstrap.models.questions.OpenQuestion;
 
 import javax.persistence.*;
 import java.util.Set;

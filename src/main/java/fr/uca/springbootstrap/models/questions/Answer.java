@@ -1,4 +1,4 @@
-package fr.uca.springbootstrap.models;
+package fr.uca.springbootstrap.models.questions;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

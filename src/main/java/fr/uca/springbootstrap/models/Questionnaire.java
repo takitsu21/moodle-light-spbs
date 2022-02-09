@@ -1,7 +1,8 @@
 package fr.uca.springbootstrap.models;
 
+import fr.uca.springbootstrap.models.questions.Question;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
