@@ -4,9 +4,9 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "cours")
+@DiscriminatorValue("Cours")
 public class Cours extends Ressource {
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "cours_text",
             joinColumns = @JoinColumn(name = "cours_id"),
             inverseJoinColumns = @JoinColumn(name = "text_id"))

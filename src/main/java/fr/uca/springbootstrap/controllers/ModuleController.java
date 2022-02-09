@@ -2,15 +2,9 @@ package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.payload.request.CoursRequest;
-import fr.uca.springbootstrap.payload.request.ModuleRequest;
-import fr.uca.springbootstrap.payload.request.RessourceRequest;
-import fr.uca.springbootstrap.payload.request.SignupRequest;
+import fr.uca.springbootstrap.payload.request.*;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RessourceRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +38,9 @@ public class ModuleController {
 
 	@Autowired
 	RessourceRepository ressourceRepository;
+
+	@Autowired
+	TextRepository textRepository;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -205,9 +202,8 @@ public class ModuleController {
 					.badRequest()
 					.body(new MessageResponse("Error: You are not allowed to add courses!"));
 		}
-		Ressource ressource = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription());
-
-		ressourceRepository.save(ressource);
+		Cours cours = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription());
+		ressourceRepository.save(cours);
 		return ResponseEntity.ok(new MessageResponse("Course added to the module successfully!"));
 	}
 
@@ -255,5 +251,57 @@ public class ModuleController {
 
 		ressourceRepository.delete(ressource);
 		return ResponseEntity.ok(new MessageResponse("Course removed from the module successfully!"));
+	}
+
+	@PostMapping("/{module_id}/cours/{cours_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> addText(Principal principal,
+									 @Valid @RequestBody TextRequest textRequest,
+									 @PathVariable("module_id") long moduleId,
+									 @PathVariable("cours_id") long coursId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
+		Optional<User> ouser = userRepository.findByUsername(principal.getName());
+		Optional<Ressource> oressource = ressourceRepository.findById(coursId);
+
+		if (omodule.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+		if (ouser.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such user!"));
+		}
+		if (oressource.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such cours!"));
+		}
+
+		if (!moduleRepository.existsById(moduleId)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Module doesn't exists!"));
+		}
+
+		Module module = omodule.get();
+		User user = ouser.get();
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
+		}
+		Set<Text> texts = new HashSet<>();
+
+		for (MyText text : textRequest.getTexts()) {
+			texts.add(new Text(text.getNum(), text.getContent()));
+		}
+		Cours cours = (Cours) oressource.get();
+
+		cours.setTexts(texts);
+		ressourceRepository.save(cours);
+		return ResponseEntity.ok(new MessageResponse("Texts successfully added to the course!"));
 	}
 }

@@ -2,6 +2,7 @@ package fr.uca.springbootstrap.payload.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 public class RessourceRequest {
     @NotBlank
@@ -11,6 +12,13 @@ public class RessourceRequest {
     @NotBlank
     @Size(min=2, max=128)
     private String description;
+
+
+    private Integer num;
+
+    private Set<String> texts;
+
+
 
     public String getName() {
         return name;
@@ -26,5 +34,21 @@ public class RessourceRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<String> getTexts() {
+        return texts;
+    }
+
+    public void setTexts(Set<String> texts) {
+        this.texts = texts;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }
