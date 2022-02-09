@@ -256,10 +256,10 @@ public class ModuleController {
 
 	@PostMapping("/{module_id}/ressourceVisible/{ressource_id}")
 	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> ressourceVisible(Principal principal, @PathVariable long module_id, @PathVariable long ressource_id) {
-		Optional<Module> omodule = moduleRepository.findById(module_id);
+	public ResponseEntity<?> ressourceVisible(Principal principal, @PathVariable("module_id") long moduleId, @PathVariable("ressource_id")  long ressourceId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
 		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Ressource> oressource = ressourceRepository.findById(ressource_id);
+		Optional<Ressource> oressource = ressourceRepository.findById(ressourceId);
 
 		if (omodule.isEmpty()) {
 			return ResponseEntity
@@ -276,7 +276,7 @@ public class ModuleController {
 					.badRequest()
 					.body(new MessageResponse("Error: No such ressource!"));
 		}
-		if (!moduleRepository.existsById(module_id)) {
+		if (!moduleRepository.existsById(moduleId)) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Module doesn't exists!"));
@@ -301,10 +301,10 @@ public class ModuleController {
 
 	@PostMapping("/{module_id}/ressourceInvisible/{ressource_id}")
 	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> ressourceInvisible(Principal principal, @PathVariable long module_id, @PathVariable long ressource_id) {
-		Optional<Module> omodule = moduleRepository.findById(module_id);
+	public ResponseEntity<?> ressourceInvisible(Principal principal, @PathVariable("module_id") long moduleId, @PathVariable("ressource_id")  long ressourceId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
 		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Ressource> oressource = ressourceRepository.findById(ressource_id);
+		Optional<Ressource> oressource = ressourceRepository.findById(ressourceId);
 
 		if (omodule.isEmpty()) {
 			return ResponseEntity
@@ -322,7 +322,7 @@ public class ModuleController {
 					.body(new MessageResponse("Error: No such ressource!"));
 		}
 
-		if (!moduleRepository.existsById(module_id)) {
+		if (!moduleRepository.existsById(moduleId)) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Module doesn't exists!"));
@@ -346,7 +346,7 @@ public class ModuleController {
 	}
 
 	@GetMapping("/{id}/ressources")
-	public ResponseEntity<?> getRessourcess(Principal principal, @PathVariable long id) {
+	public ResponseEntity<?> getRessourcess(Principal principal, @PathVariable("id") long id) {
 		Module module = moduleRepository.findById(id).get();
 		User user = userRepository.findByUsername(principal.getName()).get();
 
