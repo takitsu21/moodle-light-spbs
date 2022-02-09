@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 //@Table(name="ressources")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Ressource {
+public abstract class Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
