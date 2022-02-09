@@ -10,7 +10,6 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
     private int number;
 
     @NotBlank
