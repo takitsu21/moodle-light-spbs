@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-//@Table(name="ressources")
+@Table(name="ressource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="ressource_type")
 public abstract class Ressource {
