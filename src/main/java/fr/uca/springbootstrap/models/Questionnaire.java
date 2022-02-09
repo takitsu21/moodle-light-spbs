@@ -11,7 +11,7 @@ import java.util.Set;
 public class Questionnaire extends Ressource {
 
     @OneToMany(fetch = FetchType.LAZY)
-    private Set<Question> questionSet = new HashSet<>();
+    private Set<Question> questions;
 
     @OneToMany
     @JoinTable(name = "students_grades",
@@ -23,8 +23,8 @@ public class Questionnaire extends Ressource {
 
     }
 
-    public Set<Question> getQuestionSet() { return questionSet; }
-    public void setQuestionSet(Set<Question> questionSet) { this.questionSet = questionSet; }
+    public Set<Question> getQuestions() { return questions; }
+    public void setQuestions(Set<Question> questions) { this.questions = questions; }
 
 
 }
