@@ -1,11 +1,8 @@
 package fr.uca.springbootstrap.controllers;
 
-import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Role;
 import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.payload.request.ModuleRequest;
-import fr.uca.springbootstrap.payload.request.SignupRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 

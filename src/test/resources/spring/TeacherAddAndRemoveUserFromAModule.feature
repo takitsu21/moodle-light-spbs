@@ -8,7 +8,7 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer des ut
     Et le professeur "Paul" assigné au module de "Chimie"
     Et le professeur "Marie" assigné au module de "Chimie"
     Et le professeur "Jean" qui n'est assigné a aucun module
-    Et l'élève "Dylann" assigné au cours de "Chimie"
+    Et l'élève "Dylann" assigné au module de "Chimie"
 
 
   Scénario: Le professeur "Jean" assigne le professeur "Marie" au module "Maths"
