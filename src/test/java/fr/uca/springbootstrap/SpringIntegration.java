@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -19,19 +20,31 @@ public class SpringIntegration {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
     protected HttpResponse latestHttpResponse;
 
-    void executeGet(String url) throws IOException {
+    public void executeGet(String url, String jwt) throws IOException {
         HttpGet request = new HttpGet(url);
         request.addHeader("Accept", "application/json");
+        if (jwt != null) {
+            request.addHeader("Authorization", "Bearer " + jwt);
+        }
         latestHttpResponse = httpClient.execute(request);
     }
 
-    void executePost(String url, String jwt) throws IOException {
+    public void executePost(String url, String jwt) throws IOException {
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
         request.setEntity(new StringEntity("{}"));
+        latestHttpResponse = httpClient.execute(request);
+    }
+
+    public void executeDelete(String url, String jwt) throws IOException {
+        HttpDelete request = new HttpDelete(url);
+        request.addHeader("content-type", "application/json");
+        if (jwt != null) {
+            request.addHeader("Authorization", "Bearer " + jwt);
+        }
         latestHttpResponse = httpClient.execute(request);
     }
 }

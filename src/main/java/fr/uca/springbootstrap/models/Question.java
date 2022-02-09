@@ -13,12 +13,13 @@ public class Question {
     @Column(name = "question_id", nullable = false)
     private long id;
 
+    @NotNull
     @Column(name = "question_nb")
     private int number;
 
     @NotBlank
     @Size(max = 50)
-    @Column(name = "question_nam")
+    @Column(name = "question_name")
     private String name;
 
     @NotBlank
