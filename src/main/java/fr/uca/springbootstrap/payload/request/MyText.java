@@ -1,9 +1,15 @@
 package fr.uca.springbootstrap.payload.request;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class MyText {
 
-    private int num;
+    @NotNull
+    private Integer num;
 
+    @NotBlank
     private String content;
 
     public MyText(int num, String content) {

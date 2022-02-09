@@ -60,7 +60,7 @@ public class CoursesStepdefs {
     @Et("un module {string} qui a un cours {string} et qui a un enseignant {string} crs")
     public void unModuleQuiAUnCoursEtQuiAUnEnseignantCrs(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-        Cours cours = coursRepository.findByName(arg1).orElse(new Cours(arg1, "description"));
+        Cours cours = coursRepository.findByName(arg1).orElse(new Cours(arg1, "description", 1));
         User teacher = userRepository.findByUsername(arg2).get();
     }
 
