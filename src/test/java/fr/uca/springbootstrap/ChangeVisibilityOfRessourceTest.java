@@ -59,12 +59,15 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
 
     @Et("le module {string} a une ressource {string} invisible")
     public void leModuleAUneRessourceInvisible(String arg0, String arg1) {
-        Ressource ressource = ressourceRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null", 1));
+        Module module = moduleRepository.findByName(arg0).get();
+
+        Ressource ressource = module.findRessourceByName(arg1);
+        if(ressource==null){
+            ressource=new Cours(arg1, "null", 1);
+        }
         ressource.setVisibility(false);
         ressourceRepository.save(ressource);
 
-        Module module = moduleRepository.findByName(arg0).get();
         module.getRessources().add(ressource);
         moduleRepository.save(module);
 
@@ -73,12 +76,15 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
 
     @Et("le module {string} a une ressource {string} visible")
     public void leModuleAUneRessourceVisible(String arg0, String arg1) {
-        Ressource ressource = ressourceRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null", 2));
+        Module module = moduleRepository.findByName(arg0).get();
+
+        Ressource ressource = module.findRessourceByName(arg1);
+        if(ressource==null){
+            ressource=new Cours(arg1, "null", 1);
+        }
         ressource.setVisibility(true);
         ressourceRepository.save(ressource);
 
-        Module module = moduleRepository.findByName(arg0).get();
         module.getRessources().add(ressource);
         moduleRepository.save(module);
 
@@ -99,8 +105,8 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     @Quand("le professeur {string} essaie de rendre la ressource {string} du module {string} visible")
     public void leProfesseurEssaieDeRendreLaRessourceDuModuleVisible(String arg0, String arg1, String arg2) throws IOException {
         User prof = userRepository.findByUsername(arg0).get();
-        Ressource ressource = ressourceRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
+        Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/" + module.getId() + "/ressourceVisible/" + ressource.getId(), jwt);
     }
@@ -108,8 +114,8 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     @Quand("le professeur {string} essaie de rendre la ressource {string} du module {string} invisible")
     public void leProfesseurEssaieDeRendreLaRessourceDuModuleInvisible(String arg0, String arg1, String arg2) throws IOException {
         User prof = userRepository.findByUsername(arg0).get();
-        Ressource ressource = ressourceRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
+        Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/" + module.getId() + "/ressourceInvisible/" + ressource.getId(), jwt);
     }
@@ -122,14 +128,14 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     @Alors("la ressource {string} du module {string} est visible")
     public void laRessourceDuModuleEstVisible(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-        Ressource ressource = ressourceRepository.findByName(arg0).get();
+        Ressource ressource = module.findRessourceByName(arg0);
         assertTrue(ressource.isVisibility());
     }
 
     @Alors("la ressource {string} du module {string} est invisible")
     public void laRessourceDuModuleEstInvisible(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-        Ressource ressource = ressourceRepository.findByName(arg0).get();
+        Ressource ressource = module.findRessourceByName(arg0);
         assertFalse(ressource.isVisibility());
     }
 }

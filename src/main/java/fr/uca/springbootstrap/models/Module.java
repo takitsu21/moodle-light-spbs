@@ -3,6 +3,7 @@ package fr.uca.springbootstrap.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -62,5 +63,14 @@ public class Module {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Ressource findRessourceByName(String name){
+        for(Ressource ressource: ressources){
+            if(Objects.equals(ressource.getName(), name)){
+                return ressource;
+            }
+        }
+        return null;
     }
 }

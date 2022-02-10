@@ -64,12 +64,15 @@ public class GetRessourcesStepdefs extends SpringIntegration {
 
     @Et("le module {string} a un cours {string} invisible gr")
     public void leModuleAUnCoursInvisibleGr(String arg0, String arg1) {
-        Ressource ressource = ressourceRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null", 1));
+        Module module = moduleRepository.findByName(arg0).get();
+
+        Ressource ressource = module.findRessourceByName(arg1);
+        if(ressource==null){
+            ressource=new Cours(arg1, "null", 1);
+        }
         ressource.setVisibility(false);
         ressourceRepository.save(ressource);
 
-        Module module = moduleRepository.findByName(arg0).get();
         module.getRessources().add(ressource);
         moduleRepository.save(module);
 
@@ -78,12 +81,15 @@ public class GetRessourcesStepdefs extends SpringIntegration {
 
     @Et("le module {string} a un cours {string} visible gr")
     public void leModuleAUnCoursVisibleGr(String arg0, String arg1) {
-        Ressource ressource = ressourceRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null", 2));
+        Module module = moduleRepository.findByName(arg0).get();
+
+        Ressource ressource = module.findRessourceByName(arg1);
+        if(ressource==null){
+            ressource=new Cours(arg1, "null", 1);
+        }
         ressource.setVisibility(true);
         ressourceRepository.save(ressource);
 
-        Module module = moduleRepository.findByName(arg0).get();
         module.getRessources().add(ressource);
         moduleRepository.save(module);
 
