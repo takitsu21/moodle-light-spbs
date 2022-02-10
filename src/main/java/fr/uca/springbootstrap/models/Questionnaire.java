@@ -18,9 +18,11 @@ public class Questionnaire extends Ressource {
 
     @OneToMany
     @JoinTable(name = "students_grades",
-            joinColumns = @JoinColumn(name = "questionnaire"),
-            inverseJoinColumns = @JoinColumn(name = "grades"))
+            joinColumns = @JoinColumn(name = "questionnaire_id"),
+            inverseJoinColumns = @JoinColumn(name = "grades_id"))
     private Set<GradesQuestionnaire> studentsGrades = new HashSet<>();
+
+
 
     public Questionnaire(){
         super();

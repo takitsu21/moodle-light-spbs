@@ -67,4 +67,6 @@ public abstract class Question {
 
     public Questionnaire getQuestionnaire() { return questionnaire; }
     public void setQuestionnaire(Questionnaire questionnaire) { this.questionnaire = questionnaire; }
+
+
 }
