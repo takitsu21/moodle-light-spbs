@@ -3,8 +3,8 @@
 
 Fonctionnalité: Gérer les cours d'un module
 
-Contexte:
-  Etant donné Un enseignant avec le nom de connexion "Jacques" crs
+  Contexte:
+    Etant donné Un enseignant avec le nom de connexion "Jacques" crs
     Et un module "Math" qui a un enseignant "Jacques" crs
     Et un module "Français" qui a un cours "Test" et qui a un enseignant "Jacques" crs
 

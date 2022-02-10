@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="ressource")
+@Table(name = "ressource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, length = 20)
 @DiscriminatorValue("ressource")
@@ -26,7 +26,7 @@ public abstract class Ressource {
     @NotBlank
     private String description;
 
-    private boolean visibility=false;
+    private boolean visibility = false;
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",

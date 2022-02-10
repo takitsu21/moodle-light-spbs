@@ -16,17 +16,19 @@ public class QCM extends Question {
         this.studentsAnswer = new HashMap<Student, Integer>();
     }
 
-    public void setStudentAnswer(Student student, int answer){
+    public void setStudentAnswer(Student student, int answer) {
         this.studentsAnswer.put(student, answer);
     }
 
-    public boolean succeedQuestion(Student student){
+    public boolean succeedQuestion(Student student) {
         return answer == studentsAnswer.get(student);
     }
 
-    public int getAnswer() { return answer; }
+    public int getAnswer() {
+        return answer;
+    }
 
-    public void setAnswer(int newAnswer){
+    public void setAnswer(int newAnswer) {
         this.answer = newAnswer;
     }
 

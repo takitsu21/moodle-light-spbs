@@ -19,16 +19,19 @@ public class Questionnaire extends Ressource {
             inverseJoinColumns = @JoinColumn(name = "grades"))
     private Set<GradesQuestionnaire> studentsGrades;
 
-    public Questionnaire(){
-        super();
-    }
+    public Questionnaire() {
 
     public Questionnaire(String name, String description, int number){
         super(name, description, number);
     }
 
-    public Set<Question> getQuestions() { return questions; }
-    public void setQuestions(Set<Question> questions) { this.questions = questions; }
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
 
     public Set<GradesQuestionnaire> getStudentsGrades() { return studentsGrades; }
     public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) { this.studentsGrades = studentsGrades; }

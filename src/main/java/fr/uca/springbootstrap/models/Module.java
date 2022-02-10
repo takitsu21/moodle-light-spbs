@@ -3,10 +3,11 @@ package fr.uca.springbootstrap.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(	name = "modules")
+@Table(name = "modules")
 public class Module {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,23 +15,13 @@ public class Module {
 
     @NotBlank
     private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "user_modules",
+    @JoinTable(name = "user_modules",
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> participants = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "ressources_modules",
+    @JoinTable(name = "ressources_modules",
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "ressource_id"))
     private Set<Ressource> ressources = new HashSet<>();
@@ -42,6 +33,14 @@ public class Module {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Set<User> getParticipants() {
         return participants;
     }
@@ -49,13 +48,31 @@ public class Module {
         this.participants = participants;
     }
 
+    public Set<Ressource> getRessources() {
+        return ressources;
+    }
+
+    public void setRessources(Set<Ressource> ressources) {
+        this.ressources = ressources;
+    }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     public Set<Ressource> getRessources() { return ressources; }
     public void setRessources(Set<Ressource> ressources) { this.ressources = ressources; }
+
+    public Ressource findRessourceByName(String name){
+        for(Ressource ressource: ressources){
+            if(Objects.equals(ressource.getName(), name)){
+                return ressource;
+            }
+        }
+        return null;
+    }
 }
