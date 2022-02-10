@@ -42,6 +42,9 @@ public class ModuleController {
 	CoursRepository coursRepository;
 
 	@Autowired
+	QuestionnaireRepository questionnaireRepository;
+
+	@Autowired
 	TextRepository textRepository;
 
 
@@ -151,7 +154,7 @@ public class ModuleController {
 					.body(new MessageResponse("Error: Module already exists!"));
 		}
 
-		// Create new user's account
+		// Create new module
 		Module module = new Module(moduleRequest.getName());
 		moduleRepository.save(module);
 		return ResponseEntity.ok(new MessageResponse("Module created successfully!"));
@@ -185,6 +188,7 @@ public class ModuleController {
 
 		return ResponseEntity.ok(new MessageResponse("Module deleted successfully!"));
 	}
+
 
 	@PostMapping("/{module_id}/cours")
 	@PreAuthorize("hasRole('TEACHER')")
@@ -292,12 +296,6 @@ public class ModuleController {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: No such cours!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
 		}
 
 		Module module = omodule.get();
@@ -509,5 +507,74 @@ public class ModuleController {
 		}
 		return new ResponseEntity<Map>(ressourceView, HttpStatus.OK);
 
+	}
+
+
+	@PostMapping("{module_id}/questionnaire")
+	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+	public ResponseEntity<?> addQuestionnaire(Principal principal,
+											  @Valid @RequestBody QuestionnaireRequest questionnaireRequest,
+											  @PathVariable("module_id") long module_id) {
+
+		Optional<User> oUser = userRepository.findByUsername(principal.getName());
+		Optional<Module> oModule = moduleRepository.findById(module_id);
+
+		if (oUser.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User does not exist."));
+		}
+		else if (oModule.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Module does not exist."));
+		}
+
+		User user = oUser.get();
+		Questionnaire questionnaire = new Questionnaire(questionnaireRequest.getName(), questionnaireRequest.getDescription(), questionnaireRequest.getNum());
+		Module module = oModule.get();
+
+		if (!module.containsParticipant(user)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+		questionnaireRepository.save(questionnaire);
+
+		module.addRessource(questionnaire);
+		moduleRepository.save(module);
+
+		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully added."));
+	}
+
+
+	@DeleteMapping("{module_id}/questionnaire/{questionnaire_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> removeQuestionnaire(Principal principal,
+												 @PathVariable("module_id") long module_id,
+												 @PathVariable("questionnaire_id") long questionnaire_id) {
+
+		if (!userRepository.existsByUsername(principal.getName())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User does not exist."));
+		}
+		else if (!questionnaireRepository.existsById(questionnaire_id)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: questionnaire does not exist."));
+		}
+		Module module = moduleRepository.findById(module_id).get();
+		User user = userRepository.findByUsername(principal.getName()).get();
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+
+
+		Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
+		questionnaireRepository.delete(questionnaire);
+		module.removeRessource(questionnaire);
+		moduleRepository.save(module);
+
+
+		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully removed."));
 	}
 }
