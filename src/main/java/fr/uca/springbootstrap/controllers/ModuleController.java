@@ -15,9 +15,11 @@ import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
 import fr.uca.springbootstrap.util.Pair;
 import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,6 +48,9 @@ public class ModuleController {
 
 	@Autowired
 	CoursRepository coursRepository;
+
+	@Autowired
+	QuestionnaireRepository questionnaireRepository;
 
 	@Autowired
 	TextRepository textRepository;
@@ -139,11 +144,19 @@ public class ModuleController {
 	@GetMapping("/{id}/participants")
 	public ResponseEntity<?> getParticipants(Principal principal, @PathVariable long id) {
 		Module module = moduleRepository.findById(id).get();
-		System.out.println(module.getParticipants());
-		for (User participant : module.getParticipants()) {
-			System.out.println(participant.getUsername());
+		User user = userRepository.findByUsername(principal.getName()).get();
+		Map<Long, String> paticipantView = new HashMap<>();
+
+		if(!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to see participants!"));
+
 		}
-		return ResponseEntity.ok(new MessageResponse("success"));
+		for (User participant : module.getParticipants()) {
+			paticipantView.put(participant.getId(), participant.getUsername());
+		}
+		return ResponseEntity.ok(paticipantView);
 	}
 
 	@PostMapping("/")
@@ -155,7 +168,7 @@ public class ModuleController {
 					.body(new MessageResponse("Error: Module already exists!"));
 		}
 
-		// Create new user's account
+		// Create new module
 		Module module = new Module(moduleRequest.getName());
 		moduleRepository.save(module);
 		return ResponseEntity.ok(new MessageResponse("Module created successfully!"));
@@ -282,55 +295,93 @@ public class ModuleController {
 	}
 
 	@GetMapping("/{id}/ressources")
-	public ResponseEntity<?> getRessourcess(Principal principal, @PathVariable("id") long id) {
+	public ResponseEntity<?> getRessources(Principal principal, @PathVariable("id") long id) {
 		Module module = moduleRepository.findById(id).get();
 		User user = userRepository.findByUsername(principal.getName()).get();
+		Map<Long, String> ressourceView = new HashMap<>();
+
+		if(!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to see ressource!"));
+
+		}
 
 		for (Ressource ressource : module.getRessources()) {
-			if(ressource.isVisibility() || (module.getParticipants().contains(user) && user.hasTeacher())) {
-				System.out.println(ressource.getName());
+			if (ressource.isVisibility() || user.hasTeacher()){
+				ressourceView.put(ressource.getId(), ressource.getName());
 			}
 		}
-		return ResponseEntity.ok(new MessageResponse("success"));
+		return new ResponseEntity<Map>(ressourceView, HttpStatus.OK);
+
 	}
 
-	@PutMapping("/{module_id}/code_runner")
-	public ResponseEntity<?> addCodeRunnerQuestion(Principal principal,
-												   @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
-												   @PathVariable("module_id") long moduleId) {
-		Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-		Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
-		if (optionalModule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
+
+	@PostMapping("{module_id}/questionnaire")
+	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+	public ResponseEntity<?> addQuestionnaire(Principal principal,
+											  @Valid @RequestBody QuestionnaireRequest questionnaireRequest,
+											  @PathVariable("module_id") long module_id) {
+
+		Optional<User> oUser = userRepository.findByUsername(principal.getName());
+		Optional<Module> oModule = moduleRepository.findById(module_id);
+
+		if (oUser.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User does not exist."));
 		}
-		if (optionalUser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
+		else if (oModule.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Module does not exist."));
 		}
 
-		User user = optionalUser.get();
+		User user = oUser.get();
+		Questionnaire questionnaire = new Questionnaire(questionnaireRequest.getName(), questionnaireRequest.getDescription(), questionnaireRequest.getNum());
+		Module module = oModule.get();
 
-		Answer answer = new Answer(codeRunnerRequest.getAnswer(), user);
-		answerRepository.save(answer);
+		if (!module.containsParticipant(user)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+		questionnaireRepository.save(questionnaire);
 
-		CodeRunner question = new CodeRunner(codeRunnerRequest.getNumber(),
-				codeRunnerRequest.getName(),
-				codeRunnerRequest.getDescription(),
-				codeRunnerRequest.getTest(), answer);
+		module.addRessource(questionnaire);
+		moduleRepository.save(module);
 
-		codeRunnerRepository.save(question);
-		return ResponseEntity.ok(new MessageResponse("Code runner quesiton successfully added!"));
+		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully added."));
 	}
 
-	private Cours findCoursByNameInModule(Module module, String name) {
-		for (Ressource cours : module.getRessources()) {
-			if (cours.getName().equalsIgnoreCase(name)) {
-				return (Cours) cours;
-			}
+
+	@DeleteMapping("{module_id}/questionnaire/{questionnaire_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> removeQuestionnaire(Principal principal,
+												 @PathVariable("module_id") long module_id,
+												 @PathVariable("questionnaire_id") long questionnaire_id) {
+
+		if (!userRepository.existsByUsername(principal.getName())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User does not exist."));
 		}
-		return null;
+		else if (!questionnaireRepository.existsById(questionnaire_id)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: questionnaire does not exist."));
+		}
+		Module module = moduleRepository.findById(module_id).get();
+		User user = userRepository.findByUsername(principal.getName()).get();
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+
+
+		Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
+		questionnaireRepository.delete(questionnaire);
+		module.removeRessource(questionnaire);
+		moduleRepository.save(module);
+
+
+		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully removed."));
 	}
 }

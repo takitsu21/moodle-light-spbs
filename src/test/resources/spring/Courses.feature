@@ -13,7 +13,7 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer un cou
     Alors le dernier status de réponse est 200 crs
     Et "TestPhilo" est ajouté au module "Philo" crs
 
-  Scénario: Suppresion d'une ressource cours d'un module
+  Scénario: Suppression d'une ressource cours d'un module
     Quand "Jacques" veut supprimer le cours "Test" et numéro 2 du module "SVT" crs
     Alors le dernier status de réponse est 200 crs
     Et "Test" est supprimé du module "SVT" crs
@@ -23,7 +23,7 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer un cou
     Alors le dernier status de réponse est 400 crs
     Et "Test" n'est pas ajouté au module "SVT" crs
 
-  Scénario: Suppresion d'une ressource cours d'un module qui ne contient pas ce cours
+  Scénario: Suppression d'une ressource cours d'un module qui ne contient pas ce cours
     Quand "Jacques" veut supprimer le cours "Test2" et numéro 3 du module "SVT" crs
     Alors le dernier status de réponse est 400 crs
     Et "Test2" n'est pas supprimé du module "SVT" crs

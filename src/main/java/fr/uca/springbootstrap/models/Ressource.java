@@ -3,6 +3,7 @@ package fr.uca.springbootstrap.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,16 +26,11 @@ public abstract class Ressource {
 
     private boolean visibility=false;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "cours_ressources",
-//            joinColumns = @JoinColumn(name = "cours_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Cours> cours;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "ressources_modules",
             joinColumns = @JoinColumn(name = "ressource_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
-    private Set<Module> module;
+    private Set<Module> modules = new HashSet<>();
 
     public Ressource() {
     }
@@ -69,6 +65,14 @@ public abstract class Ressource {
         this.description = description;
     }
 
+    public Set<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
+    }
+
     public Integer getNum() {
         return num;
     }
@@ -83,13 +87,5 @@ public abstract class Ressource {
 
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
-    }
-
-    public Set<Module> getModule() {
-        return module;
-    }
-
-    public void setModule(Set<Module> module) {
-        this.module = module;
     }
 }
