@@ -76,9 +76,9 @@ public class QCMStepdefs extends SpringIntegration {
 
     @Et("le QCM {string} du questionnaire {string} a les reponses possible {string} et {string} qcm")
     public void leQCMDuQuestionnaireALesReponsesPossibleEtQcm(String arg0, String arg1, String arg2, String arg3) {
-        Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg0);
-        QCM qcm= (QCM) questionnaire.findQuestionByName(arg1);
-        qcm.setPossibleAnswers(new HashSet<>(){{add(new Answer())}});
+        Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg1);
+        QCM qcm= (QCM) questionnaire.findQuestionByName(arg0);
+        qcm.setPossibleAnswers(new HashSet<>(){{add(new Answer(arg2)); add(new Answer(arg3));}});
 
         questionnaireRepository.save(questionnaire);
         moduleRepository.save(module);
