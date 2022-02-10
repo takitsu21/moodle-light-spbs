@@ -19,16 +19,17 @@ public class Text {
     @NotBlank
     private String content;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "cours_text",
-            joinColumns = @JoinColumn(name = "cours_id"),
-            inverseJoinColumns = @JoinColumn(name = "text_id"))
-    private Set<Cours> cours;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(	name = "cours_text",
+//            joinColumns = @JoinColumn(name = "cours_id"),
+//            inverseJoinColumns = @JoinColumn(name = "text_id"))
+//    private Set<Cours> cours;
 
     public Text() {
     }
 
-    public Text(String content) {
+    public Text(Integer num, String content) {
+        this.num = num;
         this.content = content;
     }
 
@@ -56,11 +57,11 @@ public class Text {
         this.num = num;
     }
 
-    public Set<Cours> getCours() {
-        return cours;
-    }
-
-    public void setCours(Set<Cours> cours) {
-        this.cours = cours;
-    }
+//    public Set<Cours> getCours() {
+//        return cours;
+//    }
+//
+//    public void setCours(Set<Cours> cours) {
+//        this.cours = cours;
+//    }
 }

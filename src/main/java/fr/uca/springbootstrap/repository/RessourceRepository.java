@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface RessourceRepository extends JpaRepository<Ressource, Long> {
     Optional<Ressource> findByName(String name);
 
+
     Boolean existsByName(String name);
 
     Boolean existsById(long id);
