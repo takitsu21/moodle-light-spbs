@@ -5,19 +5,22 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-public class RessourceRequest {
+public class QuestionnaireRequest {
     @NotBlank
-    @Size(min=2, max=20)
+    @Size(min=2, max=30)
     private String name;
 
     @NotBlank
-    @Size(min=2, max=128)
     private String description;
 
     @NotNull
-    private Integer num;
+    private int num;
 
-
+    public QuestionnaireRequest(String name, String description, int num) {
+        this.name = name;
+        this.description = description;
+        this.num = num;
+    }
 
     public String getName() {
         return name;
@@ -35,11 +38,11 @@ public class RessourceRequest {
         this.description = description;
     }
 
-    public Integer getNum() {
+    public int getNum() {
         return num;
     }
 
-    public void setNum(Integer num) {
+    public void setNum(int num) {
         this.num = num;
     }
 }

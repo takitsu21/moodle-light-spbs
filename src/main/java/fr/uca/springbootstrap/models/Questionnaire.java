@@ -27,9 +27,23 @@ public class Questionnaire extends Ressource {
         super(name, description, number);
     }
 
+
     public Set<Question> getQuestions() { return questions; }
     public void setQuestions(Set<Question> questions) { this.questions = questions; }
 
     public Set<GradesQuestionnaire> getStudentsGrades() { return studentsGrades; }
     public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) { this.studentsGrades = studentsGrades; }
+    public void addQuestion(Question question) {
+        questions.add(question);
+        question.setQuestionnaire(this);
+    }
+
+    public void removeQuestion(Question question) {
+        questions.remove(question);
+//        question.setQuestionnaire(null); //pas sûr de ça, si le GB s'en charge de toute façon
+    }
+
+    public int getNbQuestions() {
+        return questions.size();
+    }
 }

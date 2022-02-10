@@ -1,6 +1,7 @@
 package fr.uca.springbootstrap.models.questions;
 
 import fr.uca.springbootstrap.models.Questionnaire;
+import moodle.users.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -38,6 +39,7 @@ public abstract class Question {
     public Question() {
 
     }
+
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

@@ -2,11 +2,17 @@ package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
+import fr.uca.springbootstrap.models.questions.Answer;
+import fr.uca.springbootstrap.models.questions.CodeRunner;
+import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.*;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.security.jwt.JwtUtils;
-import moodle.users.Teacher;
+import fr.uca.springbootstrap.repository.cours.CoursRepository;
+import fr.uca.springbootstrap.repository.cours.TextRepository;
+import fr.uca.springbootstrap.repository.question.AnswerRepository;
+import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.StringWriter;
 import java.security.Principal;
 import java.util.*;
 
@@ -42,7 +49,16 @@ public class ModuleController {
 	CoursRepository coursRepository;
 
 	@Autowired
+	QuestionnaireRepository questionnaireRepository;
+
+	@Autowired
 	TextRepository textRepository;
+
+	@Autowired
+	AnswerRepository answerRepository;
+
+	@Autowired
+	CodeRunnerRepository codeRunnerRepository;
 
 
 //
@@ -151,7 +167,7 @@ public class ModuleController {
 					.body(new MessageResponse("Error: Module already exists!"));
 		}
 
-		// Create new user's account
+		// Create new module
 		Module module = new Module(moduleRequest.getName());
 		moduleRepository.save(module);
 		return ResponseEntity.ok(new MessageResponse("Module created successfully!"));
@@ -184,218 +200,6 @@ public class ModuleController {
 		moduleRepository.delete(module);
 
 		return ResponseEntity.ok(new MessageResponse("Module deleted successfully!"));
-	}
-
-	@PostMapping("/{module_id}/cours")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> addCours(Principal principal,
-									  @Valid @RequestBody RessourceRequest ressourceRequest,
-									  @PathVariable("module_id") long moduleId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-		Module module = omodule.get();
-		User user = ouser.get();
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to add courses!"));
-		}
-		Cours cours = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription(), ressourceRequest.getNum());
-		coursRepository.save(cours);
-		return ResponseEntity.ok(new MessageResponse("Course added to the module successfully!"));
-	}
-
-	@DeleteMapping("/{module_id}/cours/{cours_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> deleteCours(Principal principal,
-									  @PathVariable("module_id") long moduleId,
-										 @PathVariable("cours_id") long coursId) {
-
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Cours> ocourse = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-		if (ocourse.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such course!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-		Module module = omodule.get();
-		User user = ouser.get();
-		Cours course = ocourse.get();
-
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
-		}
-
-		coursRepository.delete(course);
-		return ResponseEntity.ok(new MessageResponse("Course removed from the module successfully!"));
-	}
-
-	@PostMapping("/{module_id}/cours/{cours_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> addText(Principal principal,
-									 @Valid @RequestBody TextRequest textRequest,
-									 @PathVariable("module_id") long moduleId,
-									 @PathVariable("cours_id") long coursId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Cours> oressource = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-		if (oressource.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such cours!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-
-		Module module = omodule.get();
-		User user = ouser.get();
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
-		}
-		Cours cours = oressource.get();
-		Set<Text> texts = cours.getTexts();
-
-		for (MyText text : textRequest.getTexts()) {
-			texts.add(new Text(text.getNum(), text.getContent()));
-		}
-
-		coursRepository.save(cours);
-		return ResponseEntity.ok(new MessageResponse("Texts successfully added to the course!"));
-	}
-
-	@DeleteMapping("/{module_id}/cours/{cours_id}/texts/{text_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> removeText(Principal principal,
-									 @PathVariable("module_id") long moduleId,
-									 @PathVariable("cours_id") long coursId,
-									 @PathVariable("text_id") long textId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Text> otext = textRepository.findById(textId);
-		Optional<Cours> ocours = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-		if (otext.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such text!"));
-		}
-		if (ocours.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such text!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-
-		Module module = omodule.get();
-		User user = ouser.get();
-		Cours cours = ocours.get();
-		Text text = otext.get();
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
-		}
-		if (!cours.getTexts().contains(text)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: This text is not in the course!"));
-		}
-
-		cours.getTexts().remove(text);
-		coursRepository.save(cours);
-		return ResponseEntity.ok(new MessageResponse("Texts successfully removed from the course!"));
-	}
-
-	@GetMapping("/{module_id}/cours/{cours_id}/texts")
-	public ResponseEntity<?> getTexts(@PathVariable("module_id") long moduleId,
-									  @PathVariable("cours_id") long coursId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<Cours> ocours = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ocours.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such course!"));
-		}
-		Cours cours = ocours.get();
-		return ResponseEntity.ok(cours.getTexts());
 	}
 
 	@PostMapping("/{module_id}/ressourceVisible/{ressource_id}")
@@ -509,5 +313,83 @@ public class ModuleController {
 		}
 		return new ResponseEntity<Map>(ressourceView, HttpStatus.OK);
 
+	}
+
+
+	private Cours findCoursByNameInModule(Module module, String name) {
+		for (Ressource cours : module.getRessources()) {
+			if (cours.getName().equalsIgnoreCase(name)) {
+				return (Cours) cours;
+			}
+		}
+		return null;
+	}
+
+	@PostMapping("{module_id}/questionnaire")
+	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+	public ResponseEntity<?> addQuestionnaire(Principal principal,
+											  @Valid @RequestBody QuestionnaireRequest questionnaireRequest,
+											  @PathVariable("module_id") long module_id) {
+
+		Optional<User> oUser = userRepository.findByUsername(principal.getName());
+		Optional<Module> oModule = moduleRepository.findById(module_id);
+
+		if (oUser.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User does not exist."));
+		}
+		else if (oModule.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: Module does not exist."));
+		}
+
+		User user = oUser.get();
+		Questionnaire questionnaire = new Questionnaire(questionnaireRequest.getName(), questionnaireRequest.getDescription(), questionnaireRequest.getNum());
+		Module module = oModule.get();
+
+		if (!module.containsParticipant(user)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+		questionnaireRepository.save(questionnaire);
+
+		module.addRessource(questionnaire);
+		moduleRepository.save(module);
+
+		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully added."));
+	}
+
+
+	@DeleteMapping("{module_id}/questionnaire/{questionnaire_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> removeQuestionnaire(Principal principal,
+												 @PathVariable("module_id") long module_id,
+												 @PathVariable("questionnaire_id") long questionnaire_id) {
+
+		if (!userRepository.existsByUsername(principal.getName())) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: User does not exist."));
+		}
+		else if (!questionnaireRepository.existsById(questionnaire_id)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: questionnaire does not exist."));
+		}
+		Module module = moduleRepository.findById(module_id).get();
+		User user = userRepository.findByUsername(principal.getName()).get();
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+
+
+		Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
+		questionnaireRepository.delete(questionnaire);
+		module.removeRessource(questionnaire);
+		moduleRepository.save(module);
+
+
+		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully removed."));
 	}
 }

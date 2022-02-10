@@ -18,6 +18,7 @@ public abstract class Ressource {
     private Long id;
 
     @NotNull
+    @OrderColumn
     private Integer num;
 
     @NotBlank
