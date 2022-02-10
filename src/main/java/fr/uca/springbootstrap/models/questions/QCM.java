@@ -20,7 +20,6 @@ public class QCM extends Question {
     private Answer answer;
 
     @ManyToMany
-
     @JoinTable(name = "student_answer_qcm",
             joinColumns = @JoinColumn(name = "qcm"),
             inverseJoinColumns = @JoinColumn(name = "student_answer"))
@@ -43,9 +42,27 @@ public class QCM extends Question {
     }
 
     public Set<AnswerQCM> getStudentsAnswers() { return studentsAnswers; }
-    public void setStudentsAnswers(Set<AnswerQCM> studentsAnswers) { this.studentsAnswers = studentsAnswers; }
 
-    public void setStudentsAnswers(Set<User> studentsAnswers) {
+    public AnswerQCM getStudentAnswerOf(User user) {
+        for(AnswerQCM answerQCM: studentsAnswers){
+            if(answerQCM.getStudent().equals(user)){
+                return answerQCM;
+            }
+        }
+        return null;
+    }
+
+    public boolean StudentAnswerContains(User user) {
+        for(AnswerQCM answerQCM: studentsAnswers){
+            if(answerQCM.getStudent().equals(user)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void setStudentsAnswers(Set<AnswerQCM> studentsAnswers) {
         this.studentsAnswers = studentsAnswers;
     }
 

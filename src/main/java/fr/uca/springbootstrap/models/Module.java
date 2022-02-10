@@ -48,14 +48,6 @@ public class Module {
         this.participants = participants;
     }
 
-    public Set<Ressource> getRessources() {
-        return ressources;
-    }
-
-    public void setRessources(Set<Ressource> ressources) {
-        this.ressources = ressources;
-    }
-
     public Long getId() {
         return id;
     }

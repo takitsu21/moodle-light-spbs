@@ -73,13 +73,4 @@ public abstract class Question {
         this.description = description;
     }
 
-    public Questionnaire getQuestionnaire() {
-        return questionnaire;
-    }
-
-    public void setQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
-    }
-
-
 }

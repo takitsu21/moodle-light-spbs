@@ -29,6 +29,9 @@ public class Answer {
  //       this.student = student;
     }
 
+    public Answer(String content) {
+    }
+
     public long getId() {
         return id;
     }
@@ -45,13 +48,6 @@ public class Answer {
         this.answer = answer;
     }
 
-    public User getStudent() {
-        return student;
-    }
-
-    public void setStudent(User student) {
-        this.student = student;
-    }
  //   public User getStudent() { return student; }
  //   public void setStudent(User student) { this.student = student; }
 }

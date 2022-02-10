@@ -1,9 +1,11 @@
 package fr.uca.springbootstrap.models;
 
+import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,6 +23,8 @@ public class Questionnaire extends Ressource {
 
     public Questionnaire() {
 
+    }
+
     public Questionnaire(String name, String description, int number){
         super(name, description, number);
     }
@@ -34,5 +38,16 @@ public class Questionnaire extends Ressource {
     }
 
     public Set<GradesQuestionnaire> getStudentsGrades() { return studentsGrades; }
+
     public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) { this.studentsGrades = studentsGrades; }
+
+    public Question findQuestionByName(String arg1) {
+        for(Question question: questions){
+            if(Objects.equals(question.getName(), arg1)){
+                return question;
+            }
+        }
+        return null;
+
+    }
 }
