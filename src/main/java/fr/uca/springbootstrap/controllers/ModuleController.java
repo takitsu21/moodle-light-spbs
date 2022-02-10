@@ -2,15 +2,9 @@ package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.payload.request.CoursRequest;
-import fr.uca.springbootstrap.payload.request.ModuleRequest;
-import fr.uca.springbootstrap.payload.request.RessourceRequest;
-import fr.uca.springbootstrap.payload.request.SignupRequest;
+import fr.uca.springbootstrap.payload.request.*;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RessourceRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.security.jwt.JwtUtils;
 import moodle.users.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -47,10 +38,18 @@ public class ModuleController {
 	RessourceRepository ressourceRepository;
 
 	@Autowired
-	PasswordEncoder encoder;
+	CoursRepository coursRepository;
 
 	@Autowired
-	JwtUtils jwtUtils;
+	TextRepository textRepository;
+
+
+//
+//	@Autowired
+//	PasswordEncoder encoder;
+//
+//	@Autowired
+//	JwtUtils jwtUtils;
 
 	@PostMapping("/{id}/participants/{userid}")
 	@PreAuthorize("hasRole('TEACHER')")
@@ -134,7 +133,7 @@ public class ModuleController {
 		return ResponseEntity.ok(new MessageResponse("success"));
 	}
 
-	@PostMapping("/create")
+	@PostMapping("/")
 	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> createModule(@Valid @RequestBody ModuleRequest moduleRequest) {
 		if (moduleRepository.existsByName(moduleRequest.getName())) {
@@ -150,14 +149,21 @@ public class ModuleController {
 	}
 
 	@GetMapping("/")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> getModules() {
+	public ResponseEntity<?> getModules(Principal principal) {
+		User user = userRepository.findByUsername(principal.getName()).get();
 		List<Module> modules = moduleRepository.findAll();
-		return ResponseEntity.ok(modules);
+		Map<Long, String> modulesView = new HashMap<>();
+
+		for (Module module : modules) {
+			if (module.getParticipants().contains(user)) {
+				modulesView.put(module.getId(), module.getName());
+			}
+		}
+		return ResponseEntity.ok(modulesView);
 	}
 
-	@DeleteMapping("/delete/{id}")
-	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> deleteModuleById(@PathVariable long id) {
 		if (!moduleRepository.existsById(id)) {
 			return ResponseEntity
@@ -202,9 +208,8 @@ public class ModuleController {
 					.badRequest()
 					.body(new MessageResponse("Error: You are not allowed to add courses!"));
 		}
-		Ressource ressource = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription());
-
-		ressourceRepository.save(ressource);
+		Cours cours = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription(), ressourceRequest.getNum());
+		coursRepository.save(cours);
 		return ResponseEntity.ok(new MessageResponse("Course added to the module successfully!"));
 	}
 
@@ -216,7 +221,53 @@ public class ModuleController {
 
 		Optional<Module> omodule = moduleRepository.findById(moduleId);
 		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Ressource> oressource = ressourceRepository.findById(coursId);
+		Optional<Cours> ocourse = coursRepository.findById(coursId);
+
+		if (omodule.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+		if (ouser.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such user!"));
+		}
+		if (ocourse.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such course!"));
+		}
+
+		if (!moduleRepository.existsById(moduleId)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Module doesn't exists!"));
+		}
+		Module module = omodule.get();
+		User user = ouser.get();
+		Cours course = ocourse.get();
+
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
+		}
+
+		coursRepository.delete(course);
+		return ResponseEntity.ok(new MessageResponse("Course removed from the module successfully!"));
+	}
+
+	@PostMapping("/{module_id}/cours/{cours_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> addText(Principal principal,
+									 @Valid @RequestBody TextRequest textRequest,
+									 @PathVariable("module_id") long moduleId,
+									 @PathVariable("cours_id") long coursId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
+		Optional<User> ouser = userRepository.findByUsername(principal.getName());
+		Optional<Cours> oressource = coursRepository.findById(coursId);
 
 		if (omodule.isEmpty()) {
 			return ResponseEntity
@@ -239,19 +290,103 @@ public class ModuleController {
 					.badRequest()
 					.body(new MessageResponse("Error: Module doesn't exists!"));
 		}
+
 		Module module = omodule.get();
 		User user = ouser.get();
-		Ressource ressource = oressource.get();
-
 
 		if (!module.getParticipants().contains(user)) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
 		}
+		Cours cours = oressource.get();
+		Set<Text> texts = cours.getTexts();
 
-		ressourceRepository.delete(ressource);
-		return ResponseEntity.ok(new MessageResponse("Course removed from the module successfully!"));
+		for (MyText text : textRequest.getTexts()) {
+			texts.add(new Text(text.getNum(), text.getContent()));
+		}
+
+		coursRepository.save(cours);
+		return ResponseEntity.ok(new MessageResponse("Texts successfully added to the course!"));
+	}
+
+	@DeleteMapping("/{module_id}/cours/{cours_id}/texts/{text_id}")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<?> removeText(Principal principal,
+									 @PathVariable("module_id") long moduleId,
+									 @PathVariable("cours_id") long coursId,
+									 @PathVariable("text_id") long textId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
+		Optional<User> ouser = userRepository.findByUsername(principal.getName());
+		Optional<Text> otext = textRepository.findById(textId);
+		Optional<Cours> ocours = coursRepository.findById(coursId);
+
+		if (omodule.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+		if (ouser.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such user!"));
+		}
+		if (otext.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such text!"));
+		}
+		if (ocours.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such text!"));
+		}
+
+		if (!moduleRepository.existsById(moduleId)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Module doesn't exists!"));
+		}
+
+		Module module = omodule.get();
+		User user = ouser.get();
+		Cours cours = ocours.get();
+		Text text = otext.get();
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
+		}
+		if (!cours.getTexts().contains(text)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: This text is not in the course!"));
+		}
+
+		cours.getTexts().remove(text);
+		coursRepository.save(cours);
+		return ResponseEntity.ok(new MessageResponse("Texts successfully removed from the course!"));
+	}
+
+	@GetMapping("/{module_id}/cours/{cours_id}/texts")
+	public ResponseEntity<?> getTexts(@PathVariable("module_id") long moduleId,
+									  @PathVariable("cours_id") long coursId) {
+		Optional<Module> omodule = moduleRepository.findById(moduleId);
+		Optional<Cours> ocours = coursRepository.findById(coursId);
+
+		if (omodule.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+		if (ocours.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such course!"));
+		}
+		Cours cours = ocours.get();
+		return ResponseEntity.ok(cours.getTexts());
 	}
 
 	@PostMapping("/{module_id}/ressourceVisible/{ressource_id}")
