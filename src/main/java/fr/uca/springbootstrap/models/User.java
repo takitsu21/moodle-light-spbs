@@ -106,4 +106,13 @@ public class User {
 	public int hashCode() {
 		return Objects.hash(id, username, email, password);
 	}
+
+	public boolean hasTeacher(){
+		for (Role role: roles){
+			if (role.getName().equals(ERole.ROLE_TEACHER)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
