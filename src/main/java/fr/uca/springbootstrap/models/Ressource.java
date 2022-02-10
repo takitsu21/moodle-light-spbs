@@ -19,6 +19,8 @@ public abstract class Ressource {
     @NotBlank
     private String description;
 
+    private boolean visibility=false;
+
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",
 //            joinColumns = @JoinColumn(name = "cours_id"),
@@ -69,5 +71,13 @@ public abstract class Ressource {
 
     public void setModules(Set<Module> modules) {
         this.modules = modules;
+    }
+
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
     }
 }
