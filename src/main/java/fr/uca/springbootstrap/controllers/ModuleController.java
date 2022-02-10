@@ -126,11 +126,12 @@ public class ModuleController {
 	@GetMapping("/{id}/participants")
 	public ResponseEntity<?> getParticipants(Principal principal, @PathVariable long id) {
 		Module module = moduleRepository.findById(id).get();
-		System.out.println(module.getParticipants());
+		Map<Long, String> paticipantView = new HashMap<>();
+
 		for (User participant : module.getParticipants()) {
-			System.out.println(participant.getUsername());
+			paticipantView.put(participant.getId(), participant.getUsername());
 		}
-		return ResponseEntity.ok(new MessageResponse("success"));
+		return ResponseEntity.ok(paticipantView);
 	}
 
 	@PostMapping("/")
@@ -481,15 +482,17 @@ public class ModuleController {
 	}
 
 	@GetMapping("/{id}/ressources")
-	public ResponseEntity<?> getRessourcess(Principal principal, @PathVariable("id") long id) {
+	public ResponseEntity<?> getRessources(Principal principal, @PathVariable("id") long id) {
 		Module module = moduleRepository.findById(id).get();
 		User user = userRepository.findByUsername(principal.getName()).get();
+		Map<Long, String> ressourceView = new HashMap<>();
 
 		for (Ressource ressource : module.getRessources()) {
 			if(ressource.isVisibility() || (module.getParticipants().contains(user) && user.hasTeacher())) {
-				System.out.println(ressource.getName());
+				ressourceView.put(ressource.getId(), ressource.getName());
 			}
 		}
-		return ResponseEntity.ok(new MessageResponse("success"));
+
+		return ResponseEntity.ok(ressourceView);
 	}
 }
