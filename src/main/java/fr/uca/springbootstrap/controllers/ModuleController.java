@@ -492,23 +492,17 @@ public class ModuleController {
 	}
 
 
-	@PostMapping("{module_id}/questionnaire/{questionnaire_id}")
+	@PostMapping("{module_id}/questionnaire")
 	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
 	public ResponseEntity<?> addQuestionnaire(Principal principal,
-											  @PathVariable("module_id") long module_id,
-											  @PathVariable("questionnaire_id") long questionnaire_id) {
+											  @PathVariable("module_id") long module_id) {
 
 		Optional<User> oUser = userRepository.findByUsername(principal.getName());
-		Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
 		Optional<Module> oModule = moduleRepository.findById(module_id);
 
 		if (oUser.isEmpty()) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: User does not exist."));
-		}
-		else if (oQuestionnaire.isEmpty()) {
-			return ResponseEntity.badRequest()
-					.body(new MessageResponse("Error: Questionnaire does not exist."));
 		}
 		else if (oModule.isEmpty()) {
 			return ResponseEntity.badRequest()
@@ -516,7 +510,7 @@ public class ModuleController {
 		}
 
 		User user = oUser.get();
-		Questionnaire questionnaire = oQuestionnaire.get();
+//		Questionnaire questionnaire = new Questionnaire()
 		Module module = oModule.get();
 
 		if (!module.containsParticipant(user)) {
@@ -533,7 +527,7 @@ public class ModuleController {
 
 
 	@DeleteMapping("{module_id}/questionnaire/{questionnaire_id}")
-	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> removeQuestionnaire(Principal principal,
 												 @PathVariable("module_id") long module_id,
 												 @PathVariable("questionnaire_id") long questionnaire_id) {
@@ -546,9 +540,17 @@ public class ModuleController {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: questionnaire does not exist."));
 		}
+		Module module = moduleRepository.findById(module_id).get();
+		User user = userRepository.findByUsername(principal.getName()).get();
+
+		if (!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: User is not registered in the module."));
+		}
+
 
 		Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
-		Module module = moduleRepository.findById(module_id).get();
 		module.removeRessource(questionnaire);
 
 		moduleRepository.save(module);

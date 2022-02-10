@@ -10,7 +10,7 @@ import java.util.Set;
 @DiscriminatorValue("Questionnaire")
 public class Questionnaire extends Ressource {
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Question> questions;
 
     @OneToMany

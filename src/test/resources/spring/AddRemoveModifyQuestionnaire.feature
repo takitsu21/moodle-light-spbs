@@ -10,7 +10,7 @@ Fonctionnalité: Ajouter ou enlever une ressource d'un module
     Et le questionnaire "Examen"
     Et le questionnaire "Examen" dans le module "Mathématiques"
     Et un module "Mathématiques" avec un enseignant "Jacob"
-    Et un module "Philosophie" sans l'enseignant "Jacob"
+    Et un module "Philosophie"
 
   Scénario: Ajout d'un questionnaire par un enseignant autorisé
     Quand l'enseignant "Jacob" veut ajouter le questionnaire "Premier questionnaire" au module "Mathématiques"
