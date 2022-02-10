@@ -62,7 +62,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     @Et("le module {string} a une ressource {string} invisible")
     public void leModuleAUneRessourceInvisible(String arg0, String arg1) {
         Ressource ressource = ressourceRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null"));
+                orElse(new Cours(arg1, "null", 1));
         ressource.setVisibility(false);
         ressourceRepository.save(ressource);
 
@@ -76,7 +76,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     @Et("le module {string} a une ressource {string} visible")
     public void leModuleAUneRessourceVisible(String arg0, String arg1) {
         Ressource ressource = ressourceRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null"));
+                orElse(new Cours(arg1, "null", 2));
         ressource.setVisibility(true);
         ressourceRepository.save(ressource);
 
