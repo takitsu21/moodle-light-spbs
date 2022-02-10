@@ -104,7 +104,6 @@ public class OpenQuestionController {
                     .body(new MessageResponse("Error: You are not allowed to modify the name of the question!"));
         }
 
-        question.setPossibleAnswer(answerRequest.getAnswers());
         openQuestionRepository.save(question);
         return ResponseEntity.ok(new MessageResponse("Possible answer successfully added"));
     }

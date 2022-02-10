@@ -102,6 +102,4 @@ public class Module {
         this.id = id;
     }
 
-    public Set<Ressource> getRessources() { return ressources; }
-    public void setRessources(Set<Ressource> ressources) { this.ressources = ressources; }
 }

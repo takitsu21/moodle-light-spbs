@@ -94,7 +94,7 @@ public class QuestionnaireController {
                     .body(new MessageResponse("Error: User does not exist."));
         }
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
-        Question question = new QCM(questionRequest.getNumber(), questionRequest.getName(), questionRequest.getDescription(), questionnaire);
+        Question question = new QCM(questionRequest.getNumber(), questionRequest.getName(), questionRequest.getDescription());
         questionnaire.addQuestion(question);
         questionnaireRepository.save(questionnaire);
         questionRepository.save(question);

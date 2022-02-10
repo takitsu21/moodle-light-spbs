@@ -35,7 +35,6 @@ public class Questionnaire extends Ressource {
     public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) { this.studentsGrades = studentsGrades; }
     public void addQuestion(Question question) {
         questions.add(question);
-        question.setQuestionnaire(this);
     }
 
     public void removeQuestion(Question question) {
