@@ -1,6 +1,9 @@
 package fr.uca.springbootstrap.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 
 @Entity

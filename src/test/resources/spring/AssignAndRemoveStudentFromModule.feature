@@ -5,12 +5,12 @@ Fonctionnalité: Ajouté ou enlever un étudiant d'un module
 
   Contexte:
     Etant donné Un enseignant avec le nom de connexion "Jacques"
-      Et un étudiant "Jean"
-      Et un étudiant "Margaux"
-      Et un étudiant "Franck"
-      Et un module "Math" qui a un enseignant "Jacques"
-      Et un module "Français" qui a un enseignant "Jacques" et un étudiant "Franck"
-      Et l enseignant inscrit l'étudiant "Margaux" au module "Math"
+    Et un étudiant "Jean"
+    Et un étudiant "Margaux"
+    Et un étudiant "Franck"
+    Et un module "Math" qui a un enseignant "Jacques"
+    Et un module "Français" qui a un enseignant "Jacques" et un étudiant "Franck"
+    Et l enseignant inscrit l'étudiant "Margaux" au module "Math"
 
   Scénario: Ajout d'un étudiant à un module
     Quand l'enseignant "Jacques" veut ajouter "Jean" au module de "Math" arm

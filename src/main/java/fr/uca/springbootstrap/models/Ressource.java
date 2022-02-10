@@ -6,9 +6,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name="ressource")
+@Table(name = "ressource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="ressource_type")
+@DiscriminatorColumn(name = "ressource_type")
 public abstract class Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public abstract class Ressource {
     @NotBlank
     private String description;
 
-    private boolean visibility=false;
+    private boolean visibility = false;
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",
@@ -32,7 +32,7 @@ public abstract class Ressource {
 //    private Set<Cours> cours;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "ressources_modules",
+    @JoinTable(name = "ressources_modules",
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "ressource_id"))
     private Set<Module> modules;
@@ -93,4 +93,5 @@ public abstract class Ressource {
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
     }
+
 }

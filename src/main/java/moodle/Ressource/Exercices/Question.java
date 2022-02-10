@@ -2,13 +2,11 @@ package moodle.Ressource.Exercices;
 
 import moodle.users.Student;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(	name = "questionnaires")
+@Table(name = "questionnaires")
 public abstract class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +27,9 @@ public abstract class Question {
         this.description = description;
     }
 
-    public abstract boolean succeedQuestion(Student student);
-
-
-
     public Question() {
 
     }
+
+    public abstract boolean succeedQuestion(Student student);
 }

@@ -13,41 +13,41 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer des ut
 
   Scénario: Le professeur "Jean" assigne le professeur "Marie" au module "Maths"
     Quand le professeur "Jean" essaie d'assigner le professeur "Marie" au module "Maths"
-    Et 1le dernier status de request est 400
+    Et le dernier status de request est 400 aru
     Alors "Marie" n'est pas assigner à "Maths"
 
   Scénario: Le professeur "Paul" assigne le professeur "Marie" au module "Maths"
     Quand le professeur "Paul" essaie d'assigner le professeur "Marie" au module "Maths"
-    Et 1le dernier status de request est 200
+    Et le dernier status de request est 200 aru
     Alors "Marie" est assigner à "Maths"
 
   Scénario: Le professeur "Jean" assigne l'élève "Dylann" au module "Maths"
     Quand le professeur "Jean" essaie d assigner l élève "Dylann" au module "Maths"
-    Et 1le dernier status de request est 400
+    Et le dernier status de request est 400 aru
     Alors "Dylann" n'est pas assigner à "Maths"
 
   Scénario: Le professeur "Paul" assigne l'élève "Dylann" au module "Maths"
     Quand le professeur "Paul" essaie d assigner l élève "Dylann" au module "Maths"
-    Et 1le dernier status de request est 200
+    Et le dernier status de request est 200 aru
     Alors "Dylann" est assigner à "Maths"
 
   Scénario: Le professeur "Jean" retire le professeur "Marie" au module "Chimie"
     Quand le professeur "Jean" essaie de retirer le professeur "Marie" au module "Chimie"
-    Et 1le dernier status de request est 400
+    Et le dernier status de request est 400 aru
     Alors "Marie" est assigner à "Chimie"
 
   Scénario: Le professeur "Paul" retire le professeur "Marie" au module "Chimie"
     Quand le professeur "Paul" essaie de retirer le professeur "Marie" au module "Chimie"
-    Et 1le dernier status de request est 200
+    Et le dernier status de request est 200 aru
     Alors "Marie" n'est pas assigner à "Chimie"
 
   Scénario: Le professeur "Jean" retire l'élève "Dylann" au module "Chimie"
     Quand le professeur "Jean" essaie de retirer l élève "Dylann" au module "Chimie"
-    Et 1le dernier status de request est 400
+    Et le dernier status de request est 400 aru
     Alors "Dylann" est assigner à "Chimie"
 
   Scénario: Le professeur "Paul" retire l'élève "Dylann" au module "Chimie"
     Quand le professeur "Paul" essaie de retirer l élève "Dylann" au module "Chimie"
-    Et 1le dernier status de request est 200
+    Et le dernier status de request est 200 aru
     Alors "Dylann" n'est pas assigner à "Chimie"
 

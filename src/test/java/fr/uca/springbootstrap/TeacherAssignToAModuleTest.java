@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.SpringIntegration;
 import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,8 +43,10 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
     public void unProfesseur(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
     }
 
@@ -60,8 +61,10 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
     public void auModuleQuiAUnProfesseurAssigné(String arg0) {
         User user2 = userRepository.findByUsername("Teacher").
                 orElse(new User("Teacher", "Teacher" + "@test.fr", encoder.encode(PASSWORD)));
-        user2.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user2.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user2);
 
         Module module2 = moduleRepository.findByName(arg0).orElse(new Module(arg0));
@@ -76,7 +79,7 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg0).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/module/"+module.getId()+"/participants/"+user.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Et("le dernier status de request est {int}")

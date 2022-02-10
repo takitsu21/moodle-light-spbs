@@ -11,23 +11,23 @@ public class Student extends User {
         super(Role.STUDENT, name, password);
     }
 
-    public void validate_questionnaire(Questionnaire questionnaire){
+    public void validate_questionnaire(Questionnaire questionnaire) {
         questionnaire.validateQuestionnaire(this);
     }
 
-    public void setAnswerQCM(QCM question, int answer){
+    public void setAnswerQCM(QCM question, int answer) {
         question.setStudentAnswer(this, answer);
     }
 
-    public void removeAnswerOpenQuestion(OpenQuestion question, int answer){
+    public void removeAnswerOpenQuestion(OpenQuestion question, int answer) {
         question.removeStudentAnswer(this, answer);
     }
 
-    public void addAnswerOpenQuestion(OpenQuestion question, int answer){
+    public void addAnswerOpenQuestion(OpenQuestion question, int answer) {
         question.addStudentAnswer(this, answer);
     }
 
-    public void seeResultQuestionnaire(Questionnaire questionnaire){
+    public void seeResultQuestionnaire(Questionnaire questionnaire) {
         questionnaire.getGrade(this);
     }
 

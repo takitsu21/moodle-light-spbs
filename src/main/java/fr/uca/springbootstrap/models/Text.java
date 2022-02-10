@@ -4,10 +4,9 @@ package fr.uca.springbootstrap.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
-@Table(	name = "text")
+@Table(name = "text")
 public class Text {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

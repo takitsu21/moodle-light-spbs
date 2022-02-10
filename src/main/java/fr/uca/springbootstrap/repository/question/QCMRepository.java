@@ -11,9 +11,11 @@ import java.util.Optional;
 public interface QCMRepository extends JpaRepository<QCM, Long> {
 
     Optional<QCM> findById(long id);
+
     Optional<QCM> findByName(String name);
 
     Boolean existsById(long id);
+
     Boolean existsByName(String name);
 
     List<QCM> findAll();

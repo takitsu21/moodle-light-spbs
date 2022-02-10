@@ -25,20 +25,19 @@ public class Module {
         this(name, new HashMap<>());
     }
 
-    public boolean assignTeacher(Teacher teacher){
-        if (teachers.isEmpty()){
+    public boolean assignTeacher(Teacher teacher) {
+        if (teachers.isEmpty()) {
             teachers.add(teacher);
             return true;
         }
         return false;
     }
 
-    public boolean assignUser(Teacher teacherAssign, User toAssign){
-        if (teacherAssign!=null && teachers.contains(teacherAssign)){
-            if(toAssign instanceof Teacher) {
+    public boolean assignUser(Teacher teacherAssign, User toAssign) {
+        if (teacherAssign != null && teachers.contains(teacherAssign)) {
+            if (toAssign instanceof Teacher) {
                 teachers.add((Teacher) toAssign);
-            }
-            else{
+            } else {
                 students.add((Student) toAssign);
             }
             return true;
@@ -46,12 +45,11 @@ public class Module {
         return false;
     }
 
-    public boolean removeUser(Teacher teacherAssign, User toRemove){
-        if (teacherAssign!=null && teachers.contains(teacherAssign)){
-            if(toRemove instanceof Teacher) {
+    public boolean removeUser(Teacher teacherAssign, User toRemove) {
+        if (teacherAssign != null && teachers.contains(teacherAssign)) {
+            if (toRemove instanceof Teacher) {
                 teachers.remove((Teacher) toRemove);
-            }
-            else {
+            } else {
                 students.remove((Student) toRemove);
             }
             return true;
@@ -59,8 +57,8 @@ public class Module {
         return false;
     }
 
-    public boolean changeVisibilityOfRessource(Teacher teacher, String ressource, boolean visibility){
-        if (teachers.contains(teacher)){
+    public boolean changeVisibilityOfRessource(Teacher teacher, String ressource, boolean visibility) {
+        if (teachers.contains(teacher)) {
             resources.get(ressource).setVisibility(visibility);
             return true;
         }

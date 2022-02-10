@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table( name = "questionnaire")
+@Table(name = "questionnaire")
 public class Questionnaire extends Ressource {
 
     @OneToMany(fetch = FetchType.LAZY)
@@ -19,12 +19,17 @@ public class Questionnaire extends Ressource {
             inverseJoinColumns = @JoinColumn(name = "grades"))
     private Set<GradesQuestionnaire> studentsGrades = new HashSet<>();
 
-    public Questionnaire(){
+    public Questionnaire() {
 
     }
 
-    public Set<Question> getQuestions() { return questions; }
-    public void setQuestions(Set<Question> questions) { this.questions = questions; }
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
 
 
 }

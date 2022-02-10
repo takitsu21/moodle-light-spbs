@@ -1,9 +1,8 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.SpringIntegration;
 import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
+import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
@@ -12,14 +11,11 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
-import moodle.users.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,14 +44,16 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     public void leProfesseurAssignéAuModuleDeQuiAUneRessource(String arg0, String arg1, String arg2) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
 
         Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
         module.getParticipants().add(user);
         moduleRepository.save(module);
-        
+
         assertTrue(module.getParticipants().contains(user));
     }
 
@@ -91,8 +89,10 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     public void leProfesseurQuiNAAucunModule(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
     }
 
@@ -102,7 +102,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Ressource ressource = ressourceRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()+"/ressourceVisible/"+ressource.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/ressourceVisible/" + ressource.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie de rendre la ressource {string} du module {string} invisible")
@@ -111,7 +111,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Ressource ressource = ressourceRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()+"/ressourceInvisible/"+ressource.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/ressourceInvisible/" + ressource.getId(), jwt);
     }
 
     @Et("le dernier status de request est {int} cv")

@@ -5,7 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(	name = "users")
+@Table(name = "users")
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public abstract class User {
     private Role role;
 
     public User(Role role, String name, String password) {
-        this.role=role;
+        this.role = role;
         this.name = name;
         this.password = password;
     }

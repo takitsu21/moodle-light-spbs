@@ -11,9 +11,9 @@ import java.util.Set;
 public class QCM extends Question {
 
     @ManyToMany
-    @JoinTable( name = "possible_answers",
-            joinColumns = @JoinColumn(name ="open_question"),
-            inverseJoinColumns = @JoinColumn(name="answers"))
+    @JoinTable(name = "possible_answers",
+            joinColumns = @JoinColumn(name = "open_question"),
+            inverseJoinColumns = @JoinColumn(name = "answers"))
     private Set<Answer> possibleAnswers;
 
     @OneToOne
@@ -33,12 +33,27 @@ public class QCM extends Question {
         super();
     }
 
-    public Answer getAnswer() { return answer; }
-    public void setAnswer(Answer answer) { this.answer = answer; }
+    public Answer getAnswer() {
+        return answer;
+    }
 
-    public Set<User> getStudentsAnswers() { return studentsAnswers; }
-    public void setStudentsAnswers(Set<User> studentsAnswers) { this.studentsAnswers = studentsAnswers; }
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
 
-    public Set<Answer> getPossibleAnswers() { return possibleAnswers; }
-    public void setPossibleAnswers(Set<Answer> possibleAnswers) { this.possibleAnswers = possibleAnswers; }
+    public Set<User> getStudentsAnswers() {
+        return studentsAnswers;
+    }
+
+    public void setStudentsAnswers(Set<User> studentsAnswers) {
+        this.studentsAnswers = studentsAnswers;
+    }
+
+    public Set<Answer> getPossibleAnswers() {
+        return possibleAnswers;
+    }
+
+    public void setPossibleAnswers(Set<Answer> possibleAnswers) {
+        this.possibleAnswers = possibleAnswers;
+    }
 }

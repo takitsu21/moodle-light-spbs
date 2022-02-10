@@ -31,6 +31,7 @@ public class AddRemoveStudentModuleStepdefs {
         moduleMath = new Module(arg0);
         moduleFr = new Module(arg1);
     }
+
     @Et("l'étudiant est assigné aux cours de {string}")
     public void lÉtudiantEstAssignéAuxCoursDe(String arg0) {
         moduleMath.getStudents().add(student);

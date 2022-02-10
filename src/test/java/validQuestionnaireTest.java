@@ -1,4 +1,3 @@
-import io.cucumber.java.en_scouse.An;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
@@ -10,7 +9,7 @@ import moodle.users.Student;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class validQuestionnaireTest {
     private Student Antoine;
@@ -24,10 +23,10 @@ public class validQuestionnaireTest {
 
     @Et("un questionnaire rempli {string}")
     public void unQuestionnaireRempli(String arg0) {
-        Test1 = new Questionnaire(arg0,"Test numéro 1", new ArrayList<Question>(), new ArrayList<Student>());
+        Test1 = new Questionnaire(arg0, "Test numéro 1", new ArrayList<Question>(), new ArrayList<Student>());
         Test1.addStudent(Antoine);
-        q1 = new QCM(1,"Question1", "Répond", new String[]{"R1","R2"}, 1);
-        q1.setStudentAnswer(Antoine,1);
+        q1 = new QCM(1, "Question1", "Répond", new String[]{"R1", "R2"}, 1);
+        q1.setStudentAnswer(Antoine, 1);
         Test1.addQuestion((Question) q1);
     }
 

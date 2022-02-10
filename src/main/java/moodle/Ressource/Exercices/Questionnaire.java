@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 
 @Entity
-@Table(	name = "questionnaires")
+@Table(name = "questionnaires")
 public class Questionnaire extends Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "question_questionnaires",
+    @JoinTable(name = "question_questionnaires",
             joinColumns = @JoinColumn(name = "questionnaire_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id"))
     private List<Question> questionnaire;
@@ -26,28 +26,32 @@ public class Questionnaire extends Ressource {
         super(name, description);
         this.questionnaire = questionnaire;
         this.grades = new HashMap<>();
-        for (Student student : students.toArray(new Student[0])){
+        for (Student student : students.toArray(new Student[0])) {
             grades.put(student, null);
         }
+    }
+
+    public Questionnaire() {
+
     }
 
     public List<Question> getQuestionnaire() {
         return questionnaire;
     }
 
-    public void addQuestion(Question question){
+    public void addQuestion(Question question) {
         questionnaire.add(question);
     }
 
-    public void addStudent(Student student){
-        grades.put(student,null);
+    public void addStudent(Student student) {
+        grades.put(student, null);
     }
 
     public HashMap<Student, Integer> getGrades() {
         return grades;
     }
 
-    public void validateQuestionnaire(Student student){
+    public void validateQuestionnaire(Student student) {
         int nbQuestion = questionnaire.size();
         int result = 0;
         for (Question question : questionnaire) {
@@ -55,21 +59,14 @@ public class Questionnaire extends Ressource {
                 result += 1;
             }
         }
-        grades.put(student, result/nbQuestion);
+        grades.put(student, result / nbQuestion);
     }
 
-    public boolean isValidateBy(Student student){
+    public boolean isValidateBy(Student student) {
         return grades.get(student) != null;
     }
 
-    public int getGrade(Student student){
+    public int getGrade(Student student) {
         return grades.get(student);
-    }
-
-
-
-
-    public Questionnaire() {
-
     }
 }

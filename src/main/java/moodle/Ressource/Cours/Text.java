@@ -1,12 +1,10 @@
 package moodle.Ressource.Cours;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(	name = "text")
+@Table(name = "text")
 public class Text {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

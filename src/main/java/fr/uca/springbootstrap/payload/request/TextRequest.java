@@ -1,8 +1,8 @@
 package fr.uca.springbootstrap.payload.request;
 
-import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
-import java.util.Map;
+import fr.uca.springbootstrap.models.Text;
+
+import java.util.HashSet;
 import java.util.Set;
 
 public class TextRequest {
@@ -10,12 +10,12 @@ public class TextRequest {
 
     private Set<MyText> texts;
 
-    public TextRequest() {
-
+    public TextRequest(MyText text) {
+        texts=new HashSet<>(){{add(text);}};
     }
 
-
-
+    public TextRequest() {
+    }
 
     public Set<MyText> getTexts() {
         return texts;

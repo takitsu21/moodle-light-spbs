@@ -1,8 +1,8 @@
 package fr.uca.springbootstrap;
 
 import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
+import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.repository.*;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -36,6 +36,7 @@ public class CoursesStepdefs {
 
     @Autowired
     PasswordEncoder encoder;
+
     @Etantdonné("Un enseignant avec le nom de connexion {string} crs")
     public void unEnseignantAvecLeNomDeConnexionCrs(String arg0) {
         User user = userRepository.findByUsername(arg0).
