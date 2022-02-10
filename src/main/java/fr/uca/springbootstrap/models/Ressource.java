@@ -23,7 +23,7 @@ public abstract class Ressource {
     @NotBlank
     private String description;
 
-
+    private boolean visibility=false;
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",
@@ -84,5 +84,13 @@ public abstract class Ressource {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
     }
 }
