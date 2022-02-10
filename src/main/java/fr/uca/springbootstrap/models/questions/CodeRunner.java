@@ -8,10 +8,12 @@ import java.util.Map;
 @Entity
 @DiscriminatorValue("code_runner")
 public class CodeRunner extends Question {
-    private String anwser;
+
+    @ManyToOne
+    private Answer anwser;
     private String test;
 
-    public CodeRunner(int number, String name, String description, String test, String answer) {
+    public CodeRunner(int number, String name, String description, String test, Answer answer) {
         super(number, name, description);
         this.test = test;
         this.anwser = answer;
@@ -21,11 +23,11 @@ public class CodeRunner extends Question {
 
     }
 
-    public String getAnwser() {
+    public Answer getAnwser() {
         return anwser;
     }
 
-    public void setAnwser(String anwser) {
+    public void setAnwser(Answer anwser) {
         this.anwser = anwser;
     }
 

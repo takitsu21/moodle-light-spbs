@@ -2,6 +2,7 @@ package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
+import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.CodeRunner;
 import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.*;
@@ -9,7 +10,9 @@ import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import fr.uca.springbootstrap.repository.cours.TextRepository;
+import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+import fr.uca.springbootstrap.util.Pair;
 import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +49,9 @@ public class ModuleController {
 
 	@Autowired
 	TextRepository textRepository;
+
+	@Autowired
+	AnswerRepository answerRepository;
 
 	@Autowired
 	CodeRunnerRepository codeRunnerRepository;
@@ -184,218 +190,6 @@ public class ModuleController {
 		return ResponseEntity.ok(new MessageResponse("Module deleted successfully!"));
 	}
 
-	@PostMapping("/{module_id}/cours")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> addCours(Principal principal,
-									  @Valid @RequestBody RessourceRequest ressourceRequest,
-									  @PathVariable("module_id") long moduleId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-		Module module = omodule.get();
-		User user = ouser.get();
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to add courses!"));
-		}
-		Cours cours = new Cours(ressourceRequest.getName(), ressourceRequest.getDescription(), ressourceRequest.getNum());
-		coursRepository.save(cours);
-		return ResponseEntity.ok(new MessageResponse("Course added to the module successfully!"));
-	}
-
-	@DeleteMapping("/{module_id}/cours/{cours_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> deleteCours(Principal principal,
-									  @PathVariable("module_id") long moduleId,
-										 @PathVariable("cours_id") long coursId) {
-
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Cours> ocourse = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-		if (ocourse.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such course!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-		Module module = omodule.get();
-		User user = ouser.get();
-		Cours course = ocourse.get();
-
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
-		}
-
-		coursRepository.delete(course);
-		return ResponseEntity.ok(new MessageResponse("Course removed from the module successfully!"));
-	}
-
-	@PostMapping("/{module_id}/cours/{cours_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> addText(Principal principal,
-									 @Valid @RequestBody TextRequest textRequest,
-									 @PathVariable("module_id") long moduleId,
-									 @PathVariable("cours_id") long coursId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Cours> oressource = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-		if (oressource.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such cours!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-
-		Module module = omodule.get();
-		User user = ouser.get();
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
-		}
-		Cours cours = oressource.get();
-		Set<Text> texts = cours.getTexts();
-
-		for (MyText text : textRequest.getTexts()) {
-			texts.add(new Text(text.getNum(), text.getContent()));
-		}
-
-		coursRepository.save(cours);
-		return ResponseEntity.ok(new MessageResponse("Texts successfully added to the course!"));
-	}
-
-	@DeleteMapping("/{module_id}/cours/{cours_id}/texts/{text_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> removeText(Principal principal,
-									 @PathVariable("module_id") long moduleId,
-									 @PathVariable("cours_id") long coursId,
-									 @PathVariable("text_id") long textId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Text> otext = textRepository.findById(textId);
-		Optional<Cours> ocours = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ouser.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such user!"));
-		}
-		if (otext.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such text!"));
-		}
-		if (ocours.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such text!"));
-		}
-
-		if (!moduleRepository.existsById(moduleId)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Module doesn't exists!"));
-		}
-
-		Module module = omodule.get();
-		User user = ouser.get();
-		Cours cours = ocours.get();
-		Text text = otext.get();
-
-		if (!module.getParticipants().contains(user)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: You are not allowed to delete courses!"));
-		}
-		if (!cours.getTexts().contains(text)) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: This text is not in the course!"));
-		}
-
-		cours.getTexts().remove(text);
-		coursRepository.save(cours);
-		return ResponseEntity.ok(new MessageResponse("Texts successfully removed from the course!"));
-	}
-
-	@GetMapping("/{module_id}/cours/{cours_id}/texts")
-	public ResponseEntity<?> getTexts(@PathVariable("module_id") long moduleId,
-									  @PathVariable("cours_id") long coursId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<Cours> ocours = coursRepository.findById(coursId);
-
-		if (omodule.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such module!"));
-		}
-		if (ocours.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: No such course!"));
-		}
-		Cours cours = ocours.get();
-		return ResponseEntity.ok(cours.getTexts());
-	}
-
 	@PostMapping("/{module_id}/ressourceVisible/{ressource_id}")
 	@PreAuthorize("hasRole('TEACHER')")
 	public ResponseEntity<?> ressourceVisible(Principal principal, @PathVariable("module_id") long moduleId, @PathVariable("ressource_id")  long ressourceId) {
@@ -505,43 +299,38 @@ public class ModuleController {
 												   @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
 												   @PathVariable("module_id") long moduleId) {
 		Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-
+		Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
 		if (optionalModule.isEmpty()) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: No such module!"));
 		}
+		if (optionalUser.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such user!"));
+		}
 
-		Module module = optionalModule.get();
+		User user = optionalUser.get();
+
+		Answer answer = new Answer(codeRunnerRequest.getAnswer(), user);
+		answerRepository.save(answer);
 
 		CodeRunner question = new CodeRunner(codeRunnerRequest.getNumber(),
 				codeRunnerRequest.getName(),
 				codeRunnerRequest.getDescription(),
-				codeRunnerRequest.getTest(),
-				codeRunnerRequest.getAnswer());
+				codeRunnerRequest.getTest(), answer);
 
 		codeRunnerRepository.save(question);
-
-
 		return ResponseEntity.ok(new MessageResponse("Code runner quesiton successfully added!"));
 	}
 
-	@PostMapping("/{module_id}/code_runner/{code_runner_id}/submit")
-	public ResponseEntity<?> submitCodeRunner(Principal principal,
-											  @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
-											  @PathVariable("module_id") long moduleId,
-											  @PathVariable("code_runner_id") long codeRunnerId) {
-		PythonInterpreter pyInterp = new PythonInterpreter();
-		StringWriter output = new StringWriter();
-		pyInterp.setOut(output);
-		pyInterp.exec(codeRunnerRequest.getCode() + "\n" + codeRunnerRequest.getTest());
-		Map<String, Boolean> success = new HashMap<>();
-
-		CodeRunner question = codeRunnerRepository.findById(codeRunnerId).get();
-
-
-		success.put("success", question.getAnwser().equals(output.toString().trim()));
-
-		return ResponseEntity.ok(success);
+	private Cours findCoursByNameInModule(Module module, String name) {
+		for (Ressource cours : module.getRessources()) {
+			if (cours.getName().equalsIgnoreCase(name)) {
+				return (Cours) cours;
+			}
+		}
+		return null;
 	}
 }

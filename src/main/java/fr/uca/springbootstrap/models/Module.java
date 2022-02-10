@@ -15,14 +15,6 @@ public class Module {
     @NotBlank
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "user_modules",
             joinColumns = @JoinColumn(name = "module_id"),
@@ -31,9 +23,17 @@ public class Module {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "ressources_modules",
-            joinColumns = @JoinColumn(name = "ressource_id"),
-            inverseJoinColumns = @JoinColumn(name = "module_id"))
+            joinColumns = @JoinColumn(name = "module_id"),
+            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
     private Set<Ressource> ressources = new HashSet<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Module() {
     }

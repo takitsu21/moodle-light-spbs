@@ -1,29 +1,29 @@
 #language: fr
 #encoding: utf-8
 
-Fonctionnalité: Gérer les cours d'un module
+Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer un cours (série de texte) à un module
 
-Contexte:
-  Etant donné Un enseignant avec le nom de connexion "Jacques" crs
-    Et un module "Math" qui a un enseignant "Jacques" crs
-    Et un module "Français" qui a un cours "Test" et qui a un enseignant "Jacques" crs
+  Contexte:
+    Etant donné Un enseignant avec le nom de connexion "Jacques" crs
+      Et un module "Philo" qui a un enseignant "Jacques" crs
+      Et un module "SVT" qui a un cours "Test" et numéro 2 et qui a un enseignant "Jacques" crs
 
   Scénario: Ajout d'une ressource cours d'un module
-    Quand "Jacques" veut ajouter le cours "Types" qui a pour description "description" au module "Math" crs
+    Quand "Jacques" veut ajouter le cours "TestPhilo" qui a pour description "description" et numéro 1 au module "Philo" crs
     Alors le dernier status de réponse est 200 crs
-    Et "Types" est ajouté au module "Math" crs
+    Et "TestPhilo" est ajouté au module "Philo" crs
 
   Scénario: Suppresion d'une ressource cours d'un module
-    Quand "Jacques" veut supprimer le cours "Test" du module "Français" crs
+    Quand "Jacques" veut supprimer le cours "Test" et numéro 2 du module "SVT" crs
     Alors le dernier status de réponse est 200 crs
-    Et "Test" est supprimé du module "Français" crs
+    Et "Test" est supprimé du module "SVT" crs
 
   Scénario: Ajout d'une ressource cours d'un module qui contient déjà ce cours
-    Quand "Jacques" veut ajouter le cours "Test" au module "Français" crs
+    Quand "Jacques" veut ajouter le cours "Test" et numéro 2 au module "SVT" crs
     Alors le dernier status de réponse est 400 crs
-    Et "Test" n'est pas ajouté au module "Français" crs
+    Et "Test" n'est pas ajouté au module "SVT" crs
 
   Scénario: Suppresion d'une ressource cours d'un module qui ne contient pas ce cours
-    Quand "Jacques" veut supprimer le cours "Test2" du module "Français" crs
+    Quand "Jacques" veut supprimer le cours "Test2" et numéro 3 du module "SVT" crs
     Alors le dernier status de réponse est 400 crs
-    Et "Test2" n'est pas supprimé du module "Français" crs
+    Et "Test2" n'est pas supprimé du module "SVT" crs

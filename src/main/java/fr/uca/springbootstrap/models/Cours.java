@@ -9,8 +9,8 @@ import java.util.Set;
 public class Cours extends Ressource {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "cours_text",
-            joinColumns = @JoinColumn(name = "cours_id"),
-            inverseJoinColumns = @JoinColumn(name = "text_id"))
+            joinColumns = @JoinColumn(name = "text_id"),
+            inverseJoinColumns = @JoinColumn(name = "cours_id"))
     private Set<Text> texts;
 
 //    @ManyToMany(fetch = FetchType.EAGER)
