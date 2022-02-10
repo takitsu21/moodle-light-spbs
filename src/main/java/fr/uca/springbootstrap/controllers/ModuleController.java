@@ -12,7 +12,6 @@ import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import fr.uca.springbootstrap.repository.cours.TextRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
-import fr.uca.springbootstrap.util.Pair;
 import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -316,6 +315,15 @@ public class ModuleController {
 
 	}
 
+
+	private Cours findCoursByNameInModule(Module module, String name) {
+		for (Ressource cours : module.getRessources()) {
+			if (cours.getName().equalsIgnoreCase(name)) {
+				return (Cours) cours;
+			}
+		}
+		return null;
+	}
 
 	@PostMapping("{module_id}/questionnaire")
 	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")

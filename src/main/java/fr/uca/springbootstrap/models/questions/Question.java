@@ -31,7 +31,9 @@ public abstract class Question {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "questionnaire_id")
+    @JoinTable(	name = "questionnaire_question",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "questionnaire_id"))
     private Questionnaire questionnaire;
 
     public Question(int number, String name, String description, Questionnaire questionnaire){

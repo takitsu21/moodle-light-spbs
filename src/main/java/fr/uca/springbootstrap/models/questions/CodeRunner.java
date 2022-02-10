@@ -13,7 +13,10 @@ public class CodeRunner extends Question {
     private Answer anwser;
     private String test;
 
-    public CodeRunner(int number, String name, String description, String test, Answer answer) {
+    public CodeRunner(int number,
+                      String name,
+                      String description,
+                      String test, Answer answer) {
         super(number, name, description);
         this.test = test;
         this.anwser = answer;

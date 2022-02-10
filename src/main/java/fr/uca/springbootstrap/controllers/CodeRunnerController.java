@@ -1,16 +1,17 @@
 package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.Module;
+import fr.uca.springbootstrap.models.Questionnaire;
+import fr.uca.springbootstrap.models.Ressource;
 import fr.uca.springbootstrap.models.User;
+import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.CodeRunner;
 import fr.uca.springbootstrap.payload.request.CodeRunnerRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RessourceRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import fr.uca.springbootstrap.repository.cours.TextRepository;
+import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
 import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,20 @@ public class CodeRunnerController {
     @Autowired
     CodeRunnerRepository codeRunnerRepository;
 
+    @Autowired
+    AnswerRepository answerRepository;
 
-    @PostMapping("/{module_id}/code_runner/{code_runner_id}/submit")
-    public ResponseEntity<?> submitCodeRunner(Principal principal,
-                                              @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
-                                              @PathVariable("module_id") long moduleId,
-                                              @PathVariable("code_runner_id") long codeRunnerId) {
+    @Autowired
+    QuestionnaireRepository questionnaireRepository;
+
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner")
+    public ResponseEntity<?> addCodeRunnerQuestion(Principal principal,
+                                                   @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
+                                                   @PathVariable("module_id") long moduleId,
+                                                   @PathVariable("questionnaire_id") long questionnaireId) {
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
         Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
                     .badRequest()
@@ -71,13 +78,74 @@ public class CodeRunnerController {
                     .badRequest()
                     .body(new MessageResponse("Error: No such user!"));
         }
+        if (optionalQuestionnaire.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such questionnaire!"));
+        }
+
+        User user = optionalUser.get();
+        Module module = optionalModule.get();
+
+        Questionnaire questionnaire = optionalQuestionnaire.get();
+        if (!module.getRessources().contains(questionnaire)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such questionnaire in the module!"));
+        }
+        Answer answer = new Answer(codeRunnerRequest.getAnswer(), user);
+        answerRepository.save(answer);
+        CodeRunner question = new CodeRunner(codeRunnerRequest.getNumber(),
+                codeRunnerRequest.getName(),
+                codeRunnerRequest.getDescription(),
+                codeRunnerRequest.getTest(), answer);
+        codeRunnerRepository.save(question);
+        questionnaire.getQuestions().add(question);
+
+        questionnaireRepository.save(questionnaire);
+
+        return ResponseEntity.ok(new MessageResponse("Code runner question successfully added!"));
+    }
+
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner/{code_runner_id}/submit")
+    public ResponseEntity<?> submitCodeRunner(Principal principal,
+                                              @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
+                                              @PathVariable("module_id") long moduleId,
+                                              @PathVariable("questionnaire_id") long questionnaireId,
+                                              @PathVariable("code_runner_id") long codeRunnerId) {
+        Optional<Module> optionalModule = moduleRepository.findById(moduleId);
+        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+        if (optionalModule.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such module!"));
+        }
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such user!"));
+        }
+        if (optionalQuestionnaire.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such questionnaire!"));
+        }
         Module module = optionalModule.get();
         User user = optionalUser.get();
+        Questionnaire questionnaire = optionalQuestionnaire.get();
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: you do not belong to this module!"));
         }
+        if (!module.getRessources().contains(questionnaire)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such questionnaire in the module!"));
+        }
+
+
         try (PythonInterpreter pyInterp = new PythonInterpreter()) {
             Map<String, Boolean> success = new HashMap<>();
             CodeRunner question = codeRunnerRepository.findById(codeRunnerId).get();
@@ -89,6 +157,8 @@ public class CodeRunnerController {
             success.put("success", isValid);
             return ResponseEntity.ok(success);
         } catch (Exception e) {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e));
         }
     }

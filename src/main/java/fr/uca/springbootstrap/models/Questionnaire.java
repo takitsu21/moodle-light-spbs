@@ -11,6 +11,9 @@ import java.util.Set;
 public class Questionnaire extends Ressource {
 
     @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "questionnaire_question",
+            joinColumns = @JoinColumn(name = "questionnaire_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questions = new HashSet<>();
 
     @OneToMany
@@ -23,9 +26,10 @@ public class Questionnaire extends Ressource {
         super();
     }
 
-    public Questionnaire(String name, String description, Integer num){
+    public Questionnaire(String name, String description, Integer num) {
         super(name, description, num);
     }
+
 
     public Set<Question> getQuestions() { return questions; }
     public void setQuestions(Set<Question> questions) { this.questions = questions; }

@@ -17,6 +17,21 @@ public class CodeRunnerRequest {
 
     private String test;
 
+    public CodeRunnerRequest(Integer number, String name, String description, String answer, String test) {
+        this.number = number;
+        this.name = name;
+        this.description = description;
+        this.answer = answer;
+        this.test = test;
+    }
+
+    public CodeRunnerRequest(String code) {
+        this.code = code;
+    }
+
+    public CodeRunnerRequest() {
+    }
+
     public Integer getNumber() {
         return number;
     }
