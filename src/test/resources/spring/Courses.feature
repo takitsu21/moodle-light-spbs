@@ -13,7 +13,7 @@ Contexte:
     Alors le dernier status de réponse est 200 crs
     Et "Types" est ajouté au module "Math" crs
 
-  Scénario: Suppresion d'une ressource cours d'un module
+  Scénario: Suppression d'une ressource cours d'un module
     Quand "Jacques" veut supprimer le cours "Test" du module "Français" crs
     Alors le dernier status de réponse est 200 crs
     Et "Test" est supprimé du module "Français" crs
@@ -23,7 +23,7 @@ Contexte:
     Alors le dernier status de réponse est 400 crs
     Et "Test" n'est pas ajouté au module "Français" crs
 
-  Scénario: Suppresion d'une ressource cours d'un module qui ne contient pas ce cours
+  Scénario: Suppression d'une ressource cours d'un module qui ne contient pas ce cours
     Quand "Jacques" veut supprimer le cours "Test2" du module "Français" crs
     Alors le dernier status de réponse est 400 crs
     Et "Test2" n'est pas supprimé du module "Français" crs

@@ -1,23 +1,28 @@
 package fr.uca.springbootstrap.payload.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
-public class RessourceRequest {
+public class QuestionRequest {
+    @NotNull
+    private int number;
+
     @NotBlank
-    @Size(min=2, max=20)
+    @Size(max = 50)
     private String name;
 
     @NotBlank
-    @Size(min=2, max=128)
+    @Size(max = 120)
     private String description;
 
-    private Integer num;
+    public int getNumber() {
+        return number;
+    }
 
-    private Set<String> texts;
-
-
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     public String getName() {
         return name;
@@ -33,21 +38,5 @@ public class RessourceRequest {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<String> getTexts() {
-        return texts;
-    }
-
-    public void setTexts(Set<String> texts) {
-        this.texts = texts;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
     }
 }

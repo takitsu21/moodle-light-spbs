@@ -3,6 +3,7 @@ package fr.uca.springbootstrap.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,17 +26,11 @@ public abstract class Ressource {
 
     private boolean visibility=false;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "cours_ressources",
-//            joinColumns = @JoinColumn(name = "cours_id"),
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(	name = "ressources_modules",
+//            joinColumns = @JoinColumn(name = "module_id"),
 //            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Cours> cours;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "ressources_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-    private Set<Module> modules;
+//    private Set<Module> modules = new HashSet<>();
 
     public Ressource() {
     }
@@ -70,13 +65,13 @@ public abstract class Ressource {
         this.description = description;
     }
 
-    public Set<Module> getModules() {
-        return modules;
-    }
-
-    public void setModules(Set<Module> modules) {
-        this.modules = modules;
-    }
+//    public Set<Module> getModules() {
+//        return modules;
+//    }
+//
+//    public void setModules(Set<Module> modules) {
+//        this.modules = modules;
+//    }
 
     public Integer getNum() {
         return num;
