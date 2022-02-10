@@ -4,6 +4,7 @@ import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.repository.*;
+import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;

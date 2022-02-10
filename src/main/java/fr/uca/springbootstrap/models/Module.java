@@ -31,8 +31,8 @@ public class Module {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "ressources_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
+            joinColumns = @JoinColumn(name = "ressource_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id"))
     private Set<Ressource> ressources = new HashSet<>();
 
     public Module() {

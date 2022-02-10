@@ -35,6 +35,7 @@ public class SpringIntegration {
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
+
         request.setEntity(new StringEntity("{}"));
         latestHttpResponse = httpClient.execute(request);
     }

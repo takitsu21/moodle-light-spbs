@@ -2,19 +2,23 @@ package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
+import fr.uca.springbootstrap.models.questions.CodeRunner;
+import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.*;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.security.jwt.JwtUtils;
-import moodle.users.Teacher;
+import fr.uca.springbootstrap.repository.cours.CoursRepository;
+import fr.uca.springbootstrap.repository.cours.TextRepository;
+import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.StringWriter;
 import java.security.Principal;
 import java.util.*;
 
@@ -42,6 +46,9 @@ public class ModuleController {
 
 	@Autowired
 	TextRepository textRepository;
+
+	@Autowired
+	CodeRunnerRepository codeRunnerRepository;
 
 
 //
@@ -491,5 +498,50 @@ public class ModuleController {
 			}
 		}
 		return ResponseEntity.ok(new MessageResponse("success"));
+	}
+
+	@PutMapping("/{module_id}/code_runner")
+	public ResponseEntity<?> addCodeRunnerQuestion(Principal principal,
+												   @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
+												   @PathVariable("module_id") long moduleId) {
+		Optional<Module> optionalModule = moduleRepository.findById(moduleId);
+
+		if (optionalModule.isEmpty()) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: No such module!"));
+		}
+
+		Module module = optionalModule.get();
+
+		CodeRunner question = new CodeRunner(codeRunnerRequest.getNumber(),
+				codeRunnerRequest.getName(),
+				codeRunnerRequest.getDescription(),
+				codeRunnerRequest.getTest(),
+				codeRunnerRequest.getAnswer());
+
+		codeRunnerRepository.save(question);
+
+
+		return ResponseEntity.ok(new MessageResponse("Code runner quesiton successfully added!"));
+	}
+
+	@PostMapping("/{module_id}/code_runner/{code_runner_id}/submit")
+	public ResponseEntity<?> submitCodeRunner(Principal principal,
+											  @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
+											  @PathVariable("module_id") long moduleId,
+											  @PathVariable("code_runner_id") long codeRunnerId) {
+		PythonInterpreter pyInterp = new PythonInterpreter();
+		StringWriter output = new StringWriter();
+		pyInterp.setOut(output);
+		pyInterp.exec(codeRunnerRequest.getCode() + "\n" + codeRunnerRequest.getTest());
+		Map<String, Boolean> success = new HashMap<>();
+
+		CodeRunner question = codeRunnerRepository.findById(codeRunnerId).get();
+
+
+		success.put("success", question.getAnwser().equals(output.toString().trim()));
+
+		return ResponseEntity.ok(success);
 	}
 }
