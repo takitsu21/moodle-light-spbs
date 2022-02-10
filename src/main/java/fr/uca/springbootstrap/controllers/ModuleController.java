@@ -8,6 +8,7 @@ import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.security.jwt.JwtUtils;
 import moodle.users.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -126,11 +127,19 @@ public class ModuleController {
 	@GetMapping("/{id}/participants")
 	public ResponseEntity<?> getParticipants(Principal principal, @PathVariable long id) {
 		Module module = moduleRepository.findById(id).get();
-		System.out.println(module.getParticipants());
-		for (User participant : module.getParticipants()) {
-			System.out.println(participant.getUsername());
+		User user = userRepository.findByUsername(principal.getName()).get();
+		Map<Long, String> paticipantView = new HashMap<>();
+
+		if(!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to see participants!"));
+
 		}
-		return ResponseEntity.ok(new MessageResponse("success"));
+		for (User participant : module.getParticipants()) {
+			paticipantView.put(participant.getId(), participant.getUsername());
+		}
+		return ResponseEntity.ok(paticipantView);
 	}
 
 	@PostMapping("/")
@@ -481,15 +490,24 @@ public class ModuleController {
 	}
 
 	@GetMapping("/{id}/ressources")
-	public ResponseEntity<?> getRessourcess(Principal principal, @PathVariable("id") long id) {
+	public ResponseEntity<?> getRessources(Principal principal, @PathVariable("id") long id) {
 		Module module = moduleRepository.findById(id).get();
 		User user = userRepository.findByUsername(principal.getName()).get();
+		Map<Long, String> ressourceView = new HashMap<>();
+
+		if(!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to see ressource!"));
+
+		}
 
 		for (Ressource ressource : module.getRessources()) {
-			if(ressource.isVisibility() || (module.getParticipants().contains(user) && user.hasTeacher())) {
-				System.out.println(ressource.getName());
+			if (ressource.isVisibility() || user.hasTeacher()){
+				ressourceView.put(ressource.getId(), ressource.getName());
 			}
 		}
-		return ResponseEntity.ok(new MessageResponse("success"));
+		return new ResponseEntity<Map>(ressourceView, HttpStatus.OK);
+
 	}
 }
