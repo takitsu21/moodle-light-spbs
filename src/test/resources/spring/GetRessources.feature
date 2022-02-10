@@ -14,7 +14,7 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les ressources d'un
   Scénario: Le professeur "Paul" get les ressources du module "Maths"
     Quand Le professeur "Paul" get les ressources du module "Maths"
     Et le dernier status de request est 200 gr
-    Alors le cours "Poir" est renvoyé
+    Alors les cours "Poir" et "Pomme" sont renvoyé
 
   Scénario: Le professeur "Juliette" get les ressources du module "Maths"
     Quand Le professeur "Juliette" get les ressources du module "Maths"

@@ -164,4 +164,18 @@ public class GetRessourcesStepdefs extends SpringIntegration {
 //        System.out.println(jsonString);
         assertTrue(map.containsKey("message"));
     }
+
+    @Alors("les cours {string} et {string} sont renvoyé")
+    public void lesCoursEtSontRenvoyé(String arg0, String arg1) throws IOException {
+        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+
+        Gson gson = builder.create();
+        Map<String, String> map = gson.fromJson(jsonString, Map.class);
+
+        assertTrue(map.containsValue(arg0));
+        assertTrue(map.containsValue(arg1));
+    }
 }

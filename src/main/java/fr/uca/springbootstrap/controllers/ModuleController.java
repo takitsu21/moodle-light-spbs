@@ -130,17 +130,16 @@ public class ModuleController {
 		User user = userRepository.findByUsername(principal.getName()).get();
 		Map<Long, String> paticipantView = new HashMap<>();
 
-		if(module.getParticipants().contains(user)) {
-			for (User participant : module.getParticipants()) {
-				paticipantView.put(participant.getId(), participant.getUsername());
-			}
-			return ResponseEntity.ok(paticipantView);
+		if(!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to see participants!"));
+
 		}
-
-		return ResponseEntity
-				.badRequest()
-				.body(new MessageResponse("Error: You are not allowed to see participants!"));
-
+		for (User participant : module.getParticipants()) {
+			paticipantView.put(participant.getId(), participant.getUsername());
+		}
+		return ResponseEntity.ok(paticipantView);
 	}
 
 	@PostMapping("/")
@@ -496,16 +495,19 @@ public class ModuleController {
 		User user = userRepository.findByUsername(principal.getName()).get();
 		Map<Long, String> ressourceView = new HashMap<>();
 
-		if(module.getParticipants().contains(user)) {
-			for (Ressource ressource : module.getRessources()) {
-				if (ressource.isVisibility() || user.hasTeacher()){
-					ressourceView.put(ressource.getId(), ressource.getName());
-				}
-			}
-			return new ResponseEntity<Map>(ressourceView, HttpStatus.OK);
+		if(!module.getParticipants().contains(user)) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: You are not allowed to see ressource!"));
+
 		}
-		return ResponseEntity
-				.badRequest()
-				.body(new MessageResponse("Error: You are not allowed to see ressource!"));
+
+		for (Ressource ressource : module.getRessources()) {
+			if (ressource.isVisibility() || user.hasTeacher()){
+				ressourceView.put(ressource.getId(), ressource.getName());
+			}
+		}
+		return new ResponseEntity<Map>(ressourceView, HttpStatus.OK);
+
 	}
 }
