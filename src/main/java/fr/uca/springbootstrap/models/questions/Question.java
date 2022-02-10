@@ -1,6 +1,7 @@
 package fr.uca.springbootstrap.models.questions;
 
 import fr.uca.springbootstrap.models.Questionnaire;
+import moodle.users.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -30,7 +31,9 @@ public abstract class Question {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "questionnaire_id")
+    @JoinTable(	name = "questionnaire_question",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "questionnaire_id"))
     private Questionnaire questionnaire;
 
     public Question(int number, String name, String description, Questionnaire questionnaire){
@@ -42,6 +45,12 @@ public abstract class Question {
 
     public Question() {
 
+    }
+
+    public Question(int number, String name, String description) {
+        this.description = description;
+        this.name = name;
+        this.number = number;
     }
 
     public long getId() { return id; }
@@ -58,6 +67,4 @@ public abstract class Question {
 
     public Questionnaire getQuestionnaire() { return questionnaire; }
     public void setQuestionnaire(Questionnaire questionnaire) { this.questionnaire = questionnaire; }
-
-
 }

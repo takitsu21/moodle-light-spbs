@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.spring.CucumberContextConfiguration;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.apache.http.client.methods.HttpPost;
 
@@ -36,16 +38,8 @@ public class SpringIntegration {
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
-        request.setEntity(new StringEntity("{}"));
-        latestHttpResponse = httpClient.execute(request);
-    }
 
-    public void executeDelete(String url, String jwt) throws IOException {
-        HttpDelete request = new HttpDelete(url);
-        request.addHeader("content-type", "application/json");
-        if (jwt != null) {
-            request.addHeader("Authorization", "Bearer " + jwt);
-        }
+        request.setEntity(new StringEntity("{}"));
         latestHttpResponse = httpClient.execute(request);
     }
 
@@ -57,6 +51,15 @@ public class SpringIntegration {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
+        latestHttpResponse = httpClient.execute(request);
+    }
+
+    public void executeDelete(String url, String jwt) throws IOException {
+        HttpDelete request = new HttpDelete(url);
+        request.addHeader("content-type", "application/json");
+        if (jwt != null) {
+            request.addHeader("Authorization", "Bearer " + jwt);
+        }
         latestHttpResponse = httpClient.execute(request);
     }
 }

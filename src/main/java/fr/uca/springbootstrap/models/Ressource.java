@@ -16,6 +16,7 @@ public abstract class Ressource {
     private Long id;
 
     @NotNull
+    @OrderColumn
     private Integer num;
 
     @NotBlank
@@ -65,13 +66,13 @@ public abstract class Ressource {
         this.description = description;
     }
 
-//    public Set<Module> getModules() {
-//        return modules;
-//    }
-//
-//    public void setModules(Set<Module> modules) {
-//        this.modules = modules;
-//    }
+    public Set<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
+    }
 
     public Integer getNum() {
         return num;
