@@ -44,7 +44,6 @@ public class Module {
     public Set<User> getParticipants() {
         return participants;
     }
-
     public void setParticipants(Set<User> participants) {
         this.participants = participants;
     }
@@ -52,8 +51,10 @@ public class Module {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Set<Ressource> getRessources() { return ressources; }
+    public void setRessources(Set<Ressource> ressources) { this.ressources = ressources; }
 }

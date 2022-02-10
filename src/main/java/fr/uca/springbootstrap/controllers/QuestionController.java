@@ -20,10 +20,8 @@ public class QuestionController {
     QuestionRepository questionRepository;
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> getQuestion(){
         List<Question> questions = questionRepository.findAll();
-
         return ResponseEntity.ok(questions);
     }
 

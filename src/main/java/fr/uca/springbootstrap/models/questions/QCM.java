@@ -20,13 +20,14 @@ public class QCM extends Question {
     private Answer answer;
 
     @ManyToMany
-    @JoinTable(name = "student_answer_qcm",
-            joinColumns = @JoinColumn(name = "student"),
-            inverseJoinColumns = @JoinColumn(name = "answer"))
-    private Set<User> studentsAnswers;
 
-    public QCM(int number, String name, String description, Questionnaire questionnaire) {
-        super(number, name, description, questionnaire);
+    @JoinTable(name = "student_answer_qcm",
+            joinColumns = @JoinColumn(name = "qcm"),
+            inverseJoinColumns = @JoinColumn(name = "student_answer"))
+    private Set<AnswerQCM> studentsAnswers;
+
+    public QCM(int number, String name, String description) {
+        super(number, name, description);
     }
 
     public QCM() {
@@ -36,8 +37,8 @@ public class QCM extends Question {
     public Answer getAnswer() { return answer; }
     public void setAnswer(Answer answer) { this.answer = answer; }
 
-    public Set<User> getStudentsAnswers() { return studentsAnswers; }
-    public void setStudentsAnswers(Set<User> studentsAnswers) { this.studentsAnswers = studentsAnswers; }
+    public Set<AnswerQCM> getStudentsAnswers() { return studentsAnswers; }
+    public void setStudentsAnswers(Set<AnswerQCM> studentsAnswers) { this.studentsAnswers = studentsAnswers; }
 
     public Set<Answer> getPossibleAnswers() { return possibleAnswers; }
     public void setPossibleAnswers(Set<Answer> possibleAnswers) { this.possibleAnswers = possibleAnswers; }

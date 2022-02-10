@@ -10,7 +10,7 @@ public class AnswerOpenQuestion {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @OneToMany
     private Set<Answer> answers;

@@ -10,6 +10,7 @@ import java.util.Set;
 @Table( name = "questionnaire")
 public class Questionnaire extends Ressource {
 
+
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Question> questions;
 
@@ -20,7 +21,11 @@ public class Questionnaire extends Ressource {
     private Set<GradesQuestionnaire> studentsGrades = new HashSet<>();
 
     public Questionnaire(){
+        super();
+    }
 
+    public Questionnaire(String name, String description){
+        super(name, description);
     }
 
     public Set<Question> getQuestions() { return questions; }
