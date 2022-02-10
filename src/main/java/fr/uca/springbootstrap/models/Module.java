@@ -2,6 +2,7 @@ package fr.uca.springbootstrap.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,13 +27,13 @@ public class Module {
     @JoinTable(	name = "user_modules",
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> participants;
+    private Set<User> participants = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "ressources_modules",
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-    private Set<Ressource> ressources;
+    private Set<Ressource> ressources = new HashSet<>();
 
     public Module() {
     }
@@ -47,6 +48,14 @@ public class Module {
 
     public void setParticipants(Set<User> participants) {
         this.participants = participants;
+    }
+
+    public Set<Ressource> getRessources() {
+        return ressources;
+    }
+
+    public void setRessources(Set<Ressource> ressources) {
+        this.ressources = ressources;
     }
 
     public Long getId() {

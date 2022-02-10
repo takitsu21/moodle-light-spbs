@@ -14,11 +14,16 @@ public abstract class Ressource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    private Integer num;
+
     @NotBlank
     private String name;
 
     @NotBlank
     private String description;
+
+    private boolean visibility=false;
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",
@@ -35,9 +40,10 @@ public abstract class Ressource {
     public Ressource() {
     }
 
-    public Ressource(String name, String description) {
+    public Ressource(String name, String description, Integer num) {
         this.name = name;
         this.description = description;
+        this.num = num;
     }
 
     public Long getId() {
@@ -70,5 +76,21 @@ public abstract class Ressource {
 
     public void setModules(Set<Module> modules) {
         this.modules = modules;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
     }
 }
