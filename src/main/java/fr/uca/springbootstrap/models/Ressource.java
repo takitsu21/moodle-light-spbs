@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name="ressource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="DISC", discriminatorType = DiscriminatorType.STRING, length = 20)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, length = 20)
 @DiscriminatorValue("ressource")
 
 public abstract class Ressource {

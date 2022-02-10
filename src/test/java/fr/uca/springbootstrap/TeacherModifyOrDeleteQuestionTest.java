@@ -6,6 +6,7 @@ import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
+import fr.uca.springbootstrap.payload.request.QuestionRequest;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.QuestionnaireRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
@@ -124,9 +125,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"
+        executeDelete("http://localhost:8080/api/module/"
                 +module.getId()+"/questionnaire/"
-                +questionnaire.getId()+"/question/delete/"+question.getId(), jwTeacher);
+                +questionnaire.getId()+"/question/"+question.getId(), jwTeacher);
     }
 
     @Alors("le status de la dernière requète est {int} tmdqf")
@@ -139,7 +140,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertFalse(moduleRepository.existsByName(arg0));
     }
 
-    /////////////////////////////////////////////////////////////////////////////////
+
     @Quand("Le professeur {string} veut supprimer la question {string} du questionnaire {string} du module {string} tmdqh")
     public void leProfesseurVeutSupprimerLaQuestionDuQuestionnaireDuModuleTmdqh(String arg0, String arg1, String arg2, String arg3) throws IOException {
         Question question = questionRepository.findByName(arg1).get();
@@ -157,6 +158,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
+
     @Et("la question {string} existe tmdqj")
     public void laQuestionExisteTmdqj(String arg0) {
         assertTrue(moduleRepository.existsByName(arg0));
@@ -169,9 +171,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name/"+arg4, jwTeacher);
+                +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription()), jwTeacher);
     }
 
 
@@ -193,9 +195,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name/"+arg4, jwTeacher);
+                +"/question/put/"+question.getId()+"/name",arg4, jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqqo")
@@ -216,9 +218,9 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
     Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
     String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-    executePost("http://localhost:8080/api/module/"+module.getId()
+    executePostWithBody("http://localhost:8080/api/module/"+module.getId()
             +"/questionnaire/"+questionnaire.getId()
-            +"/question/put/"+question.getId()+"/name/"+arg4, jwTeacher);
+            +"/question/put/"+question.getId()+"/name", arg4, jwTeacher);
 
     }
 
@@ -240,9 +242,9 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name/"+arg4, jwTeacher);
+                +"/question/put/"+question.getId()+"/name", arg4, jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqu")
@@ -263,9 +265,9 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name/"+arg4, jwTeacher);
+                +"/question/put/"+question.getId()+"/name",arg4, jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqx")
@@ -286,9 +288,9 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name/"+arg4, jwTeacher);
+                +"/question/put/"+question.getId()+"/name",arg4, jwTeacher);
     }
 
     @Alors("le dernier status de réponse et {int} tmdqaa")

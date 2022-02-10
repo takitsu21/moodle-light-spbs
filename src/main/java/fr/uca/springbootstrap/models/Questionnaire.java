@@ -7,18 +7,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue("dictionnaire")
+@DiscriminatorValue("Questionnaire")
 public class Questionnaire extends Ressource {
 
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Question> questions = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Question> questions;
 
     @OneToMany
     @JoinTable(name = "students_grades",
             joinColumns = @JoinColumn(name = "questionnaire"),
             inverseJoinColumns = @JoinColumn(name = "grades"))
-    private Set<GradesQuestionnaire> studentsGrades = new HashSet<>();
+    private Set<GradesQuestionnaire> studentsGrades;
 
     public Questionnaire(){
         super();
@@ -26,8 +25,6 @@ public class Questionnaire extends Ressource {
 
     public Questionnaire(String name, String description, int number){
         super(name, description, number);
-        this.studentsGrades = new HashSet<>();
-        this.questions = new HashSet<>();
     }
 
     public Set<Question> getQuestions() { return questions; }
