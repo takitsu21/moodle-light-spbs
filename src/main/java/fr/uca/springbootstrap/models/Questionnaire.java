@@ -24,8 +24,8 @@ public class Questionnaire extends Ressource {
         super();
     }
 
-    public Questionnaire(String name, String description){
-        super(name, description);
+    public Questionnaire(String name, String description, int number){
+        super(name, description, number);
     }
 
     public Set<Question> getQuestions() { return questions; }
