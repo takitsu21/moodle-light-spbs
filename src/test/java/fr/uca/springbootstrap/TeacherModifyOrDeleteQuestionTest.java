@@ -1,3 +1,5 @@
+package fr.uca.springbootstrap;
+
 import fr.uca.springbootstrap.SpringIntegration;
 import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.*;
@@ -55,7 +57,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         // Professeur
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<Role>() {{
+        teacher.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is no found")));
         }});
@@ -75,7 +77,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         // Professeur
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<Role>() {{
+        teacher.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is no found")));
         }});

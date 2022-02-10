@@ -3,15 +3,18 @@ package fr.uca.springbootstrap.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="ressource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="ressource_type")
+@DiscriminatorColumn(name="DISC", discriminatorType = DiscriminatorType.STRING, length = 20)
+@DiscriminatorValue("ressource")
+
 public abstract class Ressource {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
@@ -31,19 +34,22 @@ public abstract class Ressource {
 //            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
 //    private Set<Cours> cours;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "ressources_modules",
-            joinColumns = @JoinColumn(name = "module_id"),
-            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-    private Set<Module> modules;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(	name = "ressources_modules",
+//            joinColumns = @JoinColumn(name = "module_id"),
+//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
+//    private Set<Module> modules;
 
     public Ressource() {
+        this.num = 0;
+ //       this.modules = new HashSet<>();
     }
 
     public Ressource(String name, String description, Integer num) {
         this.name = name;
         this.description = description;
         this.num = num;
+ //       this.modules = new HashSet<>();
     }
 
     public Long getId() {
@@ -70,13 +76,13 @@ public abstract class Ressource {
         this.description = description;
     }
 
-    public Set<Module> getModules() {
-        return modules;
-    }
+//    public Set<Module> getModules() {
+ //       return modules;
+  //  }
 
-    public void setModules(Set<Module> modules) {
-        this.modules = modules;
-    }
+  //  public void setModules(Set<Module> modules) {
+   //     this.modules = modules;
+  //  }
 
     public Integer getNum() {
         return num;

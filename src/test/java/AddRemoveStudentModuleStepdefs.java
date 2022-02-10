@@ -23,7 +23,6 @@ public class AddRemoveStudentModuleStepdefs {
     @Et("un étudiant {string}")
     public void unÉtudiant(String arg0) {
         student = new Student(arg0, null);
-
     }
 
     @Et("un module {string} et {string} de ressource vide")

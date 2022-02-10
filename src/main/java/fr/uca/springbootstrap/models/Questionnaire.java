@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table( name = "questionnaire")
+@DiscriminatorValue("dictionnaire")
 public class Questionnaire extends Ressource {
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<Question> questions;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Question> questions = new HashSet<>();
 
     @OneToMany
     @JoinTable(name = "students_grades",
@@ -26,10 +26,13 @@ public class Questionnaire extends Ressource {
 
     public Questionnaire(String name, String description, int number){
         super(name, description, number);
+        this.studentsGrades = new HashSet<>();
+        this.questions = new HashSet<>();
     }
 
     public Set<Question> getQuestions() { return questions; }
     public void setQuestions(Set<Question> questions) { this.questions = questions; }
 
-
+    public Set<GradesQuestionnaire> getStudentsGrades() { return studentsGrades; }
+    public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) { this.studentsGrades = studentsGrades; }
 }
