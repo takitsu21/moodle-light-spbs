@@ -11,7 +11,7 @@ import java.util.Set;
 public class Questionnaire extends Ressource {
 
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Question> questions;
+    private Set<Question> questions = new HashSet<>();
 
     @OneToMany
     @JoinTable(name = "students_grades",

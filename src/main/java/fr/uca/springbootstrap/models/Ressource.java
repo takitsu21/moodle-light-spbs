@@ -26,11 +26,11 @@ public abstract class Ressource {
 
     private boolean visibility=false;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "ressources_modules",
-//            joinColumns = @JoinColumn(name = "module_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Module> modules = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "ressources_modules",
+            joinColumns = @JoinColumn(name = "ressource_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id"))
+    private Set<Module> modules = new HashSet<>();
 
     public Ressource() {
     }

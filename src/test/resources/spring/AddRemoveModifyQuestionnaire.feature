@@ -39,4 +39,4 @@ Fonctionnalité: Ajouter ou enlever une ressource d'un module
   Scénario: Suppression d'un questionnaire inexistante d'un module
     Etant donné que l'enseignant "Jacob" soit dans le module "Philosophie"
     Quand l'enseignant "Jacob" veut supprimer le questionnaire "Examen" du module "Philosophie"
-    Alors la réponse est 400
+    Alors la réponse est 200

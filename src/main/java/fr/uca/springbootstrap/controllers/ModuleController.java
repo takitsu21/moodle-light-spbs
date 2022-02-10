@@ -513,6 +513,7 @@ public class ModuleController {
 	@PostMapping("{module_id}/questionnaire")
 	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
 	public ResponseEntity<?> addQuestionnaire(Principal principal,
+											  @Valid @RequestBody QuestionnaireRequest questionnaireRequest,
 											  @PathVariable("module_id") long module_id) {
 
 		Optional<User> oUser = userRepository.findByUsername(principal.getName());
@@ -528,17 +529,17 @@ public class ModuleController {
 		}
 
 		User user = oUser.get();
-//		Questionnaire questionnaire = new Questionnaire()
+		Questionnaire questionnaire = new Questionnaire(questionnaireRequest.getName(), questionnaireRequest.getDescription(), questionnaireRequest.getNum());
 		Module module = oModule.get();
 
 		if (!module.containsParticipant(user)) {
 			return ResponseEntity.badRequest()
 					.body(new MessageResponse("Error: User is not registered in the module."));
 		}
-		module.addRessource(questionnaire);
-
-		moduleRepository.save(module);
 		questionnaireRepository.save(questionnaire);
+
+		module.addRessource(questionnaire);
+		moduleRepository.save(module);
 
 		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully added."));
 	}
@@ -569,10 +570,10 @@ public class ModuleController {
 
 
 		Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
-		module.removeRessource(questionnaire);
-
-		moduleRepository.save(module);
 		questionnaireRepository.delete(questionnaire);
+		module.removeRessource(questionnaire);
+		moduleRepository.save(module);
+
 
 		return ResponseEntity.ok(new MessageResponse("Questionnaire successfully removed."));
 	}
