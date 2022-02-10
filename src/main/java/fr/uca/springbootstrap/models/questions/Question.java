@@ -29,10 +29,6 @@ public abstract class Question {
     @Column(name = "question_description")
     private String description;
 
-    //@ManyToOne
-    //@JoinColumn(name = "questionnaire_id")
-    //private Questionnaire questionnaire;
-
     public Question(int number, String name, String description){
         this.description = description;
         this.name = name;

@@ -1,8 +1,12 @@
 package fr.uca.springbootstrap.payload.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class QuestionRequest {
+
+    @NotNull
+    private int number;
 
     @NotBlank
     private String name;
@@ -10,10 +14,18 @@ public class QuestionRequest {
     @NotBlank
     private String description;
 
-    public QuestionRequest(String name, String description) {
+    public QuestionRequest(String name, String description, int number) {
         this.name = name;
         this.description = description;
+        this.number = number;
     }
+
+    public QuestionRequest(){
+
+    }
+
+    public void setNumber(int number) { this.number = number; }
+    public int getNumber() { return number; }
 
     public String getName(){ return name; }
     public void setName(String name){ this.name = name; }

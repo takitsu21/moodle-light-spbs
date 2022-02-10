@@ -149,7 +149,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/"+module.getId()+"/questionnaire/"+questionnaire.getId()+"question/delete/"+question.getId(), jwTeacher);
-
     }
 
 
@@ -173,7 +172,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription()), jwTeacher);
+                +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription(), question.getNumber()), jwTeacher);
     }
 
 
@@ -197,7 +196,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name",arg4, jwTeacher);
+                +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription(), question.getNumber()), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqqo")
@@ -205,8 +204,8 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question d{string}appelle toujours {string} tmdqp")
-    public void laQuestionDIdentifantSAppelleToujoursTmdqp(int arg0, String arg1) {
+    @Et("la question didentifant {int} s'appelle toujours {string} tmdqp")
+    public void laQuestionDidentifantSAppelleToujoursTmdqp(int arg0, String arg1) {
         Question question = questionRepository.findById(arg0).get();
         assertEquals(arg1, question.getName());
     }
@@ -220,7 +219,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
     String jwTeacher = authController.generateJwt(arg0, PASSWORD);
     executePostWithBody("http://localhost:8080/api/module/"+module.getId()
             +"/questionnaire/"+questionnaire.getId()
-            +"/question/put/"+question.getId()+"/name", arg4, jwTeacher);
+            +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
     }
 
@@ -244,7 +243,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name", arg4, jwTeacher);
+                +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqu")
@@ -267,7 +266,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name",arg4, jwTeacher);
+                +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqx")
@@ -290,7 +289,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePostWithBody("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/put/"+question.getId()+"/name",arg4, jwTeacher);
+                +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
     @Alors("le dernier status de réponse et {int} tmdqaa")

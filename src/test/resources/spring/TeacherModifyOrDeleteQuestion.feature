@@ -25,9 +25,9 @@ Fonctionnalité: Professeur modifie (nom/description) ou supprime une question
     Et la question d'identifant 1 a pour nom "Q1 new" tmdqm
 
   Scénario: Modifier le nom d'une question appartenant a une module qu'on ne possède pas
-    Quand Le professeur "Marie" veut modifier le nom de la question d'identifant 1 du questionnaire "Test1" du module "Gestion de projet" par "Q1 new" tmdqn
+    Quand Le professeur "Marie" veut modifier le nom de la question d'identifant 1 du questionnaire "Test1" du module "Gestion de projet" par "Q1 mauvaise" tmdqn
     Alors le dernier status de réponse est 400 tmdqqo
-    Et la question d'identifant 1 s'appelle toujours "Q1" tmdqp
+    Et la question didentifant 1 s'appelle toujours "Q1 new" tmdqp
 
   Scénario: Modifier la description d'une question appartenant a un module que l'on possède
     Quand Le professeur "Jean" veut modifier la description de la question d'identifiant 1 du questionnaire "Test1" du module "Gestion de projet" par "Au revoir ?" tmdqq
@@ -35,9 +35,9 @@ Fonctionnalité: Professeur modifie (nom/description) ou supprime une question
     Et la question d'identifiant 1 possède la description "Au revoir ?" tmdqs
 
   Scénario: Modifier la description d'une question appartenant a une module qu'on ne possède pas
-    Quand Le professeur "Marie" veut modifier la description de la question d'identifiant 1 du questionnaire "Test1" du module "Gestion de projet" par "Au revoir ?" tmdqt
+    Quand Le professeur "Marie" veut modifier la description de la question d'identifiant 1 du questionnaire "Test1" du module "Gestion de projet" par "A midi ?" tmdqt
     Alors le dernier status de réponse est 400 tmdqu
-    Et la question d'identifiant 1 possède toujours la description "Bonjour ?" tmdqv
+    Et la question d'identifiant 1 possède toujours la description "Au revoir ?" tmdqv
 
   Scénario: Modifier le numéro d'une question appartenant a un module que l'on possède
     Quand le professeur "Jean" veut modifier le numéro de la question d'identifiant 1 du questionnaire "Test1" du module "Gestion de projet" par 2 tmdqw
@@ -45,6 +45,6 @@ Fonctionnalité: Professeur modifie (nom/description) ou supprime une question
     Et le question d'identifiant 1 possède le numéro 2 tmdqy
 
   Scénario: Modifier le numéro d'une question appartenant a un module que l'on ne possède pas
-    Quand le professeur "Marie" veut modifier le numéro de la question d'indentifiant 1 du questionnaire "Test1" du module "Gestion de projet" par 2 tmdqz
+    Quand le professeur "Marie" veut modifier le numéro de la question d'indentifiant 1 du questionnaire "Test1" du module "Gestion de projet" par 3 tmdqz
     Alors le dernier status de réponse et 400 tmdqaa
-    Et la question d'identifiant 1 possède le numéro 1 tmdqab
+    Et la question d'identifiant 1 possède le numéro 2 tmdqab
