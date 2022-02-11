@@ -49,4 +49,12 @@ public class Questionnaire extends Ressource {
     public int getNbQuestions() {
         return questions.size();
     }
+
+    public Set<GradesQuestionnaire> getStudentsGrades() {
+        return studentsGrades;
+    }
+
+    public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) {
+        this.studentsGrades = studentsGrades;
+    }
 }

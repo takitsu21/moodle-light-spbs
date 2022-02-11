@@ -17,11 +17,15 @@ public class GradesQuestionnaire {
             inverseJoinColumns = @JoinColumn(name = "questionnaire_id"))
     private Questionnaire questionnaire;
 
+    @OneToOne
+    private User student;
+
     private Integer note;
 
-    public GradesQuestionnaire(Questionnaire questionnaire, Integer note) {
+    public GradesQuestionnaire(Questionnaire questionnaire, Integer note, User student) {
         this.questionnaire = questionnaire;
         this.note = note;
+        this.student = student;
     }
 
     public GradesQuestionnaire() {
@@ -50,5 +54,13 @@ public class GradesQuestionnaire {
 
     public void setNote(Integer note) {
         this.note = note;
+    }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
     }
 }
