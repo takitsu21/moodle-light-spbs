@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap.models.questions;
 
-import fr.uca.springbootstrap.models.Questionnaire;
 import fr.uca.springbootstrap.models.User;
 
 import javax.persistence.*;
@@ -10,19 +9,19 @@ import java.util.Set;
 @DiscriminatorValue("open")
 public class OpenQuestion extends Question {
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "possible_answers",
             joinColumns = @JoinColumn(name ="open_question"),
             inverseJoinColumns = @JoinColumn(name="answers"))
     private Set<Answer> possibleAnswers;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "answers",
             joinColumns = @JoinColumn(name ="open_question"),
             inverseJoinColumns = @JoinColumn(name="answers"))
     private Set<Answer> answers;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "students_anwser",
             joinColumns = @JoinColumn(name = "open_question"),
             inverseJoinColumns = @JoinColumn(name = "student_anwser_open_question"))
@@ -31,7 +30,7 @@ public class OpenQuestion extends Question {
 
     public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> answerOpenQuestionSet,
                         Set<Answer> possibleAnswers, String name, String description,
-                        int number, Questionnaire questionnaire){
+                        int number){
         super(number, name, description);
         this.answers = answers;
         this.answerOpenQuestionSet = answerOpenQuestionSet;

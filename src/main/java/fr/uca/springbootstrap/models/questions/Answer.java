@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class Answer {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     private long id;
 
     @NotBlank

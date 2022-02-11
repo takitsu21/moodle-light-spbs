@@ -10,7 +10,7 @@ import java.util.Set;
 @DiscriminatorValue("Questionnaire")
 public class Questionnaire extends Ressource {
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Question> questions;
 
     @OneToMany
@@ -25,6 +25,8 @@ public class Questionnaire extends Ressource {
 
     public Questionnaire(String name, String description, int number){
         super(name, description, number);
+        this.questions = new HashSet<>();
+        this.studentsGrades = new HashSet<>();
     }
 
 
@@ -39,7 +41,6 @@ public class Questionnaire extends Ressource {
 
     public void removeQuestion(Question question) {
         questions.remove(question);
-//        question.setQuestionnaire(null); //pas sûr de ça, si le GB s'en charge de toute façon
     }
 
     public int getNbQuestions() {

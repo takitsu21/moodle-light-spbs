@@ -3,7 +3,6 @@ package fr.uca.springbootstrap.payload.request;
 import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.AnswerOpenQuestion;
-import moodle.users.Student;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

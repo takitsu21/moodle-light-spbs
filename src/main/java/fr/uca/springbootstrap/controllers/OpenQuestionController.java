@@ -6,10 +6,8 @@ import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.AnswerOpenQuestion;
 import fr.uca.springbootstrap.models.questions.OpenQuestion;
-import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.AnswerRequest;
 import fr.uca.springbootstrap.payload.request.MyAnswer;
-import fr.uca.springbootstrap.payload.request.OpenQuestionRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.QuestionnaireRepository;
@@ -17,7 +15,6 @@ import fr.uca.springbootstrap.repository.UserRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.OpenQuestionRepository;
 import fr.uca.springbootstrap.repository.question.QuestionRepository;
-import org.python.antlr.op.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -361,7 +358,8 @@ public class OpenQuestionController {
         Set<Answer> answers = question.getPossibleAnswers();
 
         for (MyAnswer answer : answerRequest.getAnswers()){
-            answers.add(new Answer(answer.getContent()));
+            Answer new_answer = new Answer(answer.getContent());
+            answers.add(new_answer);
         }
 
         openQuestionRepository.save(question);

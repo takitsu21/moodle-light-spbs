@@ -14,4 +14,7 @@ public class AnswerRequest {
         this.answers = answers;
     }
 
+    public AnswerRequest(Set<MyAnswer> answers){
+        this.answers = answers;
+    }
 }

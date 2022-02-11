@@ -93,7 +93,7 @@ public class CodeRunnerController {
                     .badRequest()
                     .body(new MessageResponse("Error: No such questionnaire in the module!"));
         }
-        Answer answer = new Answer(codeRunnerRequest.getAnswer(), user);
+        Answer answer = new Answer(codeRunnerRequest.getAnswer());
         answerRepository.save(answer);
         CodeRunner question = new CodeRunner(codeRunnerRequest.getNumber(),
                 codeRunnerRequest.getName(),
