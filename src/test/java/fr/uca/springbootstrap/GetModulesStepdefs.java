@@ -75,7 +75,7 @@ public class GetModulesStepdefs extends SpringIntegration {
         userRepository.save(user);
     }
 
-    @Et("l'élève {string} est assigné au cours {string} gm")
+    @Et("l'élève {string} est assigné au module {string} gm")
     public void lÉlèveEstAssignéAuCoursGm(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));

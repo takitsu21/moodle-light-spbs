@@ -7,7 +7,7 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les modules ou je s
     Etant donné le professeur "Paul" assigné au module de "Maths" gm
     Et le professeur "Paul" assigné au module de "Chimie" gm
     Et le professeur "Jean2" qui n'a aucun module gm
-    Et l'élève "Juliette" est assigné au cours "Maths" gm
+    Et l'élève "Juliette" est assigné au module "Maths" gm
     Et l'élève "Mia" assigné a aucun module gm
 
   Scénario: Le professeur "Paul" get ces modules

@@ -103,6 +103,7 @@ public class QuestionController {
                     .body(new MessageResponse("Error: This module does not contains this questionnaire!"));
         }
         if(!questionnaire.getQuestions().contains(question)){
+            System.out.println("erooooooooor");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: This questionnaire does not contains this question!"));

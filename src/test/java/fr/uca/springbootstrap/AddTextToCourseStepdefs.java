@@ -61,8 +61,13 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
     @Et("le module de {string} a une ressource {string} qui a un texte {int} de contenu {string}")
     public void leModuleDeAUneRessourceQuiAUnTexteDeContenu(String arg0, String arg1, int arg2, String arg3) {
-        Cours ressource = (Cours) coursRepository.findByName(arg1).
-                orElse(new Cours(arg1, "null", 1));
+        Module module = moduleRepository.findByName(arg0).get();
+
+        Cours ressource = (Cours) module.findRessourceByName(arg1);
+        if (ressource==null){
+            ressource=new Cours(arg1, "null", 1);
+            coursRepository.save(ressource);
+        }
 
         Text text;
         if (!ressource.containsText(arg2)) {
@@ -72,7 +77,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         }
         coursRepository.save(ressource);
 
-        Module module = moduleRepository.findByName(arg0).get();
+
         module.getRessources().add(ressource);
         moduleRepository.save(module);
 
@@ -120,22 +125,14 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
     @Alors("le text {int} de la ressource {string} n'est pas dans le module {string}")
     public void leTextDeLaRessourceNEstPasDansLeModule(int arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
-        System.out.println(module.getRessources());
         Cours cours = coursRepository.findByName(arg1).get();
-        for (Text text: cours.getTexts()){
-            System.out.println(text.getContent());
-        }
         assertFalse(cours.containsText(arg0));
     }
 
     @Alors("le text {int} de la ressource {string} est dans le module {string}")
     public void leTextDeLaRessourceEstDansLeModule(int arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg2).get();
-        System.out.println(module.getRessources());
         Cours cours = coursRepository.findByName(arg1).get();
-        for (Text text: cours.getTexts()){
-            System.out.println(text.getContent());
-        }
         assertTrue(cours.containsText(arg0));
     }
 }

@@ -55,6 +55,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
     @Etantdonné("un professeur {string} ayant le module {string} tmdqa")
     public void unProfesseurAyantLeModuleTmdqa(String arg0, String arg1) {
+        questionnaireRepository.deleteAll();
         // Professeur
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));
@@ -104,16 +105,21 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
     @Et("une question QCM d'identifiant {int} et de nom {string} et de description {string} et le numéro {int} appartenant au questionnaire {string} tmdqd")
     public void uneQuestionQCMDIdentifiantEtDeNomEtDeDescriptionEtLeNuméroAppartenantAuQuestionnaireTmdqd(int arg0, String arg1, String arg2, int arg3, String arg4) {
         // Question
-        Question question = questionRepository.findById(arg0).
+        QCM question = qcmRepository.findByName(arg1).
                 orElse(new QCM(arg3, arg1, arg2));
-        questionRepository.save(question);
+        qcmRepository.save(question);
+
+        System.out.println(question.getName());
 
         // Questionnaire
         Questionnaire questionnaire = questionnaireRepository.findByName(arg4).
                 orElse(new Questionnaire(arg4, "Description "+arg4,1));
-        questionnaire.setQuestions(new HashSet<>(){{
-            add(question);
-        }});
+
+        System.out.println(questionnaire.getName());
+//        questionnaire.setQuestions(new HashSet<>(){{
+//            add(question);
+//        }});
+        questionnaire.getQuestions().add(question);
         questionnaireRepository.save(questionnaire);
     }
 

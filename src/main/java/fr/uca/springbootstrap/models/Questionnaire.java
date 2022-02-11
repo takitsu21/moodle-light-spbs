@@ -13,13 +13,13 @@ import java.util.Set;
 public class Questionnaire extends Ressource {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Question> questions;
+    private Set<Question> questions=new HashSet<>();
 
     @OneToMany
     @JoinTable(name = "students_grades",
             joinColumns = @JoinColumn(name = "questionnaire"),
             inverseJoinColumns = @JoinColumn(name = "grades"))
-    private Set<GradesQuestionnaire> studentsGrades;
+    private Set<GradesQuestionnaire> studentsGrades=new HashSet<>();
 
     public Questionnaire() {
 
@@ -48,6 +48,14 @@ public class Questionnaire extends Ressource {
             }
         }
         return null;
+    }
 
+    public boolean containsQuestion(String arg1) {
+        for(Question question: questions){
+            if(Objects.equals(question.getName(), arg1)){
+                return true;
+            }
+        }
+        return false;
     }
 }

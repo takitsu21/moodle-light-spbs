@@ -24,12 +24,8 @@ public class Answer {
 
     }
 
-    public Answer(String answer, User student) {
-        this.answer = answer;
- //       this.student = student;
-    }
-
     public Answer(String content) {
+        this.answer=content;
     }
 
     public long getId() {

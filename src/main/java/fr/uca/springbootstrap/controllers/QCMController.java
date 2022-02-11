@@ -10,6 +10,7 @@ import fr.uca.springbootstrap.payload.request.MyAnswer;
 import fr.uca.springbootstrap.payload.request.MyText;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
+import fr.uca.springbootstrap.repository.question.AnswerQCMRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.QCMRepository;
 import fr.uca.springbootstrap.repository.question.QuestionRepository;
@@ -58,6 +59,9 @@ public class QCMController {
     @Autowired
     AnswerRepository answerRepository;
 
+    @Autowired
+    AnswerQCMRepository answerQCMRepository;
+
     @GetMapping("/")
     public ResponseEntity<?> getQCM(){
         List<QCM> QCMs = qcmRepository.findAll();
@@ -90,7 +94,7 @@ public class QCMController {
     //public ResponseEntity<?> setPossibleAnswers(Set<Answers> possibleAnswers);
 
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/possible_answer")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/possible_answer")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addPossibleAnswers(Principal principal,
                                                 @Valid @RequestBody AnswersRequest answerRequest,
@@ -156,7 +160,7 @@ public class QCMController {
     //public ResponseEntity<?> removePossibleAnswers(long answer_id);
     //public ResponseEntity<?> removePossibleAnswers(String answers);
 
-    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/possible_answer/{answer_id}")
+    @DeleteMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/possible_answer/{answer_id}")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removePossibleAnswers(Principal principal,
                                                 @PathVariable("module_id") long moduleId,
@@ -226,7 +230,7 @@ public class QCMController {
 
     //public ResponseEntity<?> setStudentAnswer(long id_answer)
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/student_answer")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/student_answer")
     public ResponseEntity<?> addStudentAnswers(Principal principal,
                                                 @Valid @RequestBody MyAnswer answer,
                                                 @PathVariable("module_id") long moduleId,
@@ -276,18 +280,23 @@ public class QCMController {
         }
         QCM qcm = oQCM.get();
 
+        Answer answer1=new Answer(answer.getContent());
+        answerRepository.save(answer1);
+
         if(qcm.StudentAnswerContains(user)){
-            qcm.getStudentAnswerOf(user).setAnswer(new Answer(answer.getContent()));
+            qcm.getStudentAnswerOf(user).setAnswer(answer1);
         }
         else{
-            qcm.getStudentsAnswers().add(new AnswerQCM(new Answer(answer.getContent()), user));
+            AnswerQCM answerQCM=new AnswerQCM(answer1, user);
+            answerQCMRepository.save(answerQCM);
+            qcm.getStudentsAnswers().add(answerQCM);
         }
 
         qcmRepository.save(qcm);
         return ResponseEntity.ok(new MessageResponse("Answer successfully added to the QCM!"));
     }
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/good_answer")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/good_answer")
     public ResponseEntity<?> setAnswer(Principal principal,
                                                @Valid @RequestBody MyAnswer answer,
                                                @PathVariable("module_id") long moduleId,
@@ -336,8 +345,9 @@ public class QCMController {
                     .body(new MessageResponse("Error: You are not allowed!"));
         }
         QCM qcm = oQCM.get();
-
-        qcm.setAnswer(new Answer(answer.getContent()));
+        Answer answer1=new Answer(answer.getContent());
+        answerRepository.save(answer1);
+        qcm.setAnswer(answer1);
 
         qcmRepository.save(qcm);
         return ResponseEntity.ok(new MessageResponse("Answer successfully added to the QCM!"));

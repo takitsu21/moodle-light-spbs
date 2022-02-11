@@ -5,9 +5,9 @@ Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité 
 
   Contexte:
     Etant donné le professeur "Paul" assigné au module de "Maths" avec un questionnaire "Exam" visible qcm
-    Et le questionnaire "Exam" a un QCM "Q1" qcm
-    Et le QCM "Q1" du questionnaire "Exam" a les reponses possible "oui" et "non" qcm
-    Et l'élève "Dylann" assigné au module de "Maths" qcm
+    Et le questionnaire "Exam" du module "Maths" a un QCM "Q1" qcm
+    Et le QCM "Q1" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" qcm
+    Et l'élève "Batiste" assigné au module de "Maths" qcm
 
   Scénario: Le professeur "Paul" ajoute une reponse
     Quand le professeur "Paul" essaie d'ajouter la reponse possible "je ne sais pas" au QCM "Q1" du questionnaire "Exam" du module "Maths"
@@ -19,7 +19,7 @@ Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité 
     Et le dernier status de request est 200 qcm
     Alors la bonne reponse "oui" est dans le QCM "Q1" du questionnaire "Exam" du module "Maths"
 
-  Scénario: L'élève "Dylann" ajoute une reponse
-    Quand L'élève "Dylann"  essaie d'ajouter ça reponse "oui" au QCM "Q1" du questionnaire "Exam" du module "Maths"
+  Scénario: L'élève "Batiste" ajoute une reponse
+    Quand L élève "Batiste" essaie d'ajouter ça reponse "oui" au QCM "Q1" du questionnaire "Exam" du module "Maths"
     Et le dernier status de request est 200 qcm
-    Alors la reponse de l'étudiant "Dylann" est "oui" est dans le QCM "Q1" du questionnaire "Exam" du module "Maths"
+    Alors la reponse de l'étudiant "Batiste" est "oui" est dans le QCM "Q1" du questionnaire "Exam" du module "Maths"
