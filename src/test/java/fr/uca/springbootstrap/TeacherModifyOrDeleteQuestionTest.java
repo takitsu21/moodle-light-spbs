@@ -175,7 +175,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription(), question.getNumber()), jwTeacher);
     }
@@ -199,7 +199,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription(), question.getNumber()), jwTeacher);
     }
@@ -222,7 +222,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
     Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
     String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-    executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+    executePost("http://localhost:8080/api/module/"+module.getId()
             +"/questionnaire/"+questionnaire.getId()
             +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
@@ -246,7 +246,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
     }
@@ -269,7 +269,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
@@ -292,7 +292,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
