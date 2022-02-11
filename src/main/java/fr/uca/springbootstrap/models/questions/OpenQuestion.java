@@ -67,4 +67,22 @@ public class OpenQuestion extends Question {
         }
         return null;
     }
+
+    public Answer getPossibleAnswerById(long id){
+        for (Answer answer : possibleAnswers){
+            if (answer.getId() == id){
+                return answer;
+            }
+        }
+        return null;
+    }
+
+    public Answer getPossibleAnswerByContent(String content){
+        for (Answer answer : possibleAnswers){
+            if (answer.getAnswer() == content){
+                return answer;
+            }
+        }
+        return null;
+    }
 }
