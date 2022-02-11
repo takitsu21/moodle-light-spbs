@@ -30,8 +30,8 @@ public class OpenQuestion extends Question {
 
     public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> answerOpenQuestionSet,
                         Set<Answer> possibleAnswers, String name, String description,
-                        int number, Questionnaire questionnaire){
-        super(number, name, description, questionnaire);
+                        int number){
+        super(number, name, description);
         this.answers = answers;
         this.answerOpenQuestionSet = answerOpenQuestionSet;
         this.possibleAnswers =  possibleAnswers;

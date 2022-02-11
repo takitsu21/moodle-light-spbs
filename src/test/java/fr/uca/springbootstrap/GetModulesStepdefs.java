@@ -49,6 +49,7 @@ public class GetModulesStepdefs extends SpringIntegration{
 
     @Etantdonné("le professeur {string} assigné au module de {string} gm")
     public void leProfesseurAssignéAuModuleDeGm(String arg0, String arg1) {
+        moduleRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
@@ -130,9 +131,6 @@ public class GetModulesStepdefs extends SpringIntegration{
 
         Gson gson = builder.create();
         Map<String, String> map = gson.fromJson(jsonString, Map.class);
-        System.out.println(map.keySet());
-        System.out.println(map.values());
-
         assertTrue(map.keySet().isEmpty());
     }
 
