@@ -160,7 +160,7 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         Answer answer = new Answer(arg1);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePutWithBody("http://localhost:8080/api/module/"
+        executePut("http://localhost:8080/api/module/"
                 +module.getId()+"/questionnaire/"
                 +questionnaire.getId()+"/open_question/"+question.getId()+"/possible_answer",
                 new AnswerRequest(new HashSet<>(){{ add(new MyAnswer("Réponse D"));
