@@ -71,34 +71,57 @@ public class OpenQuestionModificationTest extends SpringIntegration {
 
     @Et("un questionnaire {string} contenu dans le module {string} oqm")
     public void unQuestionnaireContenuDansLeModuleOqm(String arg0, String arg1) {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg0).orElse(new Questionnaire(arg1,"Description "+arg0, 1));
+        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg0));
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
+        if (questionnaire==null) {
+            questionnaire = new Questionnaire(arg1, "Description " + arg0, 1);
+        }
+
         questionnaireRepository.save(questionnaire);
 
-        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg0));
         module.addRessource(questionnaire);
         moduleRepository.save(module);
     }
+    @Et("une question ouverte {string} contenue dans le questionnaire {string} du module {string} oqm")
+    public void uneQuestionOuverteContenueDansLeQuestionnaireDuModuleOqm(String arg0, String arg1, String arg2) {
+        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg0));
 
-    @Et("une question ouverte {string} contenue dans le le questionnaire {string} oqm")
-    public void uneQuestionOuverteContenueDansLeLeQuestionnaireOqm(String arg0, String arg1) {
-        OpenQuestion question = openQuestionRepository.findByName(arg0).orElse(new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
-                                            arg0, "Descritpion "+arg0, 1 ));
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+        if (questionnaire==null) {
+            questionnaire = new Questionnaire(arg1, "Description " + arg1, 1);
+        }
+
+        OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg0);
+        if (question==null) {
+            question = new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
+                    arg0, "Descritpion "+arg0, 1 );
+        }
+
         questionRepository.save(question);
 
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).orElse(new Questionnaire(arg1, "Description "+arg1, 1));
         questionnaire.addQuestion(question);
         questionnaireRepository.save(questionnaire);
+
     }
 
-    @Et("{string} ayant comme réponses possibles {string}, {string}, {string} oqm")
-    public void ayantCommeRéponsesPossiblesOqm(String arg0, String arg1, String arg2, String arg3) {
-        OpenQuestion question = openQuestionRepository.findByName(arg0).orElse(new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
-                arg0, "Descritpion "+arg0, 1 ));
-        Answer answer1 = new Answer(arg1);
+    @Et("{string} du questionnaire {string} du module {string} ayant comme réponses possibles {string}, {string}, {string} oqm")
+    public void duQuestionnaireDuModuleAyantCommeRéponsesPossiblesOqm(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
+        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg2));
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+
+
+        OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg0);
+        if (question==null) {
+            question = new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
+                    arg0, "Descritpion "+arg0, 1 );
+        }
+
+        Answer answer1 = new Answer(arg3);
         answerRepository.save(answer1);
-        Answer answer2 = new Answer(arg2);
+        Answer answer2 = new Answer(arg4);
         answerRepository.save(answer2);
-        Answer answer3 = new Answer(arg3);
+        Answer answer3 = new Answer(arg5);
         answerRepository.save(answer3);
 
         question.addPossibleAnswer(answer1);
@@ -108,13 +131,20 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         questionRepository.save(question);
     }
 
-    @Et("{string} ayant comme réponses {string} et {string} oqm")
-    public void ayantCommeRéponsesEtOqm(String arg0, String arg1, String arg2) {
-        OpenQuestion question = openQuestionRepository.findByName(arg0).orElse(new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
-                arg0, "Descritpion "+arg0, 1 ));
+    @Et("{string} du questionnaire {string} du module {string} ayant comme réponses {string} et {string} oqm")
+    public void duQuestionnaireDuModuleAyantCommeRéponsesEtOqm(String arg0, String arg1, String arg2, String arg3, String arg4) {
+        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg2));
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 
-        Answer answer1 = answerRepository.findByAnswer(arg1).get();
-        Answer answer2 = answerRepository.findByAnswer(arg2).get();
+
+        OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg0);
+        if (question==null) {
+            question = new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
+                    arg0, "Descritpion "+arg0, 1 );
+        }
+
+        Answer answer1 = answerRepository.findByAnswer(arg3).get();
+        Answer answer2 = answerRepository.findByAnswer(arg4).get();
 
         question.addAnswer(answer1);
         question.addAnswer(answer2);
@@ -155,8 +185,8 @@ public class OpenQuestionModificationTest extends SpringIntegration {
     public void leProfesseurAjouteUneRéponsePossibleDeContenuALaQuestionDuQuestionnaireDuModuleOqm(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
         User teacher = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg4).get();
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg3).get();
-        Question question = questionRepository.findByName(arg2).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
+        Question question = questionnaire.findQuestionByName(arg2);
         Answer answer = new Answer(arg1);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
@@ -175,9 +205,13 @@ public class OpenQuestionModificationTest extends SpringIntegration {
 
     @Et("les réponses possibles de la question {string} du questionnaire {string} du module {string} possède un réponse de contenu {string} oqm")
     public void lesRéponsesPossiblesDeLaQuestionDuQuestionnaireDuModulePossèdeUnRéponseDeContenuOqm(String arg0, String arg1, String arg2, String arg3) {
-        OpenQuestion question = openQuestionRepository.findByName(arg0).get();
+        Module module = moduleRepository.findByName(arg2).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+        Question question = questionnaire.findQuestionByName(arg0);
+
         assertTrue(openQuestionRepository.existsByName(arg3));
     }
+
 
 
 }

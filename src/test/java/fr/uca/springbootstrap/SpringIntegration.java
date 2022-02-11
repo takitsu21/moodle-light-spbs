@@ -81,11 +81,14 @@ public class SpringIntegration {
     }
 
     public void executeDelete(String url, String jwt) throws IOException {
+        System.out.println("dedans");
         HttpDelete request = new HttpDelete(url);
         request.addHeader("content-type", "application/json");
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
+        System.out.println(request);
+
         latestHttpResponse = httpClient.execute(request);
     }
 }

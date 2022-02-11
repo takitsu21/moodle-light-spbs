@@ -12,8 +12,6 @@ public interface OpenQuestionRepository extends JpaRepository<OpenQuestion, Long
 
     Optional<OpenQuestion> findById(long id);
 
-    Optional<OpenQuestion> findByName(String name);
-
     Boolean existsById(long id);
 
     Boolean existsByName(String name);

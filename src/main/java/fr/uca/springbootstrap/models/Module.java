@@ -79,8 +79,12 @@ public class Module {
      * @return true if an ID matches that of the given resource, false otherwise
      */
     public boolean containsRessource(Ressource ressource) {
+        return containsRessource(ressource.getName());
+    }
+
+    public boolean containsRessource(String ressource) {
         for (Ressource currentRessource : ressources) {
-            if (currentRessource.getId().longValue() == ressource.getId().longValue()) {
+            if (Objects.equals(currentRessource.getName(), ressource)) {
                 return true;
             }
         }

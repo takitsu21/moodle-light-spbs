@@ -281,6 +281,12 @@ public class QCMController {
         }
         QCM qcm = oQCM.get();
 
+        if(!qcm.possibleAnswerContains(answer.getContent())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: It's not a valid answer!"));
+        }
+
         Answer answer1=new Answer(answer.getContent());
         answerRepository.save(answer1);
 

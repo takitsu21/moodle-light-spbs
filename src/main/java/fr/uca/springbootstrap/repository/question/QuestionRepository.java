@@ -9,9 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-
-    Optional<Question> findByName(String name);
-
     Optional<Question> findById(long id);
 
     Boolean existsById(long id);
