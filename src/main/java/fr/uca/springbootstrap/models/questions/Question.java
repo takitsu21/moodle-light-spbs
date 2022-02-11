@@ -1,8 +1,5 @@
 package fr.uca.springbootstrap.models.questions;
 
-import fr.uca.springbootstrap.models.Questionnaire;
-import moodle.users.Student;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 

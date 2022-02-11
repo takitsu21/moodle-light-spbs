@@ -1,9 +1,6 @@
 package fr.uca.springbootstrap.models.questions;
 
-import moodle.users.Student;
-
 import javax.persistence.*;
-import java.util.Map;
 
 @Entity
 @DiscriminatorValue("code_runner")
