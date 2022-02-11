@@ -57,7 +57,6 @@ public class OpenQuestion extends Question {
     public void setAnswerOpenQuestionSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.answerOpenQuestionSet = answerOpenQuestionSet; }
     public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.add(answerOpenQuestion);}
     public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.remove(answerOpenQuestion);}
-    public AnswerOpenQuestion getStudentAnswer(){ return answerOpenQuestionSet.}
 
     public AnswerOpenQuestion getStudentAnswerByStudent(User student){
         for (AnswerOpenQuestion openAnswer : this.answerOpenQuestionSet){
