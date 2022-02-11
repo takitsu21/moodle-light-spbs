@@ -13,6 +13,9 @@ public class MyText {
     @NotBlank
     private String content;
 
+    public MyText() {
+    }
+
     public MyText(int num, String content) {
         this.num = num;
         this.content = content;

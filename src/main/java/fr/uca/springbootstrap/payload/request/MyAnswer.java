@@ -11,6 +11,9 @@ public class MyAnswer {
     @Size( max = 100 )
     private String answer;
 
+    public MyAnswer() {
+    }
+
     public MyAnswer(String content) {
         this.answer = content;
     }
