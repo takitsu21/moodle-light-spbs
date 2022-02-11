@@ -650,8 +650,9 @@ public class ModuleController {
 
 
 		Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
-		questionnaireRepository.delete(questionnaire);
 		module.removeRessource(questionnaire);
+		questionnaireRepository.delete(questionnaire);
+
 		moduleRepository.save(module);
 
 

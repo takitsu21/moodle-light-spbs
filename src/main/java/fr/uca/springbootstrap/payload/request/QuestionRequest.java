@@ -10,40 +10,27 @@ public class QuestionRequest {
     private int number;
 
     @NotBlank
-    @Size(max = 50)
     private String name;
 
     @NotBlank
-    @Size(max = 120)
     private String description;
 
-    public QuestionRequest(String arg4, String description, int number) {
-        this.number=number;
-        this.description=description;
-        this.name=arg4;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
+    public QuestionRequest(String name, String description, int number) {
+        this.name = name;
+        this.description = description;
         this.number = number;
     }
 
-    public String getName() {
-        return name;
+    public QuestionRequest(){
+
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setNumber(int number) { this.number = number; }
+    public int getNumber() { return number; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getName(){ return name; }
+    public void setName(String name){ this.name = name; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription(){ return description; }
+    public void setDescription(String description){ this.description = description; }
 }

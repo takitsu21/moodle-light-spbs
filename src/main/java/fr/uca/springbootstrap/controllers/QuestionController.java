@@ -33,6 +33,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -41,16 +44,11 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module/{module_id}/questionnaire/{questionnaire_id}")
+@RequestMapping("/api/module/")
 public class QuestionController {
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
+    QuestionRepository questionRepository;
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -59,52 +57,195 @@ public class QuestionController {
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    UserRepository userRepository;
 
-
-    @GetMapping("/question/{question_id}")
-    public ResponseEntity<?> getQuestion(Principal principal,
-                                         @PathVariable("module_id") long module_id,
-                                         @PathVariable("questionnaire_id") long questionnaire_id,
-                                         @PathVariable("question_id") long question_id) {
-
-        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
-        Optional<Module> optionalModule = moduleRepository.findById(module_id);
-        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
-
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: user does not exist."));
-        }
-        else if (optionalModule.isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: module does not exist."));
-        }
-        else if (optionalQuestionnaire.isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: questionnaire does not exist."));
-        }
-
-        User user = optionalUser.get();
-        Module module = optionalModule.get();
-        if (!module.containsParticipant(user)) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: user does not belong in this module."));
-        }
-
-        Optional<Question> optionalQuestion = questionRepository.findById(question_id);
-        if (optionalQuestion.isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: question does not exist."));
-        }
-
-        Question question = optionalQuestion.get();
-        Questionnaire questionnaire = optionalQuestionnaire.get();
-        if (!questionnaire.getQuestions().contains(question)) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: question is not in the questionnaire"));
-        }
-
-        return new ResponseEntity<>(question, HttpStatus.OK);
+    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/question/")
+    public ResponseEntity<?> getQuestion(){
+        List<Question> questions = questionRepository.findAll();
+        return ResponseEntity.ok(questions);
     }
+
+    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteQuestionById(@PathVariable long id){
+
+
+        if (!questionRepository.existsById(id)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Question doesn't exists!"));
+        }
+
+        Question question = questionRepository.findById(id).get();
+        questionRepository.delete(question);
+        return ResponseEntity.ok(new MessageResponse("Question deleted successfully!"));
+
+    }
+
+
+    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/name")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    public ResponseEntity<?> setName(Principal principal,
+                                    @Valid @RequestBody QuestionRequest questionRequest,
+                                     @PathVariable("module_id") long module_id,
+                                     @PathVariable("questionnaire_id") long questionnaire_id,
+                                     @PathVariable("question_id") long question_id){
+        Optional<Question> oQuestion = questionRepository.findById(question_id);
+        Optional<Module> oModule = moduleRepository.findById(module_id);
+        Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        if (oQuestion.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse(("Error: No such question!")));
+        }
+        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+
+        if (ouser.isEmpty()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such user!"));
+        }
+        if(oModule.isEmpty()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such module!"));
+        }
+        if(oQuestionnaire.isEmpty()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such questionnaire!"));
+        }
+
+        User user = ouser.get();
+        Questionnaire questionnaire = oQuestionnaire.get();
+        Module module = oModule.get();
+        Question question = oQuestion.get();
+
+        if(!module.getRessources().contains(questionnaire)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: This module does not contains this questionnaire!"));
+        }
+        if(!questionnaire.getQuestions().contains(question)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: This questionnaire does not contains this question!"));
+        }
+        if (!module.getParticipants().contains(user)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: You are not allowed to modify the name of the question!"));
+        }
+
+        question.setName(questionRequest.getName());
+        questionRepository.save(question);
+        return ResponseEntity.ok(new MessageResponse("Name of the question successfully changed"));
+
+    }
+
+    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/description")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    public ResponseEntity<?> setDescription(Principal principal,
+                                            @Valid @RequestBody QuestionRequest questionRequest,
+                                            @PathVariable("module_id") long module_id,
+                                            @PathVariable("questionnaire_id") long questionnaire_id,
+                                            @PathVariable("question_id") long question_id){
+        Optional<Question> oQuestion = questionRepository.findById(question_id);
+        Optional<Module> oModule = moduleRepository.findById(module_id);
+        Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+
+        if (oQuestion.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
+        }
+        if (oModule.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such module!"));
+        }
+        if (oQuestionnaire.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such questionnaire!"));
+        }
+        if (ouser.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such user!"));
+        }
+
+        User user = ouser.get();
+        Question question = oQuestion.get();
+        Module module = oModule.get();
+        Questionnaire questionnaire = oQuestionnaire.get();
+
+        if(!module.getRessources().contains(questionnaire)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: This module does not contains this questionnaire!"));
+        }
+        if(!questionnaire.getQuestions().contains(question)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: This questionnaire does not contains this question!"));
+        }
+        if (!module.getParticipants().contains(user)){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: You are not allowed to modify the name of the question!"));
+        }
+        question.setDescription(questionRequest.getDescription());
+        questionRepository.save(question);
+        return ResponseEntity.ok(new MessageResponse("Description of the question successfully changed"));
+
+    }
+
+    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/number")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    public ResponseEntity<?> setNumber(Principal principal,
+                                     @Valid @RequestBody QuestionRequest questionRequest,
+                                     @PathVariable("module_id") long module_id,
+                                     @PathVariable("questionnaire_id") long questionnaire_id,
+                                     @PathVariable("question_id") long question_id){
+        Optional<Question> oQuestion = questionRepository.findById(question_id);
+        Optional<Module> oModule = moduleRepository.findById(module_id);
+        Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        if (oQuestion.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse(("Error: No such question!")));
+        }
+        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+
+        if (ouser.isEmpty()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such user!"));
+        }
+        if(oModule.isEmpty()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such module!"));
+        }
+        if(oQuestionnaire.isEmpty()){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such questionnaire!"));
+        }
+
+        User user = ouser.get();
+        Questionnaire questionnaire = oQuestionnaire.get();
+        Module module = oModule.get();
+        Question question = oQuestion.get();
+
+        if(!module.getRessources().contains(questionnaire)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: This module does not contains this questionnaire!"));
+        }
+        if(!questionnaire.getQuestions().contains(question)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: This questionnaire does not contains this question!"));
+        }
+        if (!module.getParticipants().contains(user)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: You are not allowed to modify the name of the question!"));
+        }
+
+        question.setNumber(questionRequest.getNumber());
+        questionRepository.save(question);
+        return ResponseEntity.ok(new MessageResponse("Name of the question successfully changed"));
+
+    }
+
 }

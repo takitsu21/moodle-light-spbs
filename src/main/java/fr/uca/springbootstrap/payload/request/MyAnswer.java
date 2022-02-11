@@ -12,6 +12,13 @@ public class MyAnswer {
     public MyAnswer() {
     }
 
+import javax.validation.constraints.Size;
+
+public class MyAnswer {
+    @NotBlank
+    @Size( max = 100 )
+    private String answer;
+
     public MyAnswer(String content) {
         this.answer = content;
     }
@@ -24,3 +31,4 @@ public class MyAnswer {
         this.answer = content;
     }
 }
+

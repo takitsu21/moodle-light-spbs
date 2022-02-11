@@ -1,11 +1,9 @@
 package fr.uca.springbootstrap.models;
 
-import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,25 +22,21 @@ public class Questionnaire extends Ressource {
             inverseJoinColumns = @JoinColumn(name = "grades_id"))
     private Set<GradesQuestionnaire> studentsGrades = new HashSet<>();
 
+
+
     public Questionnaire() {
 
     }
 
-    public Questionnaire(String name, String description, Integer num) {
-        super(name, description, num);
+    public Questionnaire(String name, String description, int number){
+        super(name, description, number);
+        this.questions = new HashSet<>();
+        this.studentsGrades = new HashSet<>();
     }
 
 
     public Questionnaire(String name, String description, int number){
         super(name, description, number);
-    }
-
-    public Set<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(Set<Question> questions) {
-        this.questions = questions;
     }
 
     public void addQuestion(Question question) {

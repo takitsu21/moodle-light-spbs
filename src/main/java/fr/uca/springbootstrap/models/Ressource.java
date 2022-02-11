@@ -71,13 +71,13 @@ public abstract class Ressource {
         this.description = description;
     }
 
-    public Set<Module> getModules() {
-        return modules;
-    }
+//    public Set<Module> getModules() {
+ //       return modules;
+  //  }
 
-    public void setModules(Set<Module> modules) {
-        this.modules = modules;
-    }
+  //  public void setModules(Set<Module> modules) {
+   //     this.modules = modules;
+  //  }
 
     public Integer getNum() {
         return num;
