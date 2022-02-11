@@ -46,6 +46,8 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string} assigné au module de {string} atc")
     public void leProfesseurAssignéAuModuleDeAtc(String arg0, String arg1) {
+        moduleRepository.deleteAll();
+        coursRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>() {{
@@ -101,6 +103,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
     public void leProfesseurRetireUnTextALaRessourceDuModule(String arg0, int arg1, String arg2, String arg3) throws IOException {
         User prof = userRepository.findByUsername(arg0).get();
         Cours cours = coursRepository.findByName(arg2).get();
+        System.out.println(cours.containsText(arg1));
         Text text = cours.getText(arg1);
         Module module = moduleRepository.findByName(arg3).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
@@ -115,7 +118,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
         MyText text = new MyText(arg1, arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours/" + cours.getId()+"/texts",
+        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours/" + cours.getId(),
                 new TextRequest(text), jwt);
     }
 

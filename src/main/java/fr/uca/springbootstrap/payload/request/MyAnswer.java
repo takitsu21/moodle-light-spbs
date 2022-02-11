@@ -5,14 +5,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-public class MyAnswer {
-    @NotBlank
-    private String answer;
-
-    public MyAnswer() {
-    }
-
-import javax.validation.constraints.Size;
 
 public class MyAnswer {
     @NotBlank
