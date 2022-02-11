@@ -11,12 +11,12 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     Optional<Question> findByName(String name);
-
     Optional<Question> findById(long id);
+    Optional<Question> findByNumber(int number);
 
     Boolean existsById(long id);
-
     Boolean existsByName(String name);
+    Boolean existsByNumber(int number);
 
     List<Question> findAll();
 }
