@@ -148,8 +148,8 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         for (int ch; (ch = is.read()) != -1; ) {
             sb.append((char) ch);
         }
-        executePostWithBody(String.format(
-                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d/submit",
+        executePost(String.format(
+                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
@@ -172,10 +172,9 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             }
         }
         executePost(String.format(
-                "http://localhost:8080/api/module/%d/questionnaire/%d/submit",
+                "http://localhost:8080/api/module/%d/questionnaire/%d",
                 module.getId(),
-                questionnaire.getId()
-        ), jwtStudent);
+                questionnaire.getId()), jwtStudent);
     }
 
     @Alors("le dernier status de réponse est {int} sq")

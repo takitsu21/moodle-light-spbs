@@ -9,8 +9,6 @@ import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.repository.*;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
@@ -101,7 +99,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
                 jwtTeacher);
     }
@@ -157,7 +155,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/cours",
                 new CoursRequest(arg1, "descript", arg2),
                 jwtTeacher);
     }

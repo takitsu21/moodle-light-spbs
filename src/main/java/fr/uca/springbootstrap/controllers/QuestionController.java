@@ -14,23 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.models.User;
-import fr.uca.springbootstrap.models.questions.QCM;
-import fr.uca.springbootstrap.models.questions.Question;
-import fr.uca.springbootstrap.payload.response.MessageResponse;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.QuestionnaireRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.repository.question.QuestionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -55,6 +55,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
     @Etantdonné("un professeur {string} ayant le module {string} tmdqa")
     public void unProfesseurAyantLeModuleTmdqa(String arg0, String arg1) {
         questionnaireRepository.deleteAll();
+        questionRepository.deleteAll();
+        moduleRepository.deleteAll();
+
         // Professeur
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));
@@ -190,9 +193,11 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
-                +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription(), question.getNumber()), jwTeacher);
+        executePost("http://localhost:8080/api/module/"+module.getId()
+                        +"/questionnaire/"+questionnaire.getId()
+                        +"/question/"+question.getId()+"/name",
+                new QuestionRequest(arg4, question.getDescription(),
+                        question.getNumber()), jwTeacher);
     }
 
 
@@ -201,9 +206,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question d'identifant {int} a pour nom {string} tmdqm")
-    public void laQuestionDIdentifantAPourNomTmdqm(int arg0, String arg1) {
-        Question question = questionRepository.findById(arg0).get();
+    @Et("la question de numéro {int} a pour nom {string} tmdqm")
+    public void laQuestionDeNuméroAPourNomTmdqm(int arg0, String arg1) {
+        Question question = questionRepository.findByNumber(arg0).get();
         assertEquals(arg1, question.getName());
     }
 
@@ -216,9 +221,11 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Question question = questionRepository.findById(arg1).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/name",new QuestionRequest(arg4, question.getDescription(), question.getNumber()), jwTeacher);
+                +"/question/"+question.getId()+"/name",
+                new QuestionRequest(arg4, question.getDescription(),
+                        question.getNumber()), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqqo")
@@ -226,20 +233,20 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question didentifant {int} s'appelle toujours {string} tmdqp")
-    public void laQuestionDidentifantSAppelleToujoursTmdqp(int arg0, String arg1) {
-        Question question = questionRepository.findById(arg0).get();
+    @Et("la question de numéro {int} s'appelle toujours {string} tmdqp")
+    public void laQuestionDeNuméroSAppelleToujoursTmdqp(int arg0, String arg1) {
+        Question question = questionRepository.findByNumber(arg0).get();
         assertEquals(arg1, question.getName());
     }
 
-@Quand("Le professeur {string} veut modifier la description de la question d'identifiant {int} du questionnaire {string} du module {string} par {string} tmdqq")
-public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuestionnaireDuModuleParTmdqq(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
-    Question question = questionRepository.findById(arg1).get();
+@Quand("Le professeur {string} veut modifier la description de la question {string} du questionnaire {string} du module {string} par {string} tmdqq")
+public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuModuleParTmdqq(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
+    Question question = questionRepository.findByName(arg1).get();
     Module module = moduleRepository.findByName(arg3).get();
     Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
     String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-    executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+    executePost("http://localhost:8080/api/module/"+module.getId()
             +"/questionnaire/"+questionnaire.getId()
             +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
@@ -250,20 +257,20 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question d'identifiant {int} possède la description {string} tmdqs")
-    public void laQuestionDIdentifiantPossèdeLaDescriptionTmdqs(int arg0, String arg1) {
-        Question question = questionRepository.findById(arg0).get();
+    @Et("la question {string} possède la description {string} tmdqs")
+    public void laQuestionPossèdeLaDescriptionTmdqs(String arg0, String arg1) {
+        Question question = questionRepository.findByName(arg0).get();
         assertEquals(arg1, question.getDescription());
     }
 
-    @Quand("Le professeur {string} veut modifier la description de la question d'identifiant {int} du questionnaire {string} du module {string} par {string} tmdqt")
-    public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuestionnaireDuModuleParTmdqt(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
-        Question question = questionRepository.findById(arg1).get();
+    @Quand("Le professeur {string} veut modifier la description de la question {string} du questionnaire {string} du module {string} par {string} tmdqt")
+    public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuModuleParTmdqt(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
+        Question question = questionRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
     }
@@ -273,20 +280,20 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question d'identifiant {int} possède toujours la description {string} tmdqv")
-    public void laQuestionDIdentifiantPossèdeToujoursLaDescriptionTmdqv(int arg0, String arg1) {
-        Question question = questionRepository.findById(arg0).get();
+    @Et("la question {string} possède toujours la description {string} tmdqv")
+    public void laQuestionPossèdeToujoursLaDescriptionTmdqv(String arg0, String arg1) {
+        Question question = questionRepository.findByName(arg0).get();
         assertEquals(arg1, question.getDescription());
     }
 
-    @Quand("le professeur {string} veut modifier le numéro de la question d'identifiant {int} du questionnaire {string} du module {string} par {int} tmdqw")
-    public void leProfesseurVeutModifierLeNuméroDeLaQuestionDIdentifiantDuQuestionnaireDuModuleParTmdqw(String arg0, int arg1, String arg2, String arg3, int arg4) throws IOException {
-        Question question = questionRepository.findById(arg1).get();
+    @Quand("le professeur {string} veut modifier le numéro de la question de nom {string} du questionnaire {string} du module {string} par {int} tmdqw")
+    public void leProfesseurVeutModifierLeNuméroDeLaQuestionDeNomDuQuestionnaireDuModuleParTmdqw(String arg0, String arg1, String arg2, String arg3, int arg4) throws IOException {
+        Question question = questionRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
@@ -296,20 +303,20 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("le question d'identifiant {int} possède le numéro {int} tmdqy")
-    public void leQuestionDIdentifiantPossèdeLeNuméroTmdqy(int arg0, int arg1) {
-        Question question = questionRepository.findById(arg0).get();
+    @Et("le question {string} possède le numéro {int} tmdqy")
+    public void leQuestionPossèdeLeNuméroTmdqy(String arg0, int arg1) {
+        Question question = questionRepository.findByName(arg0).get();
         assertEquals(arg1, question.getNumber());
     }
 
-    @Quand("le professeur {string} veut modifier le numéro de la question d'indentifiant {int} du questionnaire {string} du module {string} par {int} tmdqz")
-    public void leProfesseurVeutModifierLeNuméroDeLaQuestionDIndentifiantDuQuestionnaireDuModuleParTmdqz(String arg0, int arg1, String arg2, String arg3, int arg4) throws IOException {
-        Question question = questionRepository.findById(arg1).get();
+    @Quand("le professeur {string} veut modifier le numéro de la question {string} du questionnaire {string} du module {string} par {int} tmdqz")
+    public void leProfesseurVeutModifierLeNuméroDeLaQuestionDuQuestionnaireDuModuleParTmdqz(String arg0, String arg1, String arg2, String arg3, int arg4) throws IOException {
+        Question question = questionRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
@@ -319,9 +326,9 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDIdentifiantDuQuest
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question d'identifiant {int} possède le numéro {int} tmdqab")
-    public void laQuestionDIdentifiantPossèdeLeNuméroTmdqab(int arg0, int arg1) {
-        Question question = questionRepository.findById(arg0).get();
+    @Et("la question {string} possède le numéro {int} tmdqab")
+    public void laQuestionPossèdeLeNuméroTmdqab(String arg0, int arg1) {
+        Question question = questionRepository.findByName(arg0).get();
         assertEquals(arg1, question.getNumber());
     }
 

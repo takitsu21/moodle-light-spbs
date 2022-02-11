@@ -101,7 +101,7 @@ public class CodeRunnerController {
         return ResponseEntity.ok(new MessageResponse("Code runner question successfully added!"));
     }
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner/{code_runner_id}/submit")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner/{code_runner_id}")
     public ResponseEntity<?> submitCodeRunner(Principal principal,
                                               @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
                                               @PathVariable("module_id") long moduleId,

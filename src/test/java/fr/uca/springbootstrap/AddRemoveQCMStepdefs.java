@@ -17,8 +17,6 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
-import net.minidev.json.JSONUtil;
-import org.python.antlr.op.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -118,8 +116,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
                 jwtTeacher);
     }
