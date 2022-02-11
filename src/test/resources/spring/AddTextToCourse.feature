@@ -18,11 +18,6 @@ Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et supprimer des 
     Et le dernier status de request est 200 at
     Alors le text 1 de la ressource "Pomme" n'est pas dans le module "Maths"
 
-  Scénario: Le professeur "Jean" retire un text a la ressource "Pomme" du module "Maths"
-    Quand Le professeur "Jean" retire un text 2 a la ressource "Pomme" du module "Maths"
-    Et le dernier status de request est 400 at
-    Alors le text 2 de la ressource "Pomme" est dans le module "Maths"
-
   Scénario: Le professeur "Jean" ajoute un text a la ressource "Pomme" du module "Maths"
     Quand Le professeur "Jean" ajoute un text 3 de contenu "Fleur" a la ressource "Pomme" du module "Maths"
     Et le dernier status de request est 400 at
