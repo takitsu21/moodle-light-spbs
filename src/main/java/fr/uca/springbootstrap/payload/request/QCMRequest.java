@@ -1,27 +1,24 @@
 package fr.uca.springbootstrap.payload.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+public class QCMRequest {
 
-public class QuestionRequest {
+    private Integer number;
 
-    @NotNull
-    private int number;
-
-    @NotBlank
-    @Size(max = 50)
     private String name;
 
-    @NotBlank
-    @Size(max = 120)
     private String description;
 
-    public int getNumber() {
+    public QCMRequest(Integer number, String name, String description) {
+        this.number = number;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 

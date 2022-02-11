@@ -18,6 +18,7 @@ public abstract class Ressource {
     private Long id;
 
     @NotNull
+    @OrderColumn
     private Integer num;
 
     @NotBlank
@@ -28,17 +29,11 @@ public abstract class Ressource {
 
     private boolean visibility = false;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "cours_ressources",
-//            joinColumns = @JoinColumn(name = "cours_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Cours> cours;
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "ressources_modules",
-//            joinColumns = @JoinColumn(name = "module_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Module> modules;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "ressources_modules",
+            joinColumns = @JoinColumn(name = "ressource_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id"))
+    private Set<Module> modules = new HashSet<>();
 
     public Ressource() {
         this.num = 0;
@@ -76,13 +71,13 @@ public abstract class Ressource {
         this.description = description;
     }
 
-//    public Set<Module> getModules() {
- //       return modules;
-  //  }
+    public Set<Module> getModules() {
+        return modules;
+    }
 
-  //  public void setModules(Set<Module> modules) {
-   //     this.modules = modules;
-  //  }
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
+    }
 
     public Integer getNum() {
         return num;

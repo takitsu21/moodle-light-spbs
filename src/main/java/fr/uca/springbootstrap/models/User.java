@@ -100,18 +100,33 @@ public class User {
         User user = (User) o;
         return id.equals(user.id) && username.equals(user.username) && email.equals(user.email) && password.equals(user.password);
     }
+	public Set<Module> getModules() {
+		return modules;
+	}
+
+	public void setModules(Set<Module> modules) {
+		this.modules = modules;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		User user = (User) o;
+		return id.equals(user.id) && username.equals(user.username) && email.equals(user.email) && password.equals(user.password);
+	}
 
     @Override
     public int hashCode() {
         return Objects.hash(id, username, email, password);
     }
 
-    public boolean hasTeacher() {
-        for (Role role : roles) {
-            if (role.getName().equals(ERole.ROLE_TEACHER)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public boolean isTeacher(){
+		for (Role role: roles){
+			if (role.getName().equals(ERole.ROLE_TEACHER)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

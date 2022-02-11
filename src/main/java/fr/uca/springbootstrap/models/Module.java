@@ -15,6 +15,7 @@ public class Module {
 
     @NotBlank
     private String name;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_modules",
             joinColumns = @JoinColumn(name = "module_id"),
@@ -25,6 +26,14 @@ public class Module {
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "ressource_id"))
     private Set<Ressource> ressources = new HashSet<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Module() {
     }
@@ -41,11 +50,57 @@ public class Module {
         this.name = name;
     }
 
+    /**
+     * Compares the ID of the given user to the ID of the currently registered users.
+     * @param user User whose ID will be looked for
+     * @return true if an ID matches that of the given user, false otherwise
+     */
+    public boolean containsParticipant(User user) {
+        for (User participant : participants) {
+            if (participant.getId().longValue() == user.getId().longValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Set<User> getParticipants() {
         return participants;
     }
     public void setParticipants(Set<User> participants) {
         this.participants = participants;
+    }
+
+    public void addRessource(Ressource ressource) {
+        ressources.add(ressource);
+//        ressource.getModules().add(this);
+    }
+
+    public void removeRessource(Ressource ressource) {
+        ressources.remove(ressource);
+//        ressource.getModules().remove(this);
+    }
+
+    /**
+     * Compares the ID of the given resource to the ID of the currently registered resources.
+     * @param ressource Resource whose ID will be looked for
+     * @return true if an ID matches that of the given resource, false otherwise
+     */
+    public boolean containsRessource(Ressource ressource) {
+        for (Ressource currentRessource : ressources) {
+            if (currentRessource.getId().longValue() == ressource.getId().longValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Set<Ressource> getRessources() {
+        return ressources;
+    }
+
+    public void setRessources(Set<Ressource> ressources) {
+        this.ressources = ressources;
     }
 
     public Long getId() {

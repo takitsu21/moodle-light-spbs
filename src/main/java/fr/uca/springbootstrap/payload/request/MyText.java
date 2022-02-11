@@ -1,11 +1,13 @@
 package fr.uca.springbootstrap.payload.request;
 
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class MyText {
 
     @NotNull
+    @OrderColumn
     private Integer num;
 
     @NotBlank

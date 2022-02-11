@@ -2,6 +2,8 @@ package fr.uca.springbootstrap.models;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.HashSet;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -11,7 +13,7 @@ public class Cours extends Ressource {
     @JoinTable(name = "cours_text",
             joinColumns = @JoinColumn(name = "cours_id"),
             inverseJoinColumns = @JoinColumn(name = "text_id"))
-    private Set<Text> texts=new HashSet<>();
+    private Set<Text> texts = new HashSet<>();
 
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(	name = "cours_ressources",
