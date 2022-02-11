@@ -25,8 +25,8 @@ public class QCM extends Question {
             inverseJoinColumns = @JoinColumn(name = "answer"))
     private Set<User> studentsAnswers;
 
-    public QCM(int number, String name, String description, Questionnaire questionnaire) {
-        super(number, name, description, questionnaire);
+    public QCM(int number, String name, String description) {
+        super(number, name, description);
     }
 
     public QCM() {

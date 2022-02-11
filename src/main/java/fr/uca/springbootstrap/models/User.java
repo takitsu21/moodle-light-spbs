@@ -115,7 +115,7 @@ public class User {
 		return Objects.hash(id, username, email, password);
 	}
 
-	public boolean hasTeacher(){
+	public boolean isTeacher(){
 		for (Role role: roles){
 			if (role.getName().equals(ERole.ROLE_TEACHER)){
 				return true;

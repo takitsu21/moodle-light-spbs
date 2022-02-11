@@ -18,10 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.image.RescaleOp;
 import java.io.StringWriter;
 import java.security.Principal;
 import java.util.*;
@@ -307,7 +307,7 @@ public class ModuleController {
 		}
 
 		for (Ressource ressource : module.getRessources()) {
-			if (ressource.isVisibility() || user.hasTeacher()){
+			if (ressource.isVisibility() || user.isTeacher()){
 				ressourceView.put(ressource.getId(), ressource.getName());
 			}
 		}
@@ -324,6 +324,54 @@ public class ModuleController {
 		}
 		return null;
 	}
+
+
+	@GetMapping("/{module_id}/questionnaire/{questionnaire_id}")
+	public ResponseEntity<?> getQuestionnaire(Principal principal,
+											  @PathVariable("module_id") long module_id,
+											  @PathVariable("questionnaire_id") long questionnaire_id) {
+
+		Optional<Module> oModule = moduleRepository.findById(module_id);
+		Optional<User> oUser = userRepository.findByUsername(principal.getName());
+
+		if (oModule.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: module does not exist."));
+		}
+
+		if (oUser.isEmpty()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: user does not exist."));
+		}
+
+		Module module = oModule.get();
+		User user = oUser.get();
+		Questionnaire questionnaire = null;
+
+		if (!module.containsParticipant(user)) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: user does not belong in this module."));
+		}
+
+		for (Ressource ressource : module.getRessources()) {
+			if (ressource.getId() == questionnaire_id) {
+				questionnaire = (Questionnaire) ressource;
+			}
+		}
+
+		if (questionnaire == null) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: questionnaire does not exist."));
+		}
+
+		if (!questionnaire.isVisibility() && !user.isTeacher()) {
+			return ResponseEntity.badRequest()
+					.body(new MessageResponse("Error: user does not have permission to access this questionnaire."));
+		}
+
+		return new ResponseEntity<>(questionnaire, HttpStatus.OK);
+	}
+
 
 	@PostMapping("{module_id}/questionnaire")
 	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")

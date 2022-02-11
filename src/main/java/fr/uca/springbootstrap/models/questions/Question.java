@@ -29,27 +29,14 @@ public abstract class Question {
     @Column(name = "question_description")
     private String description;
 
-    @ManyToOne
-    @JoinTable(	name = "questionnaire_question",
-            joinColumns = @JoinColumn(name = "question_id"),
-            inverseJoinColumns = @JoinColumn(name = "questionnaire_id"))
-    private Questionnaire questionnaire;
-
-    public Question(int number, String name, String description, Questionnaire questionnaire){
+    public Question(int number, String name, String description){
         this.description = description;
-        this.questionnaire = questionnaire;
         this.name = name;
         this.number = number;
     }
 
     public Question() {
 
-    }
-
-    public Question(int number, String name, String description) {
-        this.description = description;
-        this.name = name;
-        this.number = number;
     }
 
     public long getId() { return id; }
@@ -63,9 +50,5 @@ public abstract class Question {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
-    public Questionnaire getQuestionnaire() { return questionnaire; }
-    public void setQuestionnaire(Questionnaire questionnaire) { this.questionnaire = questionnaire; }
-
 
 }
