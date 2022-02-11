@@ -1,7 +1,9 @@
 package fr.uca.springbootstrap.payload.request;
 
+import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.AnswerOpenQuestion;
+import moodle.users.Student;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -54,5 +56,14 @@ public class OpenQuestionRequest {
     public void setAnswerOpenQuestionSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.answerOpenQuestionSet = answerOpenQuestionSet; }
     public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.add(answerOpenQuestion);}
     public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.remove(answerOpenQuestion);}
+
+    public AnswerOpenQuestion getStudentAnswerByAnswer(User student){
+        for (AnswerOpenQuestion openAnswer : this.answerOpenQuestionSet){
+            if (openAnswer.getStudent() == student){
+                return openAnswer;
+            }
+        }
+        return null;
+    }
 
 }
