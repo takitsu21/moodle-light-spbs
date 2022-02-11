@@ -98,7 +98,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         }});
 
         userRepository.save(student);
-        Answer answer = new Answer(answerStr, student);
+        Answer answer = new Answer(answerStr);
         answerRepository.save(answer);
         CodeRunner codeRunner = new CodeRunner(
                 num,

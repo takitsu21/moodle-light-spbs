@@ -87,7 +87,7 @@ public class CodeRunnerController {
                     .badRequest()
                     .body(new MessageResponse("Error: No such questionnaire in the module!"));
         }
-        Answer answer = new Answer(codeRunnerRequest.getAnswer(), user);
+        Answer answer = new Answer(codeRunnerRequest.getAnswer());
         answerRepository.save(answer);
         CodeRunner question = new CodeRunner(codeRunnerRequest.getNumber(),
                 codeRunnerRequest.getName(),
@@ -149,11 +149,11 @@ public class CodeRunnerController {
         CodeRunner question = optionalCodeRunner.get();
         Answer answer;
         if (question.getStudentsAnswers().contains(user)) {
-            answer = new Answer(codeRunnerRequest.getCode(), user);
+            answer = new Answer(codeRunnerRequest.getCode());
             answerRepository.save(answer);
             question.getStudentAnswer(user).setAnswer(answer);
         } else {
-            answer = new Answer(codeRunnerRequest.getCode(), user);
+            answer = new Answer(codeRunnerRequest.getCode());
             answerRepository.save(answer);
             AnswerCodeRunner answerCodeRunner = new AnswerCodeRunner(
                     answer,
@@ -220,11 +220,11 @@ public class CodeRunnerController {
         CodeRunner question = optionalCodeRunner.get();
         Answer answer;
         if (question.getStudentsAnswers().contains(user)) {
-            answer = new Answer(codeRunnerRequest.getCode(), user);
+            answer = new Answer(codeRunnerRequest.getCode());
             answerRepository.save(answer);
             question.getStudentAnswer(user).setAnswer(answer);
         } else {
-            answer = new Answer(codeRunnerRequest.getCode(), user);
+            answer = new Answer(codeRunnerRequest.getCode());
             answerRepository.save(answer);
             AnswerCodeRunner answerCodeRunner = new AnswerCodeRunner(
                     answer,

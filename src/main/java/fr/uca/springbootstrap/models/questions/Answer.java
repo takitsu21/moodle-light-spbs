@@ -10,24 +10,22 @@ import javax.validation.constraints.Size;
 public class Answer {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     private long id;
 
     @NotBlank
     @Size( max = 100 )
     private String answer;
 
-    @ManyToOne
-    private User student;
 
     public Answer(){
 
     }
 
-    public Answer(String answer, User student){
+    public Answer(String answer){
         this.answer = answer;
-        this.student = student;
     }
+
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -35,6 +33,4 @@ public class Answer {
     public String getAnswer() { return answer; }
     public void setAnswer(String answer) { this.answer = answer; }
 
-    public User getStudent() { return student; }
-    public void setStudent(User student) { this.student = student; }
 }

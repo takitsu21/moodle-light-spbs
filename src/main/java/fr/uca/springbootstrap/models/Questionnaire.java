@@ -28,8 +28,10 @@ public class Questionnaire extends Ressource {
         super();
     }
 
-    public Questionnaire(String name, String description, Integer num) {
-        super(name, description, num);
+    public Questionnaire(String name, String description, int number){
+        super(name, description, number);
+        this.questions = new HashSet<>();
+        this.studentsGrades = new HashSet<>();
     }
 
 
