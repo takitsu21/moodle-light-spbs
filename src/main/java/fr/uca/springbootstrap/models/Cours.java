@@ -2,6 +2,7 @@ package fr.uca.springbootstrap.models;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.HashSet;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -34,5 +35,27 @@ public class Cours extends Ressource {
 
     public void setTexts(Set<Text> texts) {
         this.texts = texts;
+    }
+
+
+    public boolean containsText(int arg0) {
+        if(texts!=null){
+            for (Text text : texts) {
+                if (text.getNum() == arg0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Text getText(int arg1) {
+        for (Text text : texts) {
+            if (text.getNum() == arg1) {
+                return text;
+            }
+        }
+        return null;
+
     }
 }

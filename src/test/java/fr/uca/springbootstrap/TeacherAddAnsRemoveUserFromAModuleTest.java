@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.SpringIntegration;
 import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
@@ -9,7 +8,10 @@ import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
-import io.cucumber.java.fr.*;
+import io.cucumber.java.fr.Alors;
+import io.cucumber.java.fr.Et;
+import io.cucumber.java.fr.Etantdonné;
+import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -40,8 +42,10 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
     public void leProfesseurAssignéAuModuleDe(String arg0, String arg1) throws IOException {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
 
         Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
@@ -55,8 +59,10 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
     public void lÉlèveAssignéAuModuleDe(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
 
         Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
@@ -68,8 +74,10 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
     public void leProfesseurQuiNEstAssignéAAucunModule(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
     }
 
@@ -79,7 +87,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
         User prof2 = userRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()+"/participants/"+prof2.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + prof2.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie de retirer le professeur {string} au module {string}")
@@ -99,7 +107,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()+"/participants/"+user.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
 
@@ -128,7 +136,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
         assertFalse(module.getParticipants().contains(user));
     }
 
-    @Et("1le dernier status de request est {int}")
+    @Et("le dernier status de request est {int} aru")
     public void leDernierStatusDeRequestEst(int arg0) {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }

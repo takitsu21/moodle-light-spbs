@@ -9,6 +9,8 @@ import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
+import fr.uca.springbootstrap.models.*;
+import fr.uca.springbootstrap.repository.*;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
@@ -45,6 +47,7 @@ public class CoursesStepdefs extends SpringIntegration {
 
     @Autowired
     PasswordEncoder encoder;
+
 
     private Cours findCoursByNameInModule(Module module, String name) {
         for (Ressource cours : module.getRessources()) {

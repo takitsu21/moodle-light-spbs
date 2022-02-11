@@ -34,7 +34,7 @@ public class OpenQuestion extends Question {
         super(number, name, description);
         this.answers = answers;
         this.answerOpenQuestionSet = answerOpenQuestionSet;
-        this.possibleAnswers =  possibleAnswers;
+        this.possibleAnswers = possibleAnswers;
     }
 
 

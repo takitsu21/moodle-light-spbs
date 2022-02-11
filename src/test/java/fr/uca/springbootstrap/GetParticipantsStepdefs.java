@@ -51,8 +51,10 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     public void leProfesseurAssignéAuModuleDeGp(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
 
         Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
@@ -66,8 +68,10 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     public void leProfesseurQuiNAAucunModuleGp(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
     }
 
@@ -75,8 +79,10 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     public void lÉlèveEstAssignéAuCoursGp(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
 
         Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
@@ -90,8 +96,10 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     public void lÉlèveAssignéAAucunModuleGp(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
     }
 
@@ -100,7 +108,7 @@ public class GetParticipantsStepdefs extends SpringIntegration {
         User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/module/"+module.getId()+"/participants", jwt);
+        executeGet("http://localhost:8080/api/module/" + module.getId() + "/participants", jwt);
     }
 
     @Et("le dernier status de request est {int} gp")

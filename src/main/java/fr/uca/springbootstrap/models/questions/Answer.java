@@ -14,23 +14,40 @@ public class Answer {
     private long id;
 
     @NotBlank
-    @Size( max = 100 )
+    @Size(max = 100)
     private String answer;
 
+    @ManyToOne
+    private User student;
 
-    public Answer(){
+    public Answer() {
 
     }
 
-    public Answer(String answer){
+    public Answer(String content) {
+        this.answer=content;
+    }
+
+    public Answer(String answer, User user) {
+        this.answer=answer;
+        this.student=user;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
-
-
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
-
-    public String getAnswer() { return answer; }
-    public void setAnswer(String answer) { this.answer = answer; }
 
 }

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="ressource")
+@Table(name = "ressource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, length = 20)
 @DiscriminatorValue("ressource")
@@ -27,19 +27,13 @@ public abstract class Ressource {
     @NotBlank
     private String description;
 
-    private boolean visibility=false;
+    private boolean visibility = false;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "cours_ressources",
-//            joinColumns = @JoinColumn(name = "cours_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Cours> cours;
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(	name = "ressources_modules",
-//            joinColumns = @JoinColumn(name = "module_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-//    private Set<Module> modules;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "ressources_modules",
+            joinColumns = @JoinColumn(name = "ressource_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id"))
+    private Set<Module> modules = new HashSet<>();
 
     public Ressource() {
         this.num = 0;

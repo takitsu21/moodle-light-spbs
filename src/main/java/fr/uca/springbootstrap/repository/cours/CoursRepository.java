@@ -1,7 +1,6 @@
 package fr.uca.springbootstrap.repository.cours;
 
 import fr.uca.springbootstrap.models.Cours;
-import fr.uca.springbootstrap.models.Ressource;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

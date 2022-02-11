@@ -11,9 +11,11 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     Optional<Question> findByName(String name);
+
     Optional<Question> findById(long id);
 
     Boolean existsById(long id);
+
     Boolean existsByName(String name);
 
     List<Question> findAll();

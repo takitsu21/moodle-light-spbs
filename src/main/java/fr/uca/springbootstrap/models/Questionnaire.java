@@ -4,6 +4,7 @@ import fr.uca.springbootstrap.models.questions.Question;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,8 +25,8 @@ public class Questionnaire extends Ressource {
 
 
 
-    public Questionnaire(){
-        super();
+    public Questionnaire() {
+
     }
 
     public Questionnaire(String name, String description, int number){
@@ -34,9 +35,6 @@ public class Questionnaire extends Ressource {
         this.studentsGrades = new HashSet<>();
     }
 
-
-    public Set<Question> getQuestions() { return questions; }
-    public void setQuestions(Set<Question> questions) { this.questions = questions; }
 
     public void addQuestion(Question question) {
         questions.add(question);
@@ -49,6 +47,23 @@ public class Questionnaire extends Ressource {
     public int getNbQuestions() {
         return questions.size();
     }
+    public Question findQuestionByName(String arg1) {
+        for(Question question: questions){
+            if(Objects.equals(question.getName(), arg1)){
+                return question;
+            }
+        }
+        return null;
+    }
+
+    public boolean containsQuestion(String arg1) {
+        for(Question question: questions){
+            if(Objects.equals(question.getName(), arg1)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Set<GradesQuestionnaire> getStudentsGrades() {
         return studentsGrades;
@@ -56,5 +71,13 @@ public class Questionnaire extends Ressource {
 
     public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) {
         this.studentsGrades = studentsGrades;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
 }

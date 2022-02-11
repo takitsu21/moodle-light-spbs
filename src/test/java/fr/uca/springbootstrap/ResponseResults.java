@@ -1,12 +1,12 @@
 package fr.uca.springbootstrap;
 
 
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.client.ClientHttpResponse;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.http.client.ClientHttpResponse;
 
 public class ResponseResults {
     private final ClientHttpResponse theResponse;

@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class CoursRequest {
     @NotBlank
-    @Size(min=2, max=20)
+    @Size(min = 2, max = 20)
     private String name;
 
     @NotBlank

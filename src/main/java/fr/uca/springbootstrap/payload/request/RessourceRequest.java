@@ -7,16 +7,15 @@ import java.util.Set;
 
 public class RessourceRequest {
     @NotBlank
-    @Size(min=2, max=20)
+    @Size(min = 2, max = 20)
     private String name;
 
     @NotBlank
-    @Size(min=2, max=128)
+    @Size(min = 2, max = 128)
     private String description;
 
     @NotNull
     private Integer num;
-
 
 
     public String getName() {

@@ -26,7 +26,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GetModulesStepdefs extends SpringIntegration{
+public class GetModulesStepdefs extends SpringIntegration {
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -68,18 +68,18 @@ public class GetModulesStepdefs extends SpringIntegration{
     public void leProfesseurQuiNAAucunModuleGm(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
+        user.setRoles(new HashSet<Role>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
         userRepository.save(user);
     }
 
-    @Et("l'élève {string} est assigné au cours {string} gm")
+    @Et("l'élève {string} est assigné au module {string} gm")
     public void lÉlèveEstAssignéAuCoursGm(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
+        user.setRoles(new HashSet<Role>() {{
             add(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
@@ -96,7 +96,7 @@ public class GetModulesStepdefs extends SpringIntegration{
     public void lÉlèveAssignéAAucunModuleGm(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
+        user.setRoles(new HashSet<Role>() {{
             add(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
@@ -138,6 +138,7 @@ public class GetModulesStepdefs extends SpringIntegration{
 
         Gson gson = builder.create();
         Map<String, String> map = gson.fromJson(jsonString, Map.class);
+
         assertTrue(map.keySet().isEmpty());
     }
 
@@ -153,4 +154,5 @@ public class GetModulesStepdefs extends SpringIntegration{
 
         assertTrue(map.containsValue(arg0));
     }
+
 }

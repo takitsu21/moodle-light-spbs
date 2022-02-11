@@ -2,6 +2,7 @@ package fr.uca.springbootstrap.payload.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class QuestionRequest {
 
