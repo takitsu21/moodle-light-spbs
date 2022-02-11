@@ -315,6 +315,17 @@ public class ModuleController {
 
 	}
 
+
+	private Cours findCoursByNameInModule(Module module, String name) {
+		for (Ressource cours : module.getRessources()) {
+			if (cours.getName().equalsIgnoreCase(name)) {
+				return (Cours) cours;
+			}
+		}
+		return null;
+	}
+
+
 	@GetMapping("/{module_id}/questionnaire/{questionnaire_id}")
 	public ResponseEntity<?> getQuestionnaire(Principal principal,
 											  @PathVariable("module_id") long module_id,
@@ -361,15 +372,6 @@ public class ModuleController {
 		return new ResponseEntity<>(questionnaire, HttpStatus.OK);
 	}
 
-
-	private Cours findCoursByNameInModule(Module module, String name) {
-		for (Ressource cours : module.getRessources()) {
-			if (cours.getName().equalsIgnoreCase(name)) {
-				return (Cours) cours;
-			}
-		}
-		return null;
-	}
 
 	@PostMapping("{module_id}/questionnaire")
 	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
