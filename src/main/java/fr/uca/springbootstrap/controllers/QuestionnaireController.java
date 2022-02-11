@@ -1,8 +1,11 @@
 package fr.uca.springbootstrap.controllers;
 
+import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
+import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
+import fr.uca.springbootstrap.payload.request.QCMRequest;
 import fr.uca.springbootstrap.payload.request.QuestionRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
@@ -80,34 +83,52 @@ public class QuestionnaireController {
 
 
     @PostMapping("/{questionnaire_id}/qcm")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addQcm(Principal principal,
-                                         @Valid @RequestBody QuestionRequest questionRequest,
-                                         @PathVariable("module_id") long module_id,
-                                         @PathVariable("questionnaire_id") long questionnaire_id) {
-        if (questionRepository.existsByName(questionRequest.getName())) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: Question already exists."));
-        }
-        else if (!userRepository.existsByUsername(principal.getName())) {
+                                    @Valid @RequestBody QCMRequest qcmRequest,
+                                    @PathVariable("module_id") long module_id,
+                                    @PathVariable("questionnaire_id") long questionnaire_id) {
+
+        if (!userRepository.existsByUsername(principal.getName())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
         }
+        else if (!questionnaireRepository.existsById(questionnaire_id)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Questionnaire does not exist."));
+        }
+        else if (!moduleRepository.existsById(module_id)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Module does not exist."));
+        }
+
+        Module module = moduleRepository.findById(module_id).get();
+        User user = userRepository.findByUsername(principal.getName()).get();
+        if (!module.containsParticipant(user)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not belong to this module."));
+        }
+
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
-        Question question = new QCM(questionRequest.getNumber(), questionRequest.getName(), questionRequest.getDescription());
+        QCM question = new QCM(qcmRequest.getNumber(), qcmRequest.getName(), qcmRequest.getDescription());
+        if (questionnaire.getQuestions().contains(question)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: question already exists in the questionnaire."));
+        }
+
+        questionRepository.save(question);
         questionnaire.addQuestion(question);
         questionnaireRepository.save(questionnaire);
-        questionRepository.save(question);
-
         return ResponseEntity.ok(new MessageResponse("Question successfully added."));
     }
 
-    @DeleteMapping("/{questionnaire_id}/qcm/{question_id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> removeQcm(Principal principal,
+    @DeleteMapping("/{questionnaire_id}/question/{question_id}")
+    @PreAuthorize("hasRole('TEACHER')")
+    public ResponseEntity<?> removeQuestion(Principal principal,
                                             @PathVariable("module_id") long module_id,
                                             @PathVariable("questionnaire_id") long questionnaire_id,
                                             @PathVariable("question_id") long question_id) {
+
         if (!userRepository.existsByUsername(principal.getName())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
@@ -116,9 +137,21 @@ public class QuestionnaireController {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Question does not exist."));
         }
+        else if (!moduleRepository.existsById(module_id)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Module does not exist."));
+        }
+
+        Module module = moduleRepository.findById(module_id).get();
+        User user = userRepository.findByUsername(principal.getName()).get();
+        if (!module.containsParticipant(user)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not belong to this module."));
+        }
 
         Question question = questionRepository.findById(question_id).get();
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
+
         questionnaire.removeQuestion(question);
         questionRepository.delete(question);
         questionnaireRepository.save(questionnaire);

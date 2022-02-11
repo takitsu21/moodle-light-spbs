@@ -68,12 +68,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     public void leQuestionnaireDansLeModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
         Questionnaire questionnaire = questionnaireRepository.findByName(arg0).get();
-//        Questionnaire questionnaire = null;
-//        for (Ressource ressource : module.getRessources()) {
-//            if (ressource.getName().equalsIgnoreCase(arg0)) {
-//                questionnaire = (Questionnaire) ressource;
-//            }
-//        }
 
         module.addRessource(questionnaire);
         moduleRepository.save(module);
@@ -84,8 +78,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Module module = moduleRepository.findByName(arg0).get();
         User teacher = userRepository.findByUsername(arg1).get();
 
-//        teacher.getModules().add(module);
-//        userRepository.save(teacher);
         module.getParticipants().add(teacher);
         moduleRepository.save(module);
     }
@@ -107,6 +99,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
                 jwtTeacher);
     }
 
+
     @Et("le questionnaire {string} est dans le module {string}")
     public void leQuestionnaireEstDansLeModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
@@ -119,13 +112,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         assertTrue(module.containsRessource(questionnaire));
     }
 
-//    @Et("le module {string} est connu du questionnaire {string}")
-//    public void leModuleEstConnuDuQuestionnaire(String arg0, String arg1) {
-//        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).get();
-//        Module module = moduleRepository.findByName(arg0).get();
-//
-//        assertTrue(questionnaire.getModules().contains(module));
-//    }
 
     @Et("le questionnaire {string} n'est pas dans le module {string}")
     public void leQuestionnaireNEstPasDansLeModule(String arg0, String arg1) {
@@ -140,13 +126,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         assertFalse(module.containsRessource(questionnaire));
     }
 
-//    @Et("le module {string} n'est pas connu du questionnaire {string}")
-//    public void leModuleNEstPasConnuDuQuestionnaire(String arg0, String arg1) {
-//        Module module = moduleRepository.findByName(arg0).get();
-//        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).get();
-//
-//        assertFalse(questionnaire.getModules().contains(module));
-//    }
 
     @Quand("l'enseignant {string} veut supprimer le questionnaire {string} du module {string}")
     public void lEnseignantVeutSupprimerLeQuestionnaireDuModule(String arg0, String arg1, String arg2) throws IOException {
@@ -162,11 +141,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     public void leQuestionnaireSoitDansLeModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
         Questionnaire questionnaire = questionnaireRepository.findByName(arg0).get();
-//        for (Ressource ressource : module.getRessources()) {
-//            if (ressource.getName().equalsIgnoreCase(arg0)) {
-//                questionnaire = (Questionnaire) ressource;
-//            }
-//        }
         module.getRessources().add(questionnaire);
         moduleRepository.save(module);
     }
@@ -176,7 +150,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Module module = moduleRepository.findByName(arg1).get();
         User teacher = userRepository.findByUsername(arg0).get();
         module.getParticipants().add(teacher);
-//        teacher.getModules().add(module);
         moduleRepository.save(module);
     }
 

@@ -20,7 +20,6 @@ public class QCM extends Question {
     private Answer answer;
 
     @ManyToMany
-
     @JoinTable(name = "student_answer_qcm",
             joinColumns = @JoinColumn(name = "qcm"),
             inverseJoinColumns = @JoinColumn(name = "student_answer"))
