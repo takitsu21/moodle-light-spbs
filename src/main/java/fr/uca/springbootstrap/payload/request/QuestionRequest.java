@@ -17,6 +17,12 @@ public class QuestionRequest {
     @Size(max = 120)
     private String description;
 
+    public QuestionRequest(String arg4, String description, int number) {
+        this.number=number;
+        this.description=description;
+        this.name=arg4;
+    }
+
     public int getNumber() {
         return number;
     }

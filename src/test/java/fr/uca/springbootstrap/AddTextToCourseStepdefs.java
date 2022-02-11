@@ -6,6 +6,8 @@ import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.payload.request.MyText;
 import fr.uca.springbootstrap.payload.request.TextRequest;
 import fr.uca.springbootstrap.repository.*;
+import fr.uca.springbootstrap.repository.cours.CoursRepository;
+import fr.uca.springbootstrap.repository.cours.TextRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;

@@ -26,6 +26,8 @@ public class Questionnaire extends Ressource {
 
     public Questionnaire() {
 
+    }
+
     public Questionnaire(String name, String description, Integer num) {
         super(name, description, num);
     }
@@ -43,12 +45,9 @@ public class Questionnaire extends Ressource {
         this.questions = questions;
     }
 
-    public Set<GradesQuestionnaire> getStudentsGrades() { return studentsGrades; }
-
     public void addQuestion(Question question) {
         questions.add(question);
     }
-    public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) { this.studentsGrades = studentsGrades; }
 
     public void removeQuestion(Question question) {
         questions.remove(question);

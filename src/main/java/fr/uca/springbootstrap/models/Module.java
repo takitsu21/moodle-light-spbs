@@ -27,14 +27,6 @@ public class Module {
             inverseJoinColumns = @JoinColumn(name = "ressource_id"))
     private Set<Ressource> ressources = new HashSet<>();
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Module() {
     }
 
@@ -93,14 +85,6 @@ public class Module {
             }
         }
         return false;
-    }
-
-    public Set<Ressource> getRessources() {
-        return ressources;
-    }
-
-    public void setRessources(Set<Ressource> ressources) {
-        this.ressources = ressources;
     }
 
     public Long getId() {

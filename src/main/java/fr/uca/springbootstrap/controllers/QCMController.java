@@ -10,6 +10,7 @@ import fr.uca.springbootstrap.payload.request.MyAnswer;
 import fr.uca.springbootstrap.payload.request.MyText;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
+import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import fr.uca.springbootstrap.repository.question.AnswerQCMRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.QCMRepository;
@@ -273,7 +274,7 @@ public class QCMController {
         Module module = omodule.get();
         User user = ouser.get();
 
-        if (!module.getParticipants().contains(user) && !user.hasTeacher()) {
+        if (!module.getParticipants().contains(user) && !user.isTeacher()) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: You are not allowed!"));

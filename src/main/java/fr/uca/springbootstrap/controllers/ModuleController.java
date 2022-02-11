@@ -4,7 +4,6 @@ import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.payload.request.ModuleRequest;
 import fr.uca.springbootstrap.payload.request.MyText;
-import fr.uca.springbootstrap.payload.request.RessourceRequest;
 import fr.uca.springbootstrap.payload.request.TextRequest;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.CodeRunner;
@@ -56,9 +55,6 @@ public class ModuleController {
     TextRepository textRepository;
 	@Autowired
 	QuestionnaireRepository questionnaireRepository;
-
-	@Autowired
-	TextRepository textRepository;
 
 	@Autowired
 	AnswerRepository answerRepository;
