@@ -36,12 +36,10 @@ public class Questionnaire extends Ressource {
 
     public void addQuestion(Question question) {
         questions.add(question);
-        question.setQuestionnaire(this);
     }
 
     public void removeQuestion(Question question) {
         questions.remove(question);
-//        question.setQuestionnaire(null); //pas sûr de ça, si le GB s'en charge de toute façon
     }
 
     public int getNbQuestions() {
