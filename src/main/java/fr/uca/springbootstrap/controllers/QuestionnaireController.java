@@ -257,7 +257,7 @@ public class QuestionnaireController {
         return ResponseEntity.ok(notes);
     }
 
-    @GetMapping("/{questionnaire_id}")
+    @GetMapping("/{questionnaire_id}/grades")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> getGrades(Principal principal,
                                                  @PathVariable("module_id") long moduleId,
