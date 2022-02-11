@@ -94,10 +94,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
                 orElse(new Module(arg1));
 
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg0, "Description "+arg0, 1);
-        }
 
+        if (questionnaire==null){
+            questionnaire=new Questionnaire(arg0, "Description "+arg0,1);
+        }
         questionnaireRepository.save(questionnaire);
 
         Questionnaire finalQuestionnaire = questionnaire;
@@ -107,90 +107,26 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         moduleRepository.save(module);
     }
 
-    @Et("une question QCM d'identifiant {int} et de nom {string} et de description {string} et le numéro {int} appartenant au questionnaire {string} tmdqd")
-    public void uneQuestionQCMDIdentifiantEtDeNomEtDeDescriptionEtLeNuméroAppartenantAuQuestionnaireTmdqd(int arg0, String arg1, String arg2, int arg3, String arg4) {
-        Module module = moduleRepository.findByName(arg1).
-                orElse(new Module(arg1));
+    @Et("une question QCM de nom {string} et de description {string} et de numéro {int} appartenant au questionnaire {string} tmdqd")
+    public void uneQuestionQCMDeNomEtDeDescriptionAppartenantAuQuestionnaireTmdqd(String arg0, String arg1, int arg2 ,String arg3) {
+        // Question
+        QCM question = qcmRepository.findByName(arg0).
+                orElse(new QCM(arg2, arg0, arg1));
+        questionRepository.save(question);
 
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg4);
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg4, "Description "+arg4, 1);
-        }
+        // Questionnaire
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg3).
+                orElse(new Questionnaire(arg3, "Description "+arg3,1));
 
-        QCM question = (QCM) questionnaire.findQuestionByName(arg1);
-
-        if (question==null){
-            question=new QCM(arg3, arg1, arg2);
-        }
-
-        qcmRepository.save(question);
-
-        QCM finalQuestion = question;
-        questionnaire.setQuestions(new HashSet<>(){{
-            add(finalQuestion);
-        }});
-//        questionnaire.getQuestions().add(question);
+        questionnaire.getQuestions().add(question);
         questionnaireRepository.save(questionnaire);
     }
 
-    @Quand("Le professeur {string} veut supprimer la question {string} du questionnaire {string} du module {string} tmdqe")
-    public void leProfesseurVeutSupprimerLaQuestionDuQuestionnaireDuModuleTmdqe(String arg0, String arg1, String arg2, String arg3) throws IOException {
+    @Quand("Le professeur {string} veut modifier le nom de la question de numéro {int} du questionnaire {string} du module {string} par {string} tmdqk")
+    public void leProfesseurVeutModifierLeNomDeLaQuestionDeNuméroDuQuestionnaireDuModuleParTmdqk(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
+        Question question = questionRepository.findByNumber(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
-
-        Question question = questionnaire.findQuestionByName(arg1);
-
-
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/module/"
-                +module.getId()+"/questionnaire/"
-                +questionnaire.getId()+"/question/"+question.getId(), jwTeacher);
-    }
-
-    @Alors("le status de la dernière requète est {int} tmdqf")
-    public void leStatusDeLaDernièreRequèteEstTmdqf(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
-    @Et("la question {string} n'existe plus tmdqg")
-    public void laQuestionNExistePlusTmdqg(String arg0) {
-        assertFalse(moduleRepository.existsByName(arg0));
-    }
-
-
-    @Quand("Le professeur {string} veut supprimer la question {string} du questionnaire {string} du module {string} tmdqh")
-    public void leProfesseurVeutSupprimerLaQuestionDuQuestionnaireDuModuleTmdqh(String arg0, String arg1, String arg2, String arg3) throws IOException {
-        Module module = moduleRepository.findByName(arg3).get();
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
-
-        Question question = questionnaire.findQuestionByName(arg1);
-
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()+"/questionnaire/"+questionnaire.getId()+"question/delete/"+question.getId(), jwTeacher);
-    }
-
-
-    @Alors("le dernier status de réponse est {int} tmdqi")
-    public void leDernierStatusDeRéponseEstTmdqi(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
-
-    @Et("la question {string} existe tmdqj")
-    public void laQuestionExisteTmdqj(String arg0) {
-        assertTrue(moduleRepository.existsByName(arg0));
-    }
-
-    @Quand("Le professeur {string} veut modifier le nom de la question d'identifiant {int} du questionnaire {string} du module {string} par {string} tmdqk")
-    public void leProfesseurVeutModifierLeNomDeLaQuestionDIdentifiantDuQuestionnaireDuModuleParTmdqk(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
-        Module module = moduleRepository.findByName(arg3).get();
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
-
-        Question question = questionRepository.findById(arg1).get();
-
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/"+module.getId()
@@ -212,18 +148,16 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertEquals(arg1, question.getName());
     }
 
-    @Quand("Le professeur {string} veut modifier le nom de la question d'identifant {int} du questionnaire {string} du module {string} par {string} tmdqn")
-    public void leProfesseurVeutModifierLeNomDeLaQuestionDIdentifantDuQuestionnaireDuModuleParTmdqn(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
+    @Quand("Le professeur {string} veut modifier le nom de la question de numéro {int} du questionnaire {string} du module {string} par {string} tmdqn")
+    public void leProfesseurVeutModifierLeNomDeLaQuestionDeNuméroDuQuestionnaireDuModuleParTmdqn(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
+        Question question = questionRepository.findByNumber(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
-
-        Question question = questionRepository.findById(arg1).get();
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/"+module.getId()
-                +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/name",
+                        +"/questionnaire/"+questionnaire.getId()
+                        +"/question/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
                         question.getNumber()), jwTeacher);
     }
@@ -239,16 +173,16 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         assertEquals(arg1, question.getName());
     }
 
-@Quand("Le professeur {string} veut modifier la description de la question {string} du questionnaire {string} du module {string} par {string} tmdqq")
-public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuModuleParTmdqq(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
-    Question question = questionRepository.findByName(arg1).get();
-    Module module = moduleRepository.findByName(arg3).get();
-    Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+    @Quand("Le professeur {string} veut modifier la description de la question {string} du questionnaire {string} du module {string} par {string} tmdqq")
+    public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuModuleParTmdqq(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
+        Question question = questionRepository.findByName(arg1).get();
+        Module module = moduleRepository.findByName(arg3).get();
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
-    String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-    executePost("http://localhost:8080/api/module/"+module.getId()
-            +"/questionnaire/"+questionnaire.getId()
-            +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
+        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        executePost("http://localhost:8080/api/module/"+module.getId()
+                +"/questionnaire/"+questionnaire.getId()
+                +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
     }
 
@@ -267,7 +201,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuMo
     public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuModuleParTmdqt(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
         Question question = questionRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/"+module.getId()
@@ -290,7 +224,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuMo
     public void leProfesseurVeutModifierLeNuméroDeLaQuestionDeNomDuQuestionnaireDuModuleParTmdqw(String arg0, String arg1, String arg2, String arg3, int arg4) throws IOException {
         Question question = questionRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/"+module.getId()
@@ -313,7 +247,7 @@ public void leProfesseurVeutModifierLaDescriptionDeLaQuestionDuQuestionnaireDuMo
     public void leProfesseurVeutModifierLeNuméroDeLaQuestionDuQuestionnaireDuModuleParTmdqz(String arg0, String arg1, String arg2, String arg3, int arg4) throws IOException {
         Question question = questionRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePost("http://localhost:8080/api/module/"+module.getId()
