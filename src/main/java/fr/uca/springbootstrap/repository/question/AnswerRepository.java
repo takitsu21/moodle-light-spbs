@@ -12,8 +12,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Optional<Answer> findById(long id);
 
-    Optional<Answer> findByAnswer(String answer);
-
     Boolean existsById(long id);
 
     Boolean existsByAnswer(String Answer);

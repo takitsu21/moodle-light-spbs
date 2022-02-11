@@ -143,8 +143,11 @@ public class OpenQuestionModificationTest extends SpringIntegration {
                     arg0, "Descritpion "+arg0, 1 );
         }
 
-        Answer answer1 = answerRepository.findByAnswer(arg3).get();
-        Answer answer2 = answerRepository.findByAnswer(arg4).get();
+        Answer answer1 = new Answer(arg3);
+        answerRepository.save(answer1);
+
+        Answer answer2 = new Answer(arg4);
+        answerRepository.save(answer2);
 
         question.addAnswer(answer1);
         question.addAnswer(answer2);
