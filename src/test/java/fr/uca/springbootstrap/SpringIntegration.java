@@ -55,7 +55,17 @@ public class SpringIntegration {
         latestHttpResponse = httpClient.execute(request);
     }
 
-    public void executePutWithBody(String url, Object entity, String jwt) throws IOException {
+    public void executePut(String url, String jwt) throws IOException {
+        HttpPut request = new HttpPut(url);
+        request.addHeader("content-type", "application/json");
+        if (jwt != null) {
+            request.addHeader("Authorization", "Bearer " + jwt);
+        }
+        request.setEntity(new StringEntity("{}"));
+        latestHttpResponse = httpClient.execute(request);
+    }
+
+    public void executePut(String url, Object entity, String jwt) throws IOException {
         HttpPut request = new HttpPut(url);
         request.addHeader("content-type", "application/json");
         ObjectMapper ObjMapper = new ObjectMapper();
