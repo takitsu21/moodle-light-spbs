@@ -18,9 +18,11 @@ public class Questionnaire extends Ressource {
 
     @OneToMany
     @JoinTable(name = "students_grades",
-            joinColumns = @JoinColumn(name = "questionnaire"),
-            inverseJoinColumns = @JoinColumn(name = "grades"))
+            joinColumns = @JoinColumn(name = "questionnaire_id"),
+            inverseJoinColumns = @JoinColumn(name = "grades_id"))
     private Set<GradesQuestionnaire> studentsGrades = new HashSet<>();
+
+
 
     public Questionnaire(){
         super();
@@ -44,5 +46,13 @@ public class Questionnaire extends Ressource {
 
     public int getNbQuestions() {
         return questions.size();
+    }
+
+    public Set<GradesQuestionnaire> getStudentsGrades() {
+        return studentsGrades;
+    }
+
+    public void setStudentsGrades(Set<GradesQuestionnaire> studentsGrades) {
+        this.studentsGrades = studentsGrades;
     }
 }

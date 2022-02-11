@@ -1,5 +1,7 @@
 package fr.uca.springbootstrap.models.questions;
 
+import fr.uca.springbootstrap.models.Questionnaire;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
