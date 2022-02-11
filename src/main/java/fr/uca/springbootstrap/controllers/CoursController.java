@@ -81,12 +81,12 @@ public class CoursController {
                     .badRequest()
                     .body(new MessageResponse("Error: You are not allowed to add courses!"));
         }
-        for (Ressource coursRessource : module.getRessources()) {
-            if (coursRessource.getName().equalsIgnoreCase(coursRequest.getName())) {
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: this course already exists!"));
-            }
-        }
         Cours cours = new Cours(coursRequest.getName(), coursRequest.getDescription(), coursRequest.getNum());
+
+        if (module.containsRessourceByName(cours)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: this course already exists!"));
+        }
+
 
         coursRepository.save(cours);
         module.getRessources().add(cours);

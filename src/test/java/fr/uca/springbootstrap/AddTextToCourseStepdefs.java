@@ -118,7 +118,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
         MyText text = new MyText(arg1, arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours/" + cours.getId(),
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/cours/" + cours.getId(),
                 new TextRequest(text), jwt);
     }
 

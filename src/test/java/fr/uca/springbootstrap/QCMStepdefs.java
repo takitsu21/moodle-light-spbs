@@ -14,7 +14,6 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -141,7 +140,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/QCM/" + module.getId() + "/questionnaire/" + ressource.getId()+"/QCM/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
+        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
     }
 
     @Et("le dernier status de request est {int} qcm")
@@ -167,7 +166,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/QCM/" + module.getId() + "/questionnaire/" + ressource.getId()+"/QCM/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
+        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
     }
 
     @Alors("la bonne reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -188,7 +187,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/QCM/" + module.getId() + "/questionnaire/" + ressource.getId()+"/QCM/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
+        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
 
     }
 

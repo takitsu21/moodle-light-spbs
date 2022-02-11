@@ -170,7 +170,7 @@ public class QuestionnaireController {
         return ResponseEntity.ok(new MessageResponse("Question successfully removed."));
     }
 
-    @PostMapping("/{questionnaire_id}/submit")
+    @PostMapping("/{questionnaire_id}")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> submitQuestionnaire(Principal principal,
                                                  @PathVariable("module_id") long moduleId,

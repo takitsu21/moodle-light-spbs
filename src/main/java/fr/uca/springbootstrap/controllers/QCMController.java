@@ -30,7 +30,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/QCM")
+@RequestMapping("/api/qcm")
 public class QCMController {
 
     @Autowired
@@ -95,13 +95,13 @@ public class QCMController {
     //public ResponseEntity<?> setPossibleAnswers(Set<Answers> possibleAnswers);
 
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/possible_answer")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addPossibleAnswers(Principal principal,
                                                 @Valid @RequestBody AnswersRequest answerRequest,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
-                                                @PathVariable("QCM_id") long QCMId) {
+                                                @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<User> ouser = userRepository.findByUsername(principal.getName());
@@ -161,12 +161,12 @@ public class QCMController {
     //public ResponseEntity<?> removePossibleAnswers(long answer_id);
     //public ResponseEntity<?> removePossibleAnswers(String answers);
 
-    @DeleteMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/possible_answer/{answer_id}")
+    @DeleteMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer/{answer_id}")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removePossibleAnswers(Principal principal,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
-                                                @PathVariable("QCM_id") long QCMId,
+                                                @PathVariable("qcm_id") long QCMId,
                                                 @PathVariable("answer_id") long answerId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
@@ -231,12 +231,12 @@ public class QCMController {
 
     //public ResponseEntity<?> setStudentAnswer(long id_answer)
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/student_answer")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/student_answer")
     public ResponseEntity<?> addStudentAnswers(Principal principal,
                                                 @Valid @RequestBody MyAnswer answer,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
-                                                @PathVariable("QCM_id") long QCMId) {
+                                                @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<User> ouser = userRepository.findByUsername(principal.getName());
@@ -297,12 +297,12 @@ public class QCMController {
         return ResponseEntity.ok(new MessageResponse("Answer successfully added to the QCM!"));
     }
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/QCM/{QCM_id}/good_answer")
+    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/good_answer")
     public ResponseEntity<?> setAnswer(Principal principal,
                                                @Valid @RequestBody MyAnswer answer,
                                                @PathVariable("module_id") long moduleId,
                                                @PathVariable("questionnaire_id") long questionnaireId,
-                                               @PathVariable("QCM_id") long QCMId) {
+                                               @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<User> ouser = userRepository.findByUsername(principal.getName());

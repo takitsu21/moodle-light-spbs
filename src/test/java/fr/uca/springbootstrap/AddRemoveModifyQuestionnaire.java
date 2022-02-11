@@ -94,7 +94,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/questionnaire",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/questionnaire",
                 new QuestionnaireRequest(arg1, "Plein de questions", 5),
                 jwtTeacher);
     }
@@ -109,7 +109,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
                 questionnaire = (Questionnaire) ressource;
             }
         }
-        assertTrue(module.containsRessource(questionnaire));
+        assertTrue(module.containsRessourceById(questionnaire));
     }
 
 
@@ -123,7 +123,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
                 questionnaire = (Questionnaire) ressource;
             }
         }
-        assertFalse(module.containsRessource(questionnaire));
+        assertFalse(module.containsRessourceById(questionnaire));
     }
 
 

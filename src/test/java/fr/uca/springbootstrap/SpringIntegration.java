@@ -3,10 +3,7 @@ package fr.uca.springbootstrap;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.spring.CucumberContextConfiguration;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -15,10 +12,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.io.IOException;
 
 
 @CucumberContextConfiguration
@@ -48,7 +42,7 @@ public class SpringIntegration {
         latestHttpResponse = httpClient.execute(request);
     }
 
-    public void executePostWithBody(String url, Object entity, String jwt) throws IOException {
+    public void executePost(String url, Object entity, String jwt) throws IOException {
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
         ObjectMapper ObjMapper = new ObjectMapper();
