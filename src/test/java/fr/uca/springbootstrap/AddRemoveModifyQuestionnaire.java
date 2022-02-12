@@ -54,18 +54,28 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
                 .orElse(new Module(arg0));
         moduleRepository.save(module);
     }
+    @Et("le questionnaire {string} du module {string}")
+    public void leQuestionnaireDuModule(String arg0, String arg1) {
+        Module module = moduleRepository.findByName(arg1)
+                .orElse(new Module(arg0));
 
-    @Et("le questionnaire {string}")
-    public void leQuestionnaire(String arg0) {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg0).
-                orElse(new Questionnaire(arg0, "Questionnaire", 1));
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
+
+        if (questionnaire==null){
+            questionnaire=new Questionnaire(arg0, "Questionnaire", 1);
+        }
+
+
         questionnaireRepository.save(questionnaire);
+        module.getRessources().add(questionnaire);
+        moduleRepository.save(module);
     }
+
 
     @Et("le questionnaire {string} dans le module {string}")
     public void leQuestionnaireDansLeModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg0).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
 
         module.addRessource(questionnaire);
         moduleRepository.save(module);
@@ -101,13 +111,8 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     @Et("le questionnaire {string} est dans le module {string}")
     public void leQuestionnaireEstDansLeModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-        Questionnaire questionnaire = null;
-        for (Ressource ressource : module.getRessources()) {
-            if (ressource.getName().equalsIgnoreCase(arg0)) {
-                questionnaire = (Questionnaire) ressource;
-            }
-        }
-        assertTrue(module.containsRessourceById(questionnaire));
+
+        assertTrue(module.containsRessource(arg0));
     }
 
 
@@ -115,20 +120,15 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     public void leQuestionnaireNEstPasDansLeModule(String arg0, String arg1) {
 //        Questionnaire questionnaire = questionnaireRepository.findByName(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
-        Questionnaire questionnaire = null;
-        for (Ressource ressource : module.getRessources()) {
-            if (ressource.getName().equalsIgnoreCase(arg0)) {
-                questionnaire = (Questionnaire) ressource;
-            }
-        }
-        assertFalse(module.containsRessourceById(questionnaire));
+
+        assertFalse(module.containsRessource(arg0));
     }
 
 
     @Quand("l'enseignant {string} veut supprimer le questionnaire {string} du module {string}")
     public void lEnseignantVeutSupprimerLeQuestionnaireDuModule(String arg0, String arg1, String arg2) throws IOException {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
         executeDelete("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
@@ -138,7 +138,14 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     @Etantdonnéque("le questionnaire {string} soit dans le module {string}")
     public void leQuestionnaireSoitDansLeModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg0).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
+
+        if (questionnaire==null){
+            questionnaire=new Questionnaire(arg0, "Questionnaire", 1);
+        }
+
+        questionnaireRepository.save(questionnaire);
+
         module.getRessources().add(questionnaire);
         moduleRepository.save(module);
     }
@@ -155,4 +162,5 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     public void laRéponseEst(int arg0) {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
+
 }

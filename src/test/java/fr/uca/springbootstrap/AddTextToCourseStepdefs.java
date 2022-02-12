@@ -101,7 +101,6 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
     public void leProfesseurRetireUnTextALaRessourceDuModule(String arg0, int arg1, String arg2, String arg3) throws IOException {
         User prof = userRepository.findByUsername(arg0).get();
         Cours cours = coursRepository.findByName(arg2).get();
-        System.out.println(cours.containsText(arg1));
         Text text = cours.getText(arg1);
         Module module = moduleRepository.findByName(arg3).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);

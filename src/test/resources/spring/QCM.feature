@@ -6,7 +6,9 @@ Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité 
   Contexte:
     Etant donné le professeur "Paul" assigné au module de "Maths" avec un questionnaire "Exam" visible qcm
     Et le questionnaire "Exam" du module "Maths" a un QCM "Q1" qcm
+    Et le questionnaire "Exam" du module "Maths" a un QCM "Q2" qcm
     Et le QCM "Q1" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" qcm
+    Et le QCM "Q2" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" qcm
     Et l'élève "Batiste" assigné au module de "Maths" qcm
 
   Scénario: Le professeur "Paul" ajoute une reponse
@@ -25,4 +27,10 @@ Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité 
     Quand L élève "Batiste" essaie d'ajouter ça reponse "oui" au QCM "Q1" du questionnaire "Exam" du module "Maths"
     Et le dernier status de request est 200 qcm
     Alors la reponse de l'étudiant "Batiste" est "oui" est dans le QCM "Q1" du questionnaire "Exam" du module "Maths"
+    Et les tables sont videes
+
+  Scénario: L'élève "Batiste" ajoute une reponse pas valable
+    Quand L élève "Batiste" essaie d'ajouter ça reponse "coucou" au QCM "Q2" du questionnaire "Exam" du module "Maths"
+    Et le dernier status de request est 400 qcm
+    Alors "Batiste" n a pas de reponse de l'étudiant au QCM "Q2" du questionnaire "Exam" du module "Maths"
     Et les tables sont videes

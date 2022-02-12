@@ -153,7 +153,6 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 
         Module module = moduleRepository.findByName(arg5).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        System.out.println(module.getRessources());
         Questionnaire questionnaire = new Questionnaire(
                 arg6,
                 "Test d'un code runner",
