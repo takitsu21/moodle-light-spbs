@@ -47,7 +47,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> deleteQuestionById(@PathVariable long id){
 
 
@@ -65,7 +65,7 @@ public class QuestionController {
 
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/name")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> setName(Principal principal,
                                     @Valid @RequestBody QuestionRequest questionRequest,
                                      @PathVariable("module_id") long module_id,
@@ -123,7 +123,7 @@ public class QuestionController {
     }
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/description")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> setDescription(Principal principal,
                                             @Valid @RequestBody QuestionRequest questionRequest,
                                             @PathVariable("module_id") long module_id,
@@ -172,7 +172,7 @@ public class QuestionController {
     }
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/number")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> setNumber(Principal principal,
                                      @Valid @RequestBody QuestionRequest questionRequest,
                                      @PathVariable("module_id") long module_id,

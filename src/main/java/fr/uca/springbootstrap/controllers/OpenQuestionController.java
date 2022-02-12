@@ -68,7 +68,7 @@ public class OpenQuestionController {
     }
 
     @GetMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/answers")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> getAnswers(@PathVariable("question_id") long question_id){
         if(!openQuestionRepository.existsById(question_id)){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such Open Question!"));
@@ -79,7 +79,7 @@ public class OpenQuestionController {
     }
 
     @GetMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/student_answers/{student_id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> getStudentAnswers(Principal principal,
                                                 @PathVariable("module_id") long module_id,
                                                 @PathVariable("questionnaire_id") long questionnaire_id,
@@ -133,7 +133,7 @@ public class OpenQuestionController {
     ///////////////// Delete Mapping
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/possible_answer/{possible_answer_id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> deletePossibleAnswer(Principal principal,
                                                   @PathVariable("module_id") long module_id,
                                                   @PathVariable("questionnaire_id") long questionnaire_id,
@@ -193,7 +193,7 @@ public class OpenQuestionController {
     }
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/answers/{answer_id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> deleteAnswer(Principal principal,
                                           @PathVariable("module_id") long module_id,
                                           @PathVariable("questionnaire_id") long questionnaire_id,
@@ -315,7 +315,7 @@ public class OpenQuestionController {
     ///////////// Put Mapping
 
     @PutMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/possible_answer")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addPossibleAnswer(Principal principal,
                                                  @Valid @RequestBody AnswerRequest answerRequest,
                                                  @PathVariable("module_id") long module_id,
@@ -368,7 +368,7 @@ public class OpenQuestionController {
     }
 
     @PutMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/answer/{answer_id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addAnswer(Principal principal,
                                        @Valid @RequestBody AnswerRequest answerRequest,
                                        @PathVariable("module_id") long module_id,
@@ -476,60 +476,5 @@ public class OpenQuestionController {
         openQuestionRepository.save(question);
         return ResponseEntity.ok(new MessageResponse("New student answer created"));
     }
-
-    ///////////// Post Mapping
-
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/possible_answer/{answer_id}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> modifyPossibleAnswer(Principal principal,
-                                               @Valid @RequestBody MyAnswer myAnswer,
-                                               @PathVariable("module_id") long module_id,
-                                               @PathVariable("questionnaire_id") long questionnaire_id,
-                                               @PathVariable("question_id") long question_id,
-                                                  @PathVariable("answer_id") long answer_id){
-
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
-        Optional<Module> optionalModule = moduleRepository.findById(module_id);
-        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
-        Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
-
-        if(optionalTeacher.isEmpty()){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such teacher!"));
-        }
-        if(optionalModule.isEmpty()){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such module!"));
-        }
-        if(optionalQuestionnaire.isEmpty()){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such questionnaire!"));
-        }
-        if(optionalQuestion.isEmpty()){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
-        }
-
-        User teacher = optionalTeacher.get();
-        Module module = optionalModule.get();
-        Questionnaire questionnaire = optionalQuestionnaire.get();
-        OpenQuestion question = optionalQuestion.get();
-
-        if (!module.getParticipants().contains(teacher)){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: the user doesn't have the module!"));
-        }
-        if (!module.getRessources().contains(questionnaire)){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: the module does not contains the questionnaire!"));
-        }
-        if (!questionnaire.getQuestions().contains(question)){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: the questionnaire does not contains the question!"));
-        }
-
-
-        Answer answer = question.getPossibleAnswerById(answer_id);
-        answer.setAnswer(myAnswer.getContent());
-
-        openQuestionRepository.save(question);
-        return ResponseEntity.ok(new MessageResponse("Possible answers modify created"));
-
-    }
-
-
 
 }
