@@ -63,10 +63,9 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
 
     @Etantdonné("Un enseignant avec le nom de connexion {string} sq")
     public void unEnseignantAvecLeNomDeConnexionSqD(String arg0) {
-        questionnaireRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
+        user.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
@@ -148,8 +147,8 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         for (int ch; (ch = is.read()) != -1; ) {
             sb.append((char) ch);
         }
-        executePostWithBody(String.format(
-                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d/submit",
+        executePost(String.format(
+                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
@@ -172,10 +171,9 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             }
         }
         executePost(String.format(
-                "http://localhost:8080/api/module/%d/questionnaire/%d/submit",
+                "http://localhost:8080/api/module/%d/questionnaire/%d",
                 module.getId(),
-                questionnaire.getId()
-        ), jwtStudent);
+                questionnaire.getId()), jwtStudent);
     }
 
     @Alors("le dernier status de réponse est {int} sq")

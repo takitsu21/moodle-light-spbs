@@ -17,8 +17,6 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
-import net.minidev.json.JSONUtil;
-import org.python.antlr.op.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -53,8 +51,6 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string} assigné au module de {string} arqqq")
     public void leProfesseurAssignéAuModuleDeArqqq(String arg0, String arg1) {
-//        questionRepository.deleteAll();
-//        questionnaireRepository.deleteAll();
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         teacher.setRoles(new HashSet<>() {{
@@ -83,32 +79,42 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
 
     @Et("le questionnaire {string} dans le module {string} arqqq")
     public void leQuestionnaireDansLeModuleArqqq(String arg0, String arg1) {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg0)
-                .orElse(new Questionnaire(arg0, "Controle intermediaire", 8));
-        questionnaireRepository.save(questionnaire);
         Module module = moduleRepository.findByName(arg1).get();
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
+        if (questionnaire==null){
+            questionnaire=new Questionnaire(arg0, "Controle intermediaire", 8);
+        }
+        questionnaireRepository.save(questionnaire);
+
         module.addRessource(questionnaire);
         moduleRepository.save(module);
     }
+    @Et("la question {string} dans le questionnaire {string} du module {string} arqqq")
+    public void laQuestionDansLeQuestionnaireDuModuleArqqq(String arg0, String arg1, String arg2) {
+        Module module = moduleRepository.findByName(arg2).get();
 
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 
-    @Et("la question {string} dans le questionnaire {string} arqqq")
-    public void laQuestionDansLeQuestionnaireArqqq(String arg0, String arg1) {
-        Question question = questionRepository.findByName(arg0)
-                .orElse(new QCM(1, arg0, "Quelle est la source d'energie d'une cellule?"));
+        Question question = questionnaire.findQuestionByName(arg0);
+
+        if (question==null){
+            question=new QCM(1, arg0, "Quelle est la source d'energie d'une cellule?");
+        }
+
         questionRepository.save(question);
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).get();
+
         questionnaire.addQuestion(question);
         questionnaireRepository.save(questionnaire);
     }
 
     @Quand("Le professeur {string} veut ajouter la question {string} au questionnaire {string} dans le module {string} arqqq")
     public void leProfesseurVeutAjouterLaQuestionAuQuestionnaireDansLeModuleArqqq(String arg0, String arg1, String arg2, String arg3) throws IOException {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
         Module module = moduleRepository.findByName(arg3).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
                 jwtTeacher);
     }
@@ -116,9 +122,10 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
 
     @Quand("Le professeur {string} veut supprimer la question {string} du questionnaire {string} dans le module {string} arqqq")
     public void leProfesseurVeutSupprimerLaQuestionDuQuestionnaireDansLeModuleArqqq(String arg0, String arg1, String arg2, String arg3) throws IOException {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg2).get();
         Module module = moduleRepository.findByName(arg3).get();
-        Question question = questionRepository.findByName(arg1).get();
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+        Question question = questionnaire.findQuestionByName(arg1);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
         executeDelete("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/question/" + question.getId(), jwtTeacher);
@@ -129,29 +136,24 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
-    @Et("la question {string} n'existe pas dans le questionnaire {string} arqqq")
-    public void laQuestionNExistePasDansLeQuestionnaireArqqq(String arg0, String arg1) {
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).get();
-        boolean hasQuestion = false;
-        for (Question question : questionnaire.getQuestions()) {
-            if (question.getName().equals(arg0)) {
-                hasQuestion = true;
-            }
-        }
-        assertFalse(hasQuestion);
+    @Et("la question {string} existe dans le questionnaire {string} du module {string} arqqq")
+    public void laQuestionExisteDansLeQuestionnaireDuModuleArqqq(String arg0, String arg1, String arg2) {
+        Module module = moduleRepository.findByName(arg2).get();
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+
+        assertTrue(questionnaire.containsQuestion(arg0));
     }
 
-    @Et("la question {string} existe dans le questionnaire {string} arqqq")
-    public void laQuestionExisteDansLeQuestionnaireArqqq(String arg0, String arg1) {
-        Question question = questionRepository.findByName(arg0).get();
-        Questionnaire questionnaire = questionnaireRepository.findByName(arg1).get();
-        boolean hasQuestion = false;
-        for (Question questionnaireQuestion : questionnaire.getQuestions()) {
-            if (questionnaireQuestion.getName().equals(question.getName())) {
-                hasQuestion = true;
-            }
-        }
 
-        assertTrue(hasQuestion);
+    @Et("la question {string} n'existe pas dans le questionnaire {string} du module {string} arqqq")
+    public void laQuestionExisteDansLeQuestionnaireArqqq(String arg0, String arg1, String arg2) {
+        Module module = moduleRepository.findByName(arg2).get();
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+
+        assertFalse(questionnaire.containsQuestion(arg0));
     }
+
+
 }

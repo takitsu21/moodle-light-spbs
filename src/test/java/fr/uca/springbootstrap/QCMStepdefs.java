@@ -14,7 +14,6 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,8 +21,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QCMStepdefs extends SpringIntegration {
     private static final String PASSWORD = "password";
@@ -56,7 +54,7 @@ public class QCMStepdefs extends SpringIntegration {
     public void leProfesseurAssignéAuModuleDeAvecUnQuestionnaireQcm(String arg0, String arg1, String arg2) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
+        user.setRoles(new HashSet<>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
                 orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
         userRepository.save(user);
 
@@ -82,9 +80,9 @@ public class QCMStepdefs extends SpringIntegration {
     public void leQuestionnaireDuModuleAUnQCMQcm(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg1).get();
         Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg0);
-        QCM qcm= (QCM) questionnaire.findQuestionByName(arg2);
-        if (qcm==null) {
-            qcm=new QCM(1, arg2, "null");
+        QCM qcm = (QCM) questionnaire.findQuestionByName(arg2);
+        if (qcm == null) {
+            qcm = new QCM(1, arg2, "null");
             qcmRepository.save(qcm);
             questionnaire.getQuestions().add(qcm);
             questionnaireRepository.save(questionnaire);
@@ -141,7 +139,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/QCM/" + module.getId() + "/questionnaire/" + ressource.getId()+"/QCM/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
+        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
     }
 
     @Et("le dernier status de request est {int} qcm")
@@ -167,7 +165,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/QCM/" + module.getId() + "/questionnaire/" + ressource.getId()+"/QCM/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
+        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
     }
 
     @Alors("la bonne reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -188,7 +186,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/QCM/" + module.getId() + "/questionnaire/" + ressource.getId()+"/QCM/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
+        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
 
     }
 
@@ -202,5 +200,13 @@ public class QCMStepdefs extends SpringIntegration {
         assertEquals(qcm.getStudentAnswerOf(arg0).getAnswer().getAnswer(), arg1);
     }
 
+    @Alors("{string} n a pas de reponse de l'étudiant au QCM {string} du questionnaire {string} du module {string}")
+    public void nAPasDeReponseDeLÉtudiantAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3) {
+        Module module = moduleRepository.findByName(arg3).get();
 
+        Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg2);
+        QCM qcm= (QCM) questionnaire.findQuestionByName(arg1);
+
+        assertNull(qcm.getStudentAnswerOf(arg0));
+    }
 }

@@ -9,6 +9,7 @@ import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.CodeRunnerRequest;
 import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
+import fr.uca.springbootstrap.repository.question.AnswerCodeRunnerRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
 import io.cucumber.java.fr.Alors;
@@ -60,14 +61,16 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
+    AnswerCodeRunnerRepository answerCodeRunnerRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Etantdonné("Un enseignant avec le nom de connexion {string} crn")
     public void unEnseignantAvecLeNomDeConnexionCrn(String arg0) {
-        questionnaireRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
+        user.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
@@ -80,10 +83,12 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         User teacher = userRepository.findByUsername(arg1).get();
         User student = userRepository.findByUsername(arg2).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<Role>() {{
+        student.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
+        userRepository.save(teacher);
+        userRepository.save(student);
         module.setParticipants(new HashSet<>() {{
             add(teacher);
             add(student);
@@ -148,7 +153,6 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 
         Module module = moduleRepository.findByName(arg5).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        System.out.println(module.getRessources());
         Questionnaire questionnaire = new Questionnaire(
                 arg6,
                 "Test d'un code runner",
@@ -157,7 +161,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         questionnaireRepository.save(questionnaire);
         module.addRessource(questionnaire);
         moduleRepository.save(module);
-        executePostWithBody(String.format(
+        executePost(String.format(
                         "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner",
                         module.getId(),
                         questionnaire.getId()),
@@ -218,7 +222,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         for (int ch; (ch = is.read()) != -1; ) {
             sb.append((char) ch);
         }
-        executePostWithBody(String.format(
+        executePost(String.format(
                         "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d/test",
                         module.getId(),
                         questionnaire.getId(),

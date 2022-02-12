@@ -46,26 +46,26 @@ public class QuestionController {
         return ResponseEntity.ok(questions);
     }
 
-    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
-    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> deleteQuestionById(@PathVariable long id){
-
-
-        if (!questionRepository.existsById(id)){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Question doesn't exists!"));
-        }
-
-        Question question = questionRepository.findById(id).get();
-        questionRepository.delete(question);
-        return ResponseEntity.ok(new MessageResponse("Question deleted successfully!"));
-
-    }
+//    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
+//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+//    public ResponseEntity<?> deleteQuestionById(@PathVariable long id){
+//
+//
+//        if (!questionRepository.existsById(id)){
+//            return ResponseEntity
+//                    .badRequest()
+//                    .body(new MessageResponse("Error: Question doesn't exists!"));
+//        }
+//
+//        Question question = questionRepository.findById(id).get();
+//        questionRepository.delete(question);
+//        return ResponseEntity.ok(new MessageResponse("Question deleted successfully!"));
+//
+//    }
 
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/name")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setName(Principal principal,
                                     @Valid @RequestBody QuestionRequest questionRequest,
                                      @PathVariable("module_id") long module_id,

@@ -13,21 +13,22 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les participants de
     Quand L'utilisateur "Paul" get les participants du module "Maths"
     Et le dernier status de request est 200 gp
     Alors les participants sont "Paul" et "Juliette"
+    Et les tables sont videes
 
   Scénario: Le professeur "Jean" get les participants du module "Maths"
     Quand L'utilisateur "Jean" get les participants du module "Maths"
     Et le dernier status de request est 400 gp
     Alors il n'y a pas de participant
+    Et les tables sont videes
 
   Scénario: L'élève "Juliette" get les participants du module "Maths"
     Quand L'utilisateur "Juliette" get les participants du module "Maths"
     Et le dernier status de request est 200 gp
     Alors les participants sont "Paul" et "Juliette"
+    Et les tables sont videes
 
   Scénario: L'élève "Mia" get les participants du module "Maths"
     Quand L'utilisateur "Mia" get les participants du module "Maths"
     Et le dernier status de request est 400 gp
     Alors il n'y a pas de participant
-
-
-
+    Et les tables sont videes

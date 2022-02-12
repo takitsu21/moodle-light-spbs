@@ -9,8 +9,6 @@ import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.repository.*;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
@@ -49,18 +47,8 @@ public class CoursesStepdefs extends SpringIntegration {
     PasswordEncoder encoder;
 
 
-    private Cours findCoursByNameInModule(Module module, String name) {
-        for (Ressource cours : module.getRessources()) {
-            if (cours.getName().equalsIgnoreCase(name)) {
-                return (Cours) cours;
-            }
-        }
-        return null;
-    }
-
     @Etantdonné("Un enseignant avec le nom de connexion {string} crs")
     public void unEnseignantAvecLeNomDeConnexionCrs(String arg0) {
-        coursRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>() {{
@@ -84,7 +72,6 @@ public class CoursesStepdefs extends SpringIntegration {
     public void unModuleQuiAUnCoursEtNuméroEtQuiAUnEnseignantCrs(String arg0, String arg1, int arg2, String arg3) {
         Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
         Cours cours = coursRepository.findByName(arg1).orElse(new Cours(arg1, "description", arg2));
-//        Cours cours = findCoursByNameInModule(module, arg1);
         User teacher = userRepository.findByUsername(arg3).get();
 
         coursRepository.save(cours);
@@ -101,7 +88,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
                 jwtTeacher);
     }
@@ -114,10 +101,7 @@ public class CoursesStepdefs extends SpringIntegration {
     @Et("{string} est ajouté au module {string} crs")
     public void estAjoutéAuModuleCrs(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-//        Cours cours = coursRepository.findByName(arg0).get();
-
-        Cours cours = findCoursByNameInModule(module, arg0);
-        System.out.println(module.getRessources());
+        Cours cours = (Cours) module.findRessourceByName(arg0);
 
         assertTrue(module.getRessources().contains(cours));
     }
@@ -125,9 +109,7 @@ public class CoursesStepdefs extends SpringIntegration {
     @Quand("{string} veut supprimer le cours {string} et numéro {int} du module {string} crs")
     public void veutSupprimerLeCoursEtNuméroDuModuleCrs(String arg0, String arg1, int arg2, String arg3) throws IOException {
         Module module = moduleRepository.findByName(arg3).get();
-//        Cours cours = coursRepository.findByName(arg1).get();
-        Cours cours = findCoursByNameInModule(module, arg1);
-        System.out.println(module.getRessources());
+        Cours cours = (Cours) module.findRessourceByName(arg1);
 
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
@@ -145,9 +127,7 @@ public class CoursesStepdefs extends SpringIntegration {
     @Et("{string} est supprimé du module {string} crs")
     public void estSuppriméDuModuleCrs(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-//        Cours cours = coursRepository.findByName(arg0).get();
-        Cours cours = findCoursByNameInModule(module, arg0);
-
+        Cours cours = (Cours) module.findRessourceByName(arg0);
 
         assertFalse(module.getRessources().contains(cours));
     }
@@ -157,7 +137,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePostWithBody("http://localhost:8080/api/module/" + module.getId() + "/cours",
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/cours",
                 new CoursRequest(arg1, "descript", arg2),
                 jwtTeacher);
     }
@@ -165,18 +145,14 @@ public class CoursesStepdefs extends SpringIntegration {
     @Et("{string} n'est pas ajouté au module {string} crs")
     public void nEstPasAjoutéAuModuleCrs(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-//        Cours cours = coursRepository.findByName(arg0).get();
-        Cours cours = findCoursByNameInModule(module, arg0);
-        System.out.println(module.getRessources());
+        Cours cours = (Cours) module.findRessourceByName(arg0);
         assertTrue(module.getRessources().contains(cours));
     }
 
     @Et("{string} n'est pas supprimé du module {string} crs")
     public void nEstPasSuppriméDuModuleCrs(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-//        Cours cours = coursRepository.findByName(arg0).get();
-        Cours cours = findCoursByNameInModule(module, arg0);
-
+        Cours cours = (Cours) module.findRessourceByName(arg0);
 
         assertFalse(module.getRessources().contains(cours));
     }

@@ -13,7 +13,9 @@ Fonctionnalité: Accéder à une question
     Quand l'étudiant "Charlie" récupère la question "Bonus" du questionnaire "Interrogation" du module "Physique" auq
     Alors la réponse est 200 auq
     Et la question "Bonus" en renvoyée auq
-    
+    Et les tables sont videes
+
   Scénario: l'étudiant "Tanguy" récupère la question "Bonus"
     Quand l'étudiant "Tanguy" récupère la question "Bonus" du questionnaire "Interrogation" du module "Physique" auq
     Alors la réponse est 400 auq
+    Et les tables sont videes

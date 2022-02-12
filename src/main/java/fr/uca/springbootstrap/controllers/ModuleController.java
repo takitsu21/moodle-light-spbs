@@ -40,9 +40,6 @@ public class ModuleController {
     UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
     ModuleRepository moduleRepository;
 
     @Autowired
@@ -162,14 +159,13 @@ public class ModuleController {
 
     @PostMapping("/")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> createModule(@Valid @RequestBody ModuleRequest moduleRequest) {
+    public ResponseEntity<?> addModule(@Valid @RequestBody ModuleRequest moduleRequest) {
         if (moduleRepository.existsByName(moduleRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Module already exists!"));
         }
 
-        // Create new user's account
         Module module = new Module(moduleRequest.getName());
         moduleRepository.save(module);
         return ResponseEntity.ok(new MessageResponse("Module created successfully!"));
@@ -203,55 +199,13 @@ public class ModuleController {
 
         return ResponseEntity.ok(new MessageResponse("Module deleted successfully!"));
     }
-
-   	@PostMapping("/{module_id}/ressourceVisible/{ressource_id}")
-	@PreAuthorize("hasRole('TEACHER')")
-	public ResponseEntity<?> ressourceVisible(Principal principal, @PathVariable("module_id") long moduleId, @PathVariable("ressource_id")  long ressourceId) {
-		Optional<Module> omodule = moduleRepository.findById(moduleId);
-		Optional<User> ouser = userRepository.findByUsername(principal.getName());
-		Optional<Ressource> oressource = ressourceRepository.findById(ressourceId);
-
-        if (omodule.isEmpty()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: No such module!"));
-        }
-        if (ouser.isEmpty()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: No such user!"));
-        }
-        if (oressource.isEmpty()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: No such ressource!"));
-        }
-        if (!moduleRepository.existsById(moduleId)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Module doesn't exists!"));
-        }
-        Module module = omodule.get();
-        Ressource ressource = oressource.get();
-        User user = ouser.get();
-        if (!module.getParticipants().contains(user)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: You are not allowed to modify ressource visibility!"));
-        }
-        if (!module.getRessources().contains(ressource)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Ressource not in Module!"));
-        }
-        ressource.setVisibility(true);
-        ressourceRepository.save(ressource);
-        return ResponseEntity.ok(new MessageResponse("Ressource visibility change successfully!"));
-    }
-
-    @PostMapping("/{module_id}/ressourceInvisible/{ressource_id}")
+	
+    @PostMapping("/{module_id}/visibility/{ressource_id}")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> ressourceInvisible(Principal principal, @PathVariable("module_id") long moduleId, @PathVariable("ressource_id") long ressourceId) {
+    public ResponseEntity<?> updateVisibility(Principal principal,
+											  @Valid @RequestBody VisibilityRequest visibilityRequest,
+                                              @PathVariable("module_id") long moduleId,
+                                              @PathVariable("ressource_id") long ressourceId) {
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<User> ouser = userRepository.findByUsername(principal.getName());
         Optional<Ressource> oressource = ressourceRepository.findById(ressourceId);
@@ -290,7 +244,7 @@ public class ModuleController {
                     .badRequest()
                     .body(new MessageResponse("Error: Ressource not in Module!"));
         }
-        ressource.setVisibility(false);
+        ressource.setVisibility(visibilityRequest.getVisibility());
         ressourceRepository.save(ressource);
         return ResponseEntity.ok(new MessageResponse("Ressource visibility change successfully!"));
     }

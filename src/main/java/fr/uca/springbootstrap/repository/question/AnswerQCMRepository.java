@@ -11,8 +11,6 @@ public interface AnswerQCMRepository extends JpaRepository<AnswerQCM, Long> {
 
     Optional<AnswerQCM> findById(long id);
 
-    Optional<AnswerQCM> findByAnswer(String answer);
-
     Boolean existsById(long id);
 
     Boolean existsByAnswer(String Answer);

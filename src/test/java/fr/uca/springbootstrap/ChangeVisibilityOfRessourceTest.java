@@ -3,6 +3,7 @@ package fr.uca.springbootstrap;
 import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
+import fr.uca.springbootstrap.payload.request.VisibilityRequest;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
@@ -108,7 +109,9 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/ressourceVisible/" + ressource.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/visibility/" + ressource.getId(),
+                new VisibilityRequest(true),
+                jwt);
     }
 
     @Quand("le professeur {string} essaie de rendre la ressource {string} du module {string} invisible")
@@ -117,7 +120,9 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/ressourceInvisible/" + ressource.getId(), jwt);
+        executePost("http://localhost:8080/api/module/" + module.getId() + "/visibility/" + ressource.getId(),
+                new VisibilityRequest(false),
+                jwt);
     }
 
     @Et("le dernier status de request est {int} cv")

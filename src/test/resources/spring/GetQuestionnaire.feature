@@ -14,20 +14,25 @@ Fonctionnalité: Accéder aux questionnaires
     Quand le professeur "Andrew" récupère le questionnaire "Partiel" du module "Histoire"
     Alors la réponse recue est 200
     Et le questionnaire "Partiel" est renvoyé
+    Et les tables sont videes
 
   Scénario: Le professeur "Marco" essaye de récupérer le questionnaire "Interro" du module "Histoire"
     Quand le professeur "Andrew" récupère le questionnaire "Partiel" du module "Histoire"
     Alors la réponse recue est 400
+    Et les tables sont videes
 
   Scénario: L'étudiant "Pedro" essaye de récupérer le questionnaire "Partiel" du module "Histoire"
     Quand l'étudiant "Pedro" récupère le questionnaire "Partiel" du module "Histoire"
     Alors la réponse recue est 400
+    Et les tables sont videes
 
   Scénario: L'étudiant "Pedro" essaye de récupérer le questionnaire "Interro" du module "Histoire"
     Quand l'étudiant "Pedro" récupère le questionnaire "Interro" du module "Histoire"
     Alors la réponse recue est 200
     Et le questionnaire "Interro" est renvoyé
+    Et les tables sont videes
 
   Scénario: L'étudiant "Madeleine" essaye de récupérer le questionnaire "Interro" du module "Histoire"
     Quand l'étudiant "Pedro" récupère le questionnaire "Interro" du module "Histoire"
     Alors la réponse recue est 400
+    Et les tables sont videes

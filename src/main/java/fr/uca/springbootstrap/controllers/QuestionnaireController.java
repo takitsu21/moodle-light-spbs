@@ -170,7 +170,7 @@ public class QuestionnaireController {
         return ResponseEntity.ok(new MessageResponse("Question successfully removed."));
     }
 
-    @PostMapping("/{questionnaire_id}/submit")
+    @PostMapping("/{questionnaire_id}")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> submitQuestionnaire(Principal principal,
                                                  @PathVariable("module_id") long moduleId,
@@ -302,7 +302,6 @@ public class QuestionnaireController {
         Set<Grade> grades = new HashSet<>();
         Set<GradesQuestionnaire> gradesQuestionnaire =  questionnaire.getStudentsGrades();
         for (GradesQuestionnaire grade : gradesQuestionnaire) {
-            System.out.println(grade.getStudent().getUsername());
             grades.add(new Grade(
                     grade.getNote(),
                     questionnaire.getNbQuestions(),
