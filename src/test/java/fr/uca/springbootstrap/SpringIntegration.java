@@ -80,6 +80,7 @@ public class SpringIntegration {
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
+
         latestHttpResponse = httpClient.execute(request);
     }
 }

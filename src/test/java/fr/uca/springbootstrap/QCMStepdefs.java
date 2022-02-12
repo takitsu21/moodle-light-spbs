@@ -21,8 +21,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QCMStepdefs extends SpringIntegration {
     private static final String PASSWORD = "password";
@@ -201,5 +200,13 @@ public class QCMStepdefs extends SpringIntegration {
         assertEquals(qcm.getStudentAnswerOf(arg0).getAnswer().getAnswer(), arg1);
     }
 
+    @Alors("{string} n a pas de reponse de l'étudiant au QCM {string} du questionnaire {string} du module {string}")
+    public void nAPasDeReponseDeLÉtudiantAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3) {
+        Module module = moduleRepository.findByName(arg3).get();
 
+        Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg2);
+        QCM qcm= (QCM) questionnaire.findQuestionByName(arg1);
+
+        assertNull(qcm.getStudentAnswerOf(arg0));
+    }
 }

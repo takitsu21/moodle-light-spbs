@@ -83,7 +83,7 @@ public class CoursController {
         }
         Cours cours = new Cours(coursRequest.getName(), coursRequest.getDescription(), coursRequest.getNum());
 
-        if (module.containsRessourceByName(cours)) {
+        if (module.containsRessource(cours)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: this course already exists!"));
         }
 

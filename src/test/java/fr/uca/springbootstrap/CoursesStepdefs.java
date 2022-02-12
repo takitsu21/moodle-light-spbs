@@ -115,7 +115,6 @@ public class CoursesStepdefs extends SpringIntegration {
 //        Cours cours = coursRepository.findByName(arg0).get();
 
         Cours cours = findCoursByNameInModule(module, arg0);
-        System.out.println(module.getRessources());
 
         assertTrue(module.getRessources().contains(cours));
     }
@@ -123,9 +122,7 @@ public class CoursesStepdefs extends SpringIntegration {
     @Quand("{string} veut supprimer le cours {string} et numéro {int} du module {string} crs")
     public void veutSupprimerLeCoursEtNuméroDuModuleCrs(String arg0, String arg1, int arg2, String arg3) throws IOException {
         Module module = moduleRepository.findByName(arg3).get();
-//        Cours cours = coursRepository.findByName(arg1).get();
         Cours cours = findCoursByNameInModule(module, arg1);
-        System.out.println(module.getRessources());
 
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
@@ -163,9 +160,7 @@ public class CoursesStepdefs extends SpringIntegration {
     @Et("{string} n'est pas ajouté au module {string} crs")
     public void nEstPasAjoutéAuModuleCrs(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
-//        Cours cours = coursRepository.findByName(arg0).get();
         Cours cours = findCoursByNameInModule(module, arg0);
-        System.out.println(module.getRessources());
         assertTrue(module.getRessources().contains(cours));
     }
 

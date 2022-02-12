@@ -6,9 +6,7 @@ Fonctionnalité: Ajouter ou enlever une ressource d'un module
   Contexte:
     Étant donné L'enseignant avec le nom de connexion "Jacob"
     Et le module "Mathématiques"
-    Et le questionnaire "Premier questionnaire"
-    Et le questionnaire "Examen"
-    Et le questionnaire "Examen" dans le module "Mathématiques"
+    Et le questionnaire "Examen" du module "Mathématiques"
     Et un module "Mathématiques" avec un enseignant "Jacob"
     Et un module "Philosophie"
 
@@ -35,8 +33,4 @@ Fonctionnalité: Ajouter ou enlever une ressource d'un module
     Quand l'enseignant "Jacob" veut supprimer le questionnaire "Examen" du module "Philosophie"
     Alors la réponse est 400
     Et le questionnaire "Examen" est dans le module "Philosophie"
-
-  Scénario: Suppression d'un questionnaire inexistante d'un module
-    Etant donné que l'enseignant "Jacob" soit dans le module "Philosophie"
-    Quand l'enseignant "Jacob" veut supprimer le questionnaire "Examen" du module "Philosophie"
-    Alors la réponse est 200
+    
