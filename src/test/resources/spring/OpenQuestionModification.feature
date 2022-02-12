@@ -50,26 +50,51 @@
       Alors le status de la dernière requète est 400
       Et la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" a comme réponses possibles "A", "B", "C" et comme réponses "A", "B"
 
-    Scénario: Elève supprime une des ses réponses a une question de son module
-      Quand l'élève "Yann" veut supprimer une
-    Scénario: Elève supprine une de ses réponses a une question d'un module qu'il n'a pas
-
-
     Scénario: Professeur ajoute une réponse possible a une question de son module
+      Quand le professeur "Cédric" ajoute la réponse possible "D" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requète est 200
+      Et les réponses possibles de la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" contiennent la réponse "D"
 
     Scénario: Professeur ajoute une réponse possible a une question d'un module qu'il n'a pas
-
+      Quand le professeur "Cinzia" ajoute la réponse possible "D" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requète est 400
+      Et les réponses possibles de la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ne contiennent la réponse "D"
 
     Scénario: Professeur ajoute une réponse (appartenant aux réponses possibles) a une question de son module
+      Quand le professeur "Cédric" ajoute la réponse "C" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requète est 200
+      Et les réponses de la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" contiennent la réponse "C"
 
     Scénario: Professeur ajoute une réponse (appartenant aux réponses possibles) a une question d'un module qui ne lui appartient pas
+      Quand le professeur "Cinzia" ajoute la réponse "C" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requète est 400
+      Et les réponses de la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ne contiennent pas la réponse "C"
 
     Scénario: Professeur ajoute une réponse n'appartenant pas aux réponses possibles de sa question
-
+      Quand le professeur "Cinzia" ajoute la réponse "D" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requète est 400
+      Et les réponses de la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ne contiennent pas la réponse "D"
 
     Scénario: Elève ajoute une réponse (appartenant aux réponses possibles) a une question de son module
+      Quand l'élève "Yann" veut ajouter sa réponse "B" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requètes est 200
+      Et la réponses de "Yann" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" contient la réponse "B"
 
     Scénario: Elève ajoute une réponse (appartenant aux réponses possibles) a une question d'un module qu'il n'a pas
+      Quand l'élève "Jp" veut supprimer sa réponse "B" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requètes est 400
+      Et la réponses de "Yann" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ne contient pas "B"
 
     Scénario: Elève ajoute une réponse (n'appartenant pas aux réponses possibles) a une question de son module
+      Quand l'élève "Yann" veut supprimer sa réponse "D" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requètes est 400
+      Et la réponses de "Yann" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ne contient pas "D"
 
+    Scénario: Elève supprime une des ses réponses a une question de son module
+      Quand l'élève "Yann" veut supprimer sa réponse "A" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requètes est 200
+      Et la réponses de "Yann" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" sont "C"
+
+    Scénario: Elève supprine une de ses réponses a une question d'un module qu'il n'a pas
+      Quand l'élève "Jp" veut supprimer sa réponse "A" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths"
+      Alors le status de la dernière requète est 400
