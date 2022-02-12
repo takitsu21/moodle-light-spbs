@@ -46,8 +46,6 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string} assigné au module de {string} atc")
     public void leProfesseurAssignéAuModuleDeAtc(String arg0, String arg1) {
-        moduleRepository.deleteAll();
-        coursRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<Role>() {{

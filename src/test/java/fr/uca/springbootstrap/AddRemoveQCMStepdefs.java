@@ -51,8 +51,6 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string} assigné au module de {string} arqqq")
     public void leProfesseurAssignéAuModuleDeArqqq(String arg0, String arg1) {
-//        questionRepository.deleteAll();
-//        questionnaireRepository.deleteAll();
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         teacher.setRoles(new HashSet<>() {{

@@ -63,10 +63,9 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
 
     @Etantdonné("Un enseignant avec le nom de connexion {string} sq")
     public void unEnseignantAvecLeNomDeConnexionSqD(String arg0) {
-        questionnaireRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
+        user.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});

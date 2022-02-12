@@ -14,21 +14,22 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les modules ou je s
     Quand L'utilisateur "Paul" get ces modules
     Et le dernier status de request est 200 gm
     Alors les modules sont "Maths" et "Chimie"
+    Et les tables sont videes
 
   Scénario: Le professeur "Jean" get ces modules
     Quand L'utilisateur "Jean2" get ces modules
     Et le dernier status de request est 200 gm
     Alors il n'y a pas de module
+    Et les tables sont videes
 
   Scénario: L'élève "Juliette" get ces modules
     Quand L'utilisateur "Juliette" get ces modules
     Et le dernier status de request est 200 gm
     Alors le module est "Maths"
+    Et les tables sont videes
 
   Scénario: L'élève "Mia" get ces modules
     Quand L'utilisateur "Mia" get ces modules
     Et le dernier status de request est 200 gm
     Alors il n'y a pas de module
-
-
-
+    Et les tables sont videes

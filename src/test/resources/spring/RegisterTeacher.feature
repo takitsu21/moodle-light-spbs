@@ -9,6 +9,7 @@ Feature: Register Teacher
     When "steve" registers to module "Gestion de projet"
     Then last request status is 200
     And "steve" is registered to module "Gestion de projet"
+    And les tables sont videes
 
   Scenario: Register Second Teacher
     When "sarah" registers to module "Gestion de projet"
@@ -16,4 +17,4 @@ Feature: Register Teacher
     Then last request status is 400
     And "sarah" is registered to module "Gestion de projet"
     And "steve" is not registered to module "Gestion de projet"
-
+    And les tables sont videes

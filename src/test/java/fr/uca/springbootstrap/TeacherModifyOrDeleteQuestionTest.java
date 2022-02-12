@@ -54,10 +54,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
     @Etantdonné("un professeur {string} ayant le module {string} tmdqa")
     public void unProfesseurAyantLeModuleTmdqa(String arg0, String arg1) {
-        questionnaireRepository.deleteAll();
-        questionRepository.deleteAll();
-        moduleRepository.deleteAll();
-
         // Professeur
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));

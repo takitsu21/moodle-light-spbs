@@ -13,3 +13,4 @@ Fonctionnalité: En tant que API REST je veux pouvoir calculé la note d'un él�
     Quand "Margaux" soumet le questionnaire "Questionnaire code runner" du module "Prog 2" sq
     Alors le dernier status de réponse est 200 sq
     Et la note est 1 sur 1 sq
+    Et les tables sont videes
