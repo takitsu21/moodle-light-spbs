@@ -39,8 +39,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
     @Étantdonné("L'enseignant avec le nom de connexion {string}")
     public void lEnseignantAvecLeNomDeConnexion(String arg0) {
-        moduleRepository.deleteAll();
-        questionnaireRepository.deleteAll();
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
         user.setRoles(new HashSet<>() {{

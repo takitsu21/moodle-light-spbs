@@ -16,3 +16,4 @@
       Quand le professeur "Cédric" ajoute une réponse possible de contenu "D" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" oqm
       Alors le status de la dernière réponse est 200 oqm
       Et les réponses possibles de la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" possède un réponse de contenu "D" oqm
+      Et les tables sont videes

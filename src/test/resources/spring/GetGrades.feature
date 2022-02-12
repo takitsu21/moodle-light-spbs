@@ -12,3 +12,4 @@ Fonctionnalité: En tant que professeur je veux pouvoir voir la note de tous les
     Quand "Jacques" récupères les notes du questionnaire "Questionnaire code runner" du module "Prog 2" gg
     Alors le dernier status de request est 200 gg
     Et les notes de "Margaux" sont affichés et à un résultat de 1 sur 1
+    Et les tables sont videes
