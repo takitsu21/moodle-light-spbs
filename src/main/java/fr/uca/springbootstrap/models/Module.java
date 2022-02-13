@@ -21,6 +21,7 @@ public class Module {
             joinColumns = @JoinColumn(name = "module_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> participants = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ressources_modules",
             joinColumns = @JoinColumn(name = "module_id"),
@@ -65,12 +66,14 @@ public class Module {
 
     public void addRessource(Ressource ressource) {
         ressources.add(ressource);
-//        ressource.getModules().add(this);
     }
 
     public void removeRessource(Ressource ressource) {
         ressources.remove(ressource);
-//        ressource.getModules().remove(this);
+    }
+
+    public void addParticipant(User user){
+        this.participants.add(user);
     }
 
     /**
@@ -107,6 +110,15 @@ public class Module {
         for(Ressource ressource: ressources){
             if(Objects.equals(ressource.getName(), name)){
                 return ressource;
+            }
+        }
+        return null;
+    }
+
+    public User findUserByName(String name){
+        for (User user: participants){
+            if (Objects.equals(user.getUsername(), name)){
+                return user;
             }
         }
         return null;

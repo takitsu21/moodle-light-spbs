@@ -3,6 +3,7 @@ package fr.uca.springbootstrap.models.questions;
 import fr.uca.springbootstrap.models.User;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,15 +26,15 @@ public class OpenQuestion extends Question {
     @JoinTable(name = "students_anwser",
             joinColumns = @JoinColumn(name = "open_question"),
             inverseJoinColumns = @JoinColumn(name = "student_anwser_open_question"))
-    private Set<AnswerOpenQuestion> answerOpenQuestionSet;
+    private Set<AnswerOpenQuestion> studentsAnswers;
 
 
-    public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> answerOpenQuestionSet,
+    public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> studentAnswers,
                         Set<Answer> possibleAnswers, String name, String description,
                         int number){
         super(number, name, description);
         this.answers = answers;
-        this.answerOpenQuestionSet = answerOpenQuestionSet;
+        this.studentsAnswers = studentAnswers;
         this.possibleAnswers = possibleAnswers;
     }
 
@@ -52,13 +53,13 @@ public class OpenQuestion extends Question {
     public void addPossibleAnswer(Answer answer){ possibleAnswers.add(answer);}
     public void removePossibleAnswer(Answer answer){ possibleAnswers.remove(answer);}
 
-    public Set<AnswerOpenQuestion> getAnswerOpenQuestionSet() { return answerOpenQuestionSet; }
-    public void setAnswerOpenQuestionSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.answerOpenQuestionSet = answerOpenQuestionSet; }
-    public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.add(answerOpenQuestion);}
-    public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.remove(answerOpenQuestion);}
+    public Set<AnswerOpenQuestion> getStudentsAnswers() { return studentsAnswers; }
+    public void setAnswerstudentAnswerSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.studentsAnswers = answerOpenQuestionSet; }
+    public void addStudentAnswer(AnswerOpenQuestion answerOpenQuestion){ studentsAnswers.add(answerOpenQuestion);}
+    public void removeStudentAnswer(AnswerOpenQuestion answerOpenQuestion){ studentsAnswers.remove(answerOpenQuestion);}
 
     public AnswerOpenQuestion getStudentAnswerByStudent(User student){
-        for (AnswerOpenQuestion openAnswer : this.answerOpenQuestionSet){
+        for (AnswerOpenQuestion openAnswer : this.studentsAnswers){
             if (openAnswer.getStudent() == student){
                 return openAnswer;
             }
@@ -77,10 +78,20 @@ public class OpenQuestion extends Question {
 
     public Answer getPossibleAnswerByContent(String content){
         for (Answer answer : possibleAnswers){
-            if (answer.getAnswer() == content){
+            if (Objects.equals(answer.getAnswer(), content)){
                 return answer;
             }
         }
         return null;
     }
+
+    public Answer getAnswerByContent(String content){
+        for (Answer answer : answers){
+            if (Objects.equals(answer.getAnswer(), content)){
+                return answer;
+            }
+        }
+        return null;
+    }
+
 }

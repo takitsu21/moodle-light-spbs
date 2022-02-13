@@ -17,20 +17,12 @@ public class Answer {
     @Size(max = 100)
     private String answer;
 
-    @ManyToOne
-    private User student;
-
     public Answer() {
 
     }
 
     public Answer(String content) {
         this.answer=content;
-    }
-
-    public Answer(String answer, User user) {
-        this.answer=answer;
-        this.student=user;
     }
 
     public long getId() {
