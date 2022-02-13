@@ -4,7 +4,6 @@ RUN groupadd -r spring && useradd -r spring -g spring
 # user name to run the image
 USER spring:spring
 # build time variable (with default value here)
-EXPOSE 8080
 ARG JAR_FILE=target/*.jar
 # copy file from host to container
 COPY ${JAR_FILE} app.jar
