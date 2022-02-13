@@ -103,6 +103,7 @@ public class GetQuestionStepdefs extends SpringIntegration {
         assert(question != null);
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
+        //TODO adapter la requete avec les s
         executeGet("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/question/" + question.getId(),
                 jwt);
     }
