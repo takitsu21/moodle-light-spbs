@@ -47,6 +47,7 @@ public class Questionnaire extends Ressource {
     public int getNbQuestions() {
         return questions.size();
     }
+
     public Question findQuestionByName(String arg1) {
         for(Question question: questions){
             if(Objects.equals(question.getName(), arg1)){

@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.text.html.Option;
+import javax.validation.Path;
 import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module/")
+@RequestMapping("/api/module/{module_id}/questionnaire/{questionnaire_id}/question")
 public class QuestionController {
 
     @Autowired
@@ -40,11 +42,95 @@ public class QuestionController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/question/")
-    public ResponseEntity<?> getQuestion(){
-        List<Question> questions = questionRepository.findAll();
-        return ResponseEntity.ok(questions);
+    @GetMapping("/{question_id}")
+    public ResponseEntity<?> getQuestion(Principal principal,
+                                         @PathVariable("module_id") long module_id,
+                                         @PathVariable("questionnaire_id") long questionnaire_id,
+                                         @PathVariable("question_id") long question_id){
+
+        Optional<Module> optionalModule = moduleRepository.findById(module_id);
+        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        if (optionalModule.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: module does not exist."));
+        }
+        else if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not exist."));
+        }
+        User user = optionalUser.get();
+        Module module = optionalModule.get();
+
+        if (!module.containsParticipant(user)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not belong in this module."));
+        }
+
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        if (optionalQuestionnaire.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not exist."));
+        }
+        Questionnaire questionnaire = optionalQuestionnaire.get();
+
+        if (!module.containsRessource(questionnaire)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not belong in this module."));
+        }
+
+        Optional<Question> optionalQuestion = questionRepository.findById(question_id);
+        if (optionalQuestion.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: question does not exist."));
+        }
+
+        Question question = optionalQuestion.get();
+        if (!questionnaire.containsQuestion(question.getName())) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: question does not belong in this questionnaire."));
+        }
+
+        return ResponseEntity.ok(question);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getQuestions(Principal principal,
+                                          @PathVariable("module_id") long module_id,
+                                          @PathVariable("questionnaire_id") long questionnaire_id){
+
+        Optional<Module> optionalModule = moduleRepository.findById(module_id);
+        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        if (optionalModule.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: module does not exist."));
+        }
+        else if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not exist."));
+        }
+        User user = optionalUser.get();
+        Module module = optionalModule.get();
+
+        if (!module.containsParticipant(user)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not belong in this module."));
+        }
+
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        if (optionalQuestionnaire.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not exist."));
+        }
+        Questionnaire questionnaire = optionalQuestionnaire.get();
+
+        if (!module.containsRessource(questionnaire)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not belong in this module."));
+        }
+
+        return ResponseEntity.ok(questionnaire.getQuestions());
+    }
+
 
 //    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
@@ -64,7 +150,7 @@ public class QuestionController {
 //    }
 
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/name")
+    @PostMapping("/{question_id}/name")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setName(Principal principal,
                                     @Valid @RequestBody QuestionRequest questionRequest,
@@ -122,7 +208,7 @@ public class QuestionController {
 
     }
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/description")
+    @PostMapping("/{question_id}/description")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setDescription(Principal principal,
                                             @Valid @RequestBody QuestionRequest questionRequest,
@@ -171,7 +257,7 @@ public class QuestionController {
 
     }
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/number")
+    @PostMapping("/{question_id}/number")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setNumber(Principal principal,
                                      @Valid @RequestBody QuestionRequest questionRequest,
