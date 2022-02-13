@@ -162,7 +162,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         module.addRessource(questionnaire);
         moduleRepository.save(module);
         executePost(String.format(
-                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner",
+                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/",
                         module.getId(),
                         questionnaire.getId()),
                 new CodeRunnerRequest(1, arg1, arg2, arg3, arg4),
@@ -223,7 +223,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
             sb.append((char) ch);
         }
         executePost(String.format(
-                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d/test",
+                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d/test",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
