@@ -37,14 +37,12 @@ public abstract class Ressource {
 
     public Ressource() {
         this.num = 0;
- //       this.modules = new HashSet<>();
     }
 
     public Ressource(String name, String description, Integer num) {
         this.name = name;
         this.description = description;
         this.num = num;
- //       this.modules = new HashSet<>();
     }
 
     public Long getId() {

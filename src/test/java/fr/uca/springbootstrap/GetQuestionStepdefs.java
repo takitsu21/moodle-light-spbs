@@ -1,15 +1,14 @@
 package fr.uca.springbootstrap;
 
 import fr.uca.springbootstrap.controllers.AuthController;
+import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.QuestionnaireRepository;
+import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.repository.question.QCMRepository;
 import fr.uca.springbootstrap.repository.question.QuestionRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -22,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,6 +41,9 @@ public class GetQuestionStepdefs extends SpringIntegration {
     QuestionRepository questionRepository;
 
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     AuthController authController;
 
     @Autowired
@@ -51,10 +53,7 @@ public class GetQuestionStepdefs extends SpringIntegration {
     public void leQuestionnaireDansLeModuleAuq(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1)
                 .orElse(new Module(arg1));
-        Questionnaire questionnaire =  (Questionnaire) module.findRessourceByName(arg0);
-        if (questionnaire == null) {
-            questionnaire = new Questionnaire(arg0, "Questionnaire", 1);
-        }
+        Questionnaire questionnaire = new Questionnaire(arg0, "Questionnaire", 1);
         questionnaireRepository.save(questionnaire);
         module.addRessource(questionnaire);
         moduleRepository.save(module);
@@ -65,6 +64,10 @@ public class GetQuestionStepdefs extends SpringIntegration {
     public void lÉtudiantDansLeModuleAuq(String arg0, String arg1) {
         User user = userRepository.findByUsername(arg0)
                 .orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
+        user.setRoles(new HashSet<>() {{
+            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
         Module module = moduleRepository.findByName(arg1).get();
         module.getParticipants().add(user);
@@ -75,6 +78,10 @@ public class GetQuestionStepdefs extends SpringIntegration {
     public void lÉtudiantSansModuleAuq(String arg0) {
         User user = userRepository.findByUsername(arg0)
                 .orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
+        user.setRoles(new HashSet<>() {{
+            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
         userRepository.save(user);
     }
 

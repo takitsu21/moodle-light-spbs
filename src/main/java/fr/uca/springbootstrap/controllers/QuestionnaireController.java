@@ -167,8 +167,6 @@ public class QuestionnaireController {
                     .body(new MessageResponse("Error: user does not have permission to access this questionnaire."));
         }
 
-
-
         return new ResponseEntity<>(questionnaire, HttpStatus.OK);
     }
 
