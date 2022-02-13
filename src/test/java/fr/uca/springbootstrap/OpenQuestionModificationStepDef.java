@@ -1,3 +1,5 @@
+package fr.uca.springbootstrap;
+
 import fr.uca.springbootstrap.SpringIntegration;
 import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
@@ -59,7 +61,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Etantdonné("Un module {string}")
+    @Et("Un module {string}")
     public void unModule(String arg0) {
         Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
         moduleRepository.save(module);
@@ -203,18 +205,25 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
     public void ARéponduALaQuestionDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
-        OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg2);
+        OpenQuestion question = new OpenQuestion(new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                arg0, "Description "+arg0, 1);
+
         User student = module.findUserByName(arg0);
 
         Answer answer = question.getPossibleAnswerByContent(arg1);
+        if (answer == null){
+            answer = new Answer(arg1);
+        }
         Set<Answer> answerSet = new HashSet<>();
         answerSet.add(answer);
         AnswerOpenQuestion studentAnswer = new AnswerOpenQuestion(answerSet, student);
+        question.addStudentAnswer(studentAnswer);
 
         answerOpenQuestionRepository.save(studentAnswer);
-
-        question.addStudentAnswer(studentAnswer);
         questionRepository.save(question);
+
+        questionnaire.addQuestion(question);
+        questionnaireRepository.save(questionnaire);
     }
 
     @Et("un élève {string} n'ayant pas le module {string}")
@@ -229,8 +238,11 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         User teacher = module.findUserByName(arg0);
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg2);
-        Answer answer = question.getPossibleAnswerByContent(arg1);
 
+        Answer answer = question.getPossibleAnswerByContent(arg1);
+        if (answer == null){
+            answer = new Answer(arg1);
+        }
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executeDelete("http://localhost:8080/api/module/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
@@ -276,7 +288,11 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         User teacher = module.findUserByName(arg0);
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg2);
+
         Answer answer = question.getAnswerByContent(arg1);
+        if (answer == null){
+            answer = new Answer(arg1);
+        }
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executeDelete("http://localhost:8080/api/module/"+module.getId()
@@ -324,7 +340,11 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         User teacher = module.findUserByName(arg0);
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg2);
+
         Answer answer = question.getAnswerByContent(arg1);
+        if (answer == null){
+            answer = new Answer(arg1);
+        }
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executePut("http://localhost:8080/api/module/"+module.getId()
@@ -383,6 +403,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         User student = module.findUserByName(arg0);
         Answer answer = question.getAnswerByContent(arg4);
 
+
         AnswerOpenQuestion studentAnswer = question.getStudentAnswerByStudent(student);
         assertTrue(studentAnswer.getAnswers().contains(answer));
     }
@@ -392,7 +413,11 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg2);
+
         Answer answer = question.getAnswerByContent(arg1);
+        if (answer == null){
+            answer = new Answer(arg1);
+        }
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executeDelete("http://localhost:8080/api/module/"+module.getId()
@@ -409,6 +434,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg1);
         User student = module.findUserByName(arg0);
         Answer answer = question.getAnswerByContent(arg4);
+
 
         AnswerOpenQuestion studentAnswer = question.getStudentAnswerByStudent(student);
         assertFalse(studentAnswer.getAnswers().contains(answer));

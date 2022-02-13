@@ -4,7 +4,8 @@
   Fonctionnalité: Modification d'une question ouverte
 
     Contexte:
-      Etant donné Un module "Maths"
+      Etant donné que les tables sont videes
+      Et Un module "Maths"
       Et un questionnaire "Questionnaire 1" contenu dans le module "Maths"
       Et une question ouverte "Question 1" contenue dans le le questionnaire "Questionnaire 1" du module "Maths"
       Et la "Question 1" du questionnaire "Questionnaire 1" du module "Maths" a comme réponses possibles "A", "B", "C"

@@ -12,10 +12,10 @@ public class AnswerOpenQuestion {
     @GeneratedValue
     private long id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Answer> answers;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "student")
     private User student;
 
