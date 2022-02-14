@@ -92,9 +92,6 @@ public class QCMController {
         }
     }
 
-    //public ResponseEntity<?> setPossibleAnswers(Set<Answers> possibleAnswers);
-
-
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addPossibleAnswers(Principal principal,
@@ -154,12 +151,6 @@ public class QCMController {
         qcmRepository.save(qcm);
         return ResponseEntity.ok(new MessageResponse("Answer successfully added to the QCM!"));
     }
-
-    //public ResponseEntity<?> addPossibleAnswers(Answer answer)
-    //public ResponseEntity<?> addPossibleAnswers(String answer)
-
-    //public ResponseEntity<?> removePossibleAnswers(long answer_id);
-    //public ResponseEntity<?> removePossibleAnswers(String answers);
 
     @DeleteMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer/{answer_id}")
     @PreAuthorize("hasRole('TEACHER')")
@@ -224,12 +215,6 @@ public class QCMController {
         qcmRepository.save(qcm);
         return ResponseEntity.ok(new MessageResponse("Answer successfully added to the QCM!"));
     }
-
-    //public ResponseEntity<?> getAnswer()
-    //public ResponseEntity<?> setAnswer(String answer)
-    //public ResponseEntity<?> setAnswer(Answer answer)
-
-    //public ResponseEntity<?> setStudentAnswer(long id_answer)
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/student_answer")
     public ResponseEntity<?> addStudentAnswers(Principal principal,
