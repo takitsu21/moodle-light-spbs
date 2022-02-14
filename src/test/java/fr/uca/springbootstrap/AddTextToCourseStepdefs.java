@@ -104,7 +104,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         Text text = cours.getText(arg1);
         Module module = moduleRepository.findByName(arg3).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/module/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
     }
 
     @Quand("Le professeur {string} ajoute un text {int} de contenu {string} a la ressource {string} du module {string}")
@@ -115,7 +115,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
         MyText text = new MyText(arg1, arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/cours/" + cours.getId(),
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/",
                 new TextRequest(text), jwt);
     }
 

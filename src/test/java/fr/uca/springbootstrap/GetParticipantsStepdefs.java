@@ -108,7 +108,7 @@ public class GetParticipantsStepdefs extends SpringIntegration {
         User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/module/" + module.getId() + "/participants", jwt);
+        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
     }
 
     @Et("le dernier status de request est {int} gp")

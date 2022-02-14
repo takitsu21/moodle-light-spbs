@@ -148,7 +148,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             sb.append((char) ch);
         }
         executePost(String.format(
-                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d",
+                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
@@ -171,7 +171,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             }
         }
         executePost(String.format(
-                "http://localhost:8080/api/module/%d/questionnaire/%d",
+                "http://localhost:8080/api/modules/%d/questionnaire/%d",
                 module.getId(),
                 questionnaire.getId()), jwtStudent);
     }
