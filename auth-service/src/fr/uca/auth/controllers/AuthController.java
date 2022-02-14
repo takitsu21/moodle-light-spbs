@@ -1,17 +1,17 @@
 package fr.uca.auth.controllers;
 
 
-import fr.uca.springbootstrap.models.ERole;
-import fr.uca.springbootstrap.models.Role;
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.model.ERole;
+import fr.uca.auth.model.Role;
+import fr.uca.auth.model.User;
+import fr.uca.auth.repository.RoleRepository;
+import fr.uca.auth.repository.UserRepository;
+import fr.uca.auth.security.jwt.JwtUtils;
+import fr.uca.auth.security.services.UserDetailsImpl;
 import fr.uca.springbootstrap.payload.request.LoginRequest;
 import fr.uca.springbootstrap.payload.request.SignupRequest;
 import fr.uca.springbootstrap.payload.response.JwtResponse;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.security.jwt.JwtUtils;
-import fr.uca.springbootstrap.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +35,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-     UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -46,6 +46,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
     private Authentication authentication;
 
     public String generateJwt(String userName, String password) {
@@ -55,7 +56,7 @@ public class AuthController {
         return jwtUtils.generateJwtToken(authentication);
     }
 
-    @PostMapping("/signin")
+    @PostMapping(value = "/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         String jwt = generateJwt(loginRequest.getUsername(), loginRequest.getPassword());
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -75,7 +76,7 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_STUDENT)
+            Role userRole = roleRepository.findByName(fr.uca.auth.model.ERole.ROLE_STUDENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
@@ -104,7 +105,7 @@ public class AuthController {
         return user;
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity

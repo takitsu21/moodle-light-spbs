@@ -19,7 +19,6 @@
         <module>core</module>
         <module>auth-service</module>
         <module>api</module>
-        <module>tests</module>
     </modules>
 
 
@@ -92,24 +91,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.moodle.light.core</groupId>
-            <artifactId>moodle-light-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.moodle.light.auth</groupId>
-            <artifactId>moodle-light-auth</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.moodle.light.api</groupId>
-            <artifactId>moodle-light-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
