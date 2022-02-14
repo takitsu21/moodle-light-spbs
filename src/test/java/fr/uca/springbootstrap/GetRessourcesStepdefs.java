@@ -140,7 +140,7 @@ public class GetRessourcesStepdefs extends SpringIntegration {
         User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/module/" + module.getId() + "/ressources", jwt);
+        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/ressources", jwt);
     }
 
     @Et("le dernier status de request est {int} gr")

@@ -28,7 +28,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module")
+@RequestMapping("/api/modules/{module_id}/cours/{cours_id}")
 public class TextController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -58,7 +58,7 @@ public class TextController {
     CodeRunnerRepository codeRunnerRepository;
 
 
-    @PostMapping("/{module_id}/cours/{cours_id}")
+    @PostMapping("/texts")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addText(Principal principal,
                                      @Valid @RequestBody TextRequest textRequest,
@@ -109,7 +109,7 @@ public class TextController {
         return ResponseEntity.ok(new MessageResponse("Texts successfully added to the course!"));
     }
 
-    @DeleteMapping("/{module_id}/cours/{cours_id}/texts/{text_id}")
+    @DeleteMapping("/texts/{text_id}")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removeText(Principal principal,
                                         @PathVariable("module_id") long moduleId,

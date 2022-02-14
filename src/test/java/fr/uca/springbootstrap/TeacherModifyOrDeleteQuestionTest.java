@@ -135,9 +135,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
-                        +"/question/"+question.getId()+"/name",
+                        +"/questions/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
                         question.getNumber()), jwTeacher);
     }
@@ -161,9 +161,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
-                        +"/question/"+question.getId()+"/name",
+                        +"/questions/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
                         question.getNumber()), jwTeacher);
     }
@@ -186,9 +186,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
+                +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
     }
 
@@ -210,9 +210,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
+                +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqu")
@@ -233,9 +233,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
+                +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqx")
@@ -256,9 +256,9 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/"+module.getId()
+        executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
-                +"/question/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
+                +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
     @Alors("le dernier status de réponse et {int} tmdqaa")

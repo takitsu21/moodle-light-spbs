@@ -79,7 +79,7 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg0).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + user.getId(), jwt);
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Et("le dernier status de request est {int}")

@@ -25,7 +25,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module/")
+@RequestMapping("/api/modules/")
 public class QuestionController {
 
     @Autowired
@@ -40,13 +40,13 @@ public class QuestionController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/question/")
+    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/questions/")
     public ResponseEntity<?> getQuestion(){
         List<Question> questions = questionRepository.findAll();
         return ResponseEntity.ok(questions);
     }
 
-//    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
+//    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
 //    public ResponseEntity<?> deleteQuestionById(@PathVariable long id){
 //
@@ -64,7 +64,7 @@ public class QuestionController {
 //    }
 
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/name")
+    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/name")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setName(Principal principal,
                                     @Valid @RequestBody QuestionRequest questionRequest,
@@ -122,7 +122,7 @@ public class QuestionController {
 
     }
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/description")
+    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/description")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> setDescription(Principal principal,
                                             @Valid @RequestBody QuestionRequest questionRequest,
@@ -171,7 +171,7 @@ public class QuestionController {
 
     }
 
-    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/question/{question_id}/number")
+    @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/number")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> setNumber(Principal principal,
                                      @Valid @RequestBody QuestionRequest questionRequest,

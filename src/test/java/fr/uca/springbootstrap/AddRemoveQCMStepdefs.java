@@ -114,7 +114,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
                 jwtTeacher);
     }
@@ -128,7 +128,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Question question = questionnaire.findQuestionByName(arg1);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/question/" + question.getId(), jwtTeacher);
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwtTeacher);
     }
 
     @Alors("la réponse est {int} arqqq")
