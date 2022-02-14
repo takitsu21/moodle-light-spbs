@@ -16,14 +16,17 @@ import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.messages.internal.com.google.gson.JsonArray;
+import io.cucumber.messages.internal.com.google.gson.JsonObject;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetQuestionStepdefs extends SpringIntegration {
     private static final String PASSWORD = "securedPassword";
@@ -108,6 +111,17 @@ public class GetQuestionStepdefs extends SpringIntegration {
                 jwt);
     }
 
+    @Quand("l'etudiant {string} recupere les questions du questionnaire {string} du module {string} auq")
+    public void lEtudiantRecupereLesQuestionsDuQuestionnaireDuModuleAuq(String arg0, String arg1, String arg2) throws IOException {
+        Module module = moduleRepository.findByName(arg2).get();
+        Questionnaire questionnaire =  (Questionnaire) module.findRessourceByName(arg1);
+
+        String jwt = authController.generateJwt(arg0, PASSWORD);
+        //TODO adapter la requete avec les s
+        executeGet("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/question/",
+                jwt);
+    }
+
     @Alors("la réponse est {int} auq")
     public void laRéponseEstAuq(int arg0) {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
@@ -123,5 +137,23 @@ public class GetQuestionStepdefs extends SpringIntegration {
         QCM question = gson.fromJson(json_question, QCM.class);
 
         assertEquals(arg0, question.getName());
+    }
+
+    @Et("les questions {string} et {string} du questionnaire {string} du module {string} sont renvoyees")
+    public void lesQuestionsEtDuQuestionnaireDuModuleSontRenvoyees(String arg0, String arg1, String arg2, String arg3) throws IOException {
+        Module module = moduleRepository.findByName(arg3).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+        Question question1 = questionnaire.findQuestionByName(arg0);
+        Question question2 = questionnaire.findQuestionByName(arg1);
+
+        String json_questions = EntityUtils.toString(latestHttpResponse.getEntity());
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+
+        Gson gson = builder.create();
+        Map<String, String> questions = gson.fromJson(json_questions, Map.class);
+
+        assertTrue(questions.containsKey(String.valueOf(question1.getId())));
+        assertTrue(questions.containsKey(String.valueOf(question2.getId())));
     }
 }

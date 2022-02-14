@@ -15,7 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
-import java.util.Optional;
+import java.util.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.swing.text.html.Option;
 import javax.validation.Path;
 import javax.validation.Valid;
-import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -128,7 +128,14 @@ public class QuestionController {
                     .body(new MessageResponse("Error: questionnaire does not belong in this module."));
         }
 
-        return ResponseEntity.ok(questionnaire.getQuestions());
+        // Je veux renvoyer les questions elles-mêmes mais je dois garder un élément simple a comparer pour les tests avec gson
+        // c'est pour ça qu'il y a l'id et la question
+        Map<Long, Question> questions = new HashMap<>();
+        for (Question question : questionnaire.getQuestions()) {
+            questions.put(question.getId(), question);
+        }
+
+        return ResponseEntity.ok(questions);
     }
 
 
