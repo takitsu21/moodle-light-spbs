@@ -13,7 +13,6 @@ import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
@@ -61,16 +60,6 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("Un enseignant avec le nom de connexion {string} sq")
-    public void unEnseignantAvecLeNomDeConnexionSqD(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
 
     @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} sq")
     public void unModuleQuiAUnEnseignantEtUnÉtudiantEtQuiALaQuestionNuméroAvecDescriptionLaRéponseEstAvecLeTestDansLeSq(
@@ -87,7 +76,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         User teacher = userRepository.findByUsername(teacherName).get();
         User student = userRepository.findByUsername(studentName).
                 orElse(new User(studentName, studentName + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<Role>() {{
+        student.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
@@ -123,7 +112,6 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
 
     @Et("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string} sq")
     public void écritSonCodePythonDansLeFichierEtSoumetSontCodeAuModuleDeLaQuestionNuméroDansLeSq(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
-        User user = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg2).get();
         Questionnaire questionnaire = null;
         for (Ressource ressource : module.getRessources()) {

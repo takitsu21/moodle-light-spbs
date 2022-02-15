@@ -1,11 +1,8 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.SpringIntegration;
 import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.OpenQuestion;
 import fr.uca.springbootstrap.models.questions.Question;
@@ -155,42 +152,12 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         questionRepository.save(question);
     }
 
-    @Et("un professeur {string} ayant le module {string} oqm")
-    public void unProfesseurAyantLeModuleOqm(String arg0, String arg1) {
-        User teacher = userRepository.findByUsername(arg0)
-                .orElse( new User(arg0, arg0+"@test.fr", encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>(){{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER)
-                    .orElseThrow( () -> new RuntimeException("Error: Role is not found")));
-        }});
-        userRepository.save(teacher);
-
-        Module module = moduleRepository.findByName(arg1).
-                orElse(new Module(arg1));
-        module.setParticipants(new HashSet<>(){{
-            add(teacher);
-        }});
-        moduleRepository.save(module);
-    }
-
-    @Et("un professeur {string} n'ayant pas de module oqm")
-    public void unProfesseurNAyantPasDeModuleOqm(String arg0) {
-        User teacher = userRepository.findByUsername(arg0)
-                .orElse( new User(arg0, arg0+"@test.fr", encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>(){{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER)
-                    .orElseThrow( () -> new RuntimeException("Error: Role is not found")));
-        }});
-        userRepository.save(teacher);
-    }
 
     @Quand("le professeur {string} ajoute une réponse possible de contenu {string} a la question {string} du questionnaire {string} du module {string} oqm")
     public void leProfesseurAjouteUneRéponsePossibleDeContenuALaQuestionDuQuestionnaireDuModuleOqm(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
-        User teacher = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
         Question question = questionnaire.findQuestionByName(arg2);
-        Answer answer = new Answer(arg1);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         executePut("http://localhost:8080/api/modules/"

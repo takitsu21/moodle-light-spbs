@@ -4,8 +4,8 @@
 Fonctionnalité: Ajouter ou retirer une question quelconque d'un questionnaire
 
   Contexte:
-    Etant donné le professeur "Jean-Patrick" assigné au module de "Sport" arqqq
-    Et le professeur "Mariette" sans module arqqq
+    Etant donné le professeur "Jean-Patrick" assigne au module "Sport"
+    Et le professeur "Mariette"
     Et le questionnaire "Controle" dans le module "Sport" arqqq
     Et la question "QCM1" dans le questionnaire "Controle" du module "Sport" arqqq
 

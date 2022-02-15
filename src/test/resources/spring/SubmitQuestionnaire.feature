@@ -5,7 +5,7 @@ Fonctionnalité: En tant que API REST je veux pouvoir calculé la note d'un él�
 
 
   Contexte:
-    Etant donné Un enseignant avec le nom de connexion "Jacques" sq
+    Etant donné le professeur "Jacques"
     Et un module "Prog 2" qui a un enseignant "Jacques" et un étudiant "Margaux" et qui a la question numéro 1 "Factorial" avec description "Ecrire la fonction fact(n) qui calcule n!" la réponse est "720" avec le test "print(fact(6))" dans le "Questionnaire code runner" sq
     Et "Margaux" écrit son code python dans le fichier "fact_success.py" et soumet sont code au module "Prog 2" de la question numéro 1 dans le "Questionnaire code runner" sq
 

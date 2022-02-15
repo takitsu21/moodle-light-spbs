@@ -37,23 +37,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Étantdonné("L'enseignant avec le nom de connexion {string}")
-    public void lEnseignantAvecLeNomDeConnexion(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
 
-    @Et("le module {string}")
-    public void leModule(String arg0) {
-        Module module = moduleRepository.findByName(arg0)
-                .orElse(new Module(arg0));
-        moduleRepository.save(module);
-    }
     @Et("le questionnaire {string} du module {string}")
     public void leQuestionnaireDuModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1)
@@ -78,15 +62,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
 
         module.addRessource(questionnaire);
-        moduleRepository.save(module);
-    }
-
-    @Et("un module {string} avec un enseignant {string}")
-    public void unModuleAvecUnEnseignantEtUnQuestionnaire(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg0).get();
-        User teacher = userRepository.findByUsername(arg1).get();
-
-        module.getParticipants().add(teacher);
         moduleRepository.save(module);
     }
 
@@ -118,7 +93,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
     @Et("le questionnaire {string} n'est pas dans le module {string}")
     public void leQuestionnaireNEstPasDansLeModule(String arg0, String arg1) {
-//        Questionnaire questionnaire = questionnaireRepository.findByName(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
 
         assertFalse(module.containsRessource(arg0));

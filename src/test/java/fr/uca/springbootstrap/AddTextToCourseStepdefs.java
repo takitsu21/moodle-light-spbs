@@ -44,22 +44,6 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("le professeur {string} assigné au module de {string} atc")
-    public void leProfesseurAssignéAuModuleDeAtc(String arg0, String arg1) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-
-        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
-        module.getParticipants().add(user);
-        moduleRepository.save(module);
-
-        assertTrue(module.getParticipants().contains(user));
-    }
 
     @Et("le module de {string} a une ressource {string} qui a un texte {int} de contenu {string}")
     public void leModuleDeAUneRessourceQuiAUnTexteDeContenu(String arg0, String arg1, int arg2, String arg3) {
@@ -86,32 +70,19 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         assertTrue(module.getRessources().contains(ressource));
     }
 
-    @Et("le professeur {string} qui n'a aucun module atc")
-    public void leProfesseurQuiNAAucunModuleAtc(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
     @Quand("Le professeur {string} retire un text {int} a la ressource {string} du module {string}")
     public void leProfesseurRetireUnTextALaRessourceDuModule(String arg0, int arg1, String arg2, String arg3) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
-        Cours cours = coursRepository.findByName(arg2).get();
-        Text text = cours.getText(arg1);
         Module module = moduleRepository.findByName(arg3).get();
+        Cours cours = (Cours) module.findRessourceByName(arg2);
+        Text text = cours.getText(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
     }
 
     @Quand("Le professeur {string} ajoute un text {int} de contenu {string} a la ressource {string} du module {string}")
     public void leProfesseurAjouteUnTextDeContenuALaRessourceDuModule(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg4).get();
-        Cours cours = coursRepository.findByName(arg3).get();
+        Cours cours = (Cours) module.findRessourceByName(arg3);
 
         MyText text = new MyText(arg1, arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
@@ -127,14 +98,14 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
     @Alors("le text {int} de la ressource {string} n'est pas dans le module {string}")
     public void leTextDeLaRessourceNEstPasDansLeModule(int arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
-        Cours cours = coursRepository.findByName(arg1).get();
+        Cours cours = (Cours) module.findRessourceByName(arg1);
         assertFalse(cours.containsText(arg0));
     }
 
     @Alors("le text {int} de la ressource {string} est dans le module {string}")
     public void leTextDeLaRessourceEstDansLeModule(int arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg2).get();
-        Cours cours = coursRepository.findByName(arg1).get();
+        Cours cours = (Cours) module.findRessourceByName(arg1);
         assertTrue(cours.containsText(arg0));
     }
 }

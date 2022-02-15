@@ -1,22 +1,18 @@
 package fr.uca.springbootstrap;
 
 import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Role;
 import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,53 +34,9 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("Un enseignant avec le nom de connexion {string}")
-    public void unEnseignantAvecLeNomDeConnexion(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
-    @Et("un étudiant {string}")
-    public void unEtudiant(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
-    @Et("un module {string} qui a un enseignant {string}")
-    public void unModuleQuiAUnEnseignant(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-        User teacher = userRepository.findByUsername(arg1).get();
-        module.setParticipants(new HashSet<>() {{
-            add(teacher);
-        }});
-        moduleRepository.save(module);
-    }
-
-    @Et("un module {string} qui a un enseignant {string} et un étudiant {string}")
-    public void unModuleQuiAUnEnseignantEtUnÉtudiant(String arg0, String arg1, String arg2) {
-        Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-        User teacher = userRepository.findByUsername(arg1).get();
-        User student = userRepository.findByUsername(arg2).get();
-
-        module.setParticipants(new HashSet<>() {{
-            add(teacher);
-            add(student);
-        }});
-        moduleRepository.save(module);
-    }
 
     @Et("l enseignant inscrit l'étudiant {string} au module {string}")
-    public void lEnseignantInscritLÉtudiantAuModule(String arg0, String arg1) throws IOException {
+    public void lEnseignantInscritLÉtudiantAuModule(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();
         User student = userRepository.findByUsername(arg0).get();
         module.getParticipants().add(student);
@@ -94,7 +46,6 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
     @Quand("l'enseignant {string} veut ajouter {string} au module de {string} arm")
     public void lEnseignantVeutAjouterAuModuleDeArm(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
-        User teacher = userRepository.findByUsername(arg0).get();
         User student = userRepository.findByUsername(arg1).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
@@ -117,7 +68,6 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
     @Quand("l'enseignant {string} veut enlever {string} du module de {string} arm")
     public void lEnseignantVeutEnleverDuModuleDeArm(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
-        User teacher = userRepository.findByUsername(arg0).get();
         User student = userRepository.findByUsername(arg1).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);

@@ -47,64 +47,9 @@ public class GetModulesStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("le professeur {string} assigné au module de {string} gm")
-    public void leProfesseurAssignéAuModuleDeGm(String arg0, String arg1) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
 
-        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
-        module.getParticipants().add(user);
-        moduleRepository.save(module);
-
-        assertTrue(module.getParticipants().contains(user));
-    }
-
-    @Et("le professeur {string} qui n'a aucun module gm")
-    public void leProfesseurQuiNAAucunModuleGm(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
-    @Et("l'élève {string} est assigné au module {string} gm")
-    public void lÉlèveEstAssignéAuCoursGm(String arg0, String arg1) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-
-        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
-        module.getParticipants().add(user);
-        moduleRepository.save(module);
-
-        assertTrue(module.getParticipants().contains(user));
-    }
-
-    @Et("l'élève {string} assigné a aucun module gm")
-    public void lÉlèveAssignéAAucunModuleGm(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
-    @Quand("L'utilisateur {string} get ces modules")
-    public void lUtilisateurGetCesModules(String arg0) throws IOException {
+    @Quand("L'utilisateur {string} get ses modules")
+    public void lUtilisateurGetSesModules(String arg0) throws IOException {
         User prof = userRepository.findByUsername(arg0).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
         executeGet("http://localhost:8080/api/modules/", jwt);

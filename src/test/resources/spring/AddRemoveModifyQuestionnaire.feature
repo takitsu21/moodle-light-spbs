@@ -4,10 +4,8 @@
 Fonctionnalité: Ajouter ou enlever une ressource d'un module
 
   Contexte:
-    Étant donné L'enseignant avec le nom de connexion "Jacob"
-    Et le module "Mathématiques"
+    Étant donné le professeur "Jacob" assigne au module "Mathématiques"
     Et le questionnaire "Examen" du module "Mathématiques"
-    Et un module "Mathématiques" avec un enseignant "Jacob"
     Et un module "Philosophie"
 
   Scénario: Ajout d'un questionnaire par un enseignant autorisé

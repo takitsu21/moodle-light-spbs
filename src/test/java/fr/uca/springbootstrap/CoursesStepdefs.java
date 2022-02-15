@@ -47,26 +47,26 @@ public class CoursesStepdefs extends SpringIntegration {
     PasswordEncoder encoder;
 
 
-    @Etantdonné("Un enseignant avec le nom de connexion {string} crs")
-    public void unEnseignantAvecLeNomDeConnexionCrs(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
-    @Et("un module {string} qui a un enseignant {string} crs")
-    public void unModuleQuiAUnEnseignantCrs(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-        User teacher = userRepository.findByUsername(arg1).get();
-        module.setParticipants(new HashSet<>() {{
-            add(teacher);
-        }});
-        moduleRepository.save(module);
-    }
+//    @Etantdonné("Un enseignant avec le nom de connexion {string} crs")
+//    public void unEnseignantAvecLeNomDeConnexionCrs(String arg0) {
+//        User user = userRepository.findByUsername(arg0).
+//                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
+//        user.setRoles(new HashSet<Role>() {{
+//            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+//        }});
+//        userRepository.save(user);
+//    }
+//
+//    @Et("un module {string} qui a un enseignant {string} crs")
+//    public void unModuleQuiAUnEnseignantCrs(String arg0, String arg1) {
+//        Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
+//        User teacher = userRepository.findByUsername(arg1).get();
+//        module.setParticipants(new HashSet<>() {{
+//            add(teacher);
+//        }});
+//        moduleRepository.save(module);
+//    }
 
     @Et("un module {string} qui a un cours {string} et numéro {int} et qui a un enseignant {string} crs")
     public void unModuleQuiAUnCoursEtNuméroEtQuiAUnEnseignantCrs(String arg0, String arg1, int arg2, String arg3) {

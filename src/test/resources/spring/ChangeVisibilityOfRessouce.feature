@@ -4,10 +4,10 @@
 Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité des ressources
 
   Contexte:
-    Etant donné le professeur "Paul" assigné au module de "Maths"
+    Etant donné le professeur "Paul" assigne au module "Maths"
     Et le module "Maths" a une ressource "Pomme" invisible
     Et le module "Maths" a une ressource "Poir" visible
-    Et le professeur "Jean" qui n'a aucun module
+    Et le professeur "Jean"
 
   Scénario: Le professeur "Paul" rend visible la ressource "Pomme" du module "Maths"
     Quand le professeur "Paul" essaie de rendre la ressource "Pomme" du module "Maths" visible

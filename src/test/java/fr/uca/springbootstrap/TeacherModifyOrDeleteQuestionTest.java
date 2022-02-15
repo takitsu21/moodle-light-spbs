@@ -14,7 +14,6 @@ import fr.uca.springbootstrap.repository.question.QCMRepository;
 import fr.uca.springbootstrap.repository.question.QuestionRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,38 +50,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-
-    @Etantdonné("un professeur {string} ayant le module {string} tmdqa")
-    public void unProfesseurAyantLeModuleTmdqa(String arg0, String arg1) {
-        // Professeur
-        User teacher = userRepository.findByUsername(arg0).
-                orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is no found")));
-        }});
-        userRepository.save(teacher);
-
-        // Module
-        Module module = moduleRepository.findByName(arg1).
-                orElse(new Module(arg1));
-        module.setParticipants(new HashSet<>(){{
-            add(teacher);
-        }});
-        moduleRepository.save(module);
-    }
-
-    @Et("un professeur {string} n'ayant pas le module {string} tmdqb")
-    public void unProfesseurNAyantPasLeModuleTmdqb(String arg0, String arg1) {
-        // Professeur
-        User teacher = userRepository.findByUsername(arg0).
-                orElse(new User(arg0,arg0+"@test.fr",encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is no found")));
-        }});
-        userRepository.save(teacher);
-    }
 
     @Et("un questionnaire {string} appartenant à un module {string} tmdqc")
     public void unQuestionnaireAppartenantÀUnModuleTmdqc(String arg0, String arg1) {

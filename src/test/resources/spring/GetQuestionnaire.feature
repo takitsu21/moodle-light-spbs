@@ -3,12 +3,12 @@
 
 Fonctionnalité: Accéder aux questionnaires
   Contexte:
-    Etant donné le professeur "Andrew" assigné au module d'"Histoire" aaq
+    Etant donné le professeur "Andrew" assigne au module "Histoire"
     Et le module "Histoire" a un questionnaire "Partiel" invisible aaq
     Et le module "Histoire" a un questionnaire "Interro" visible aaq
-    Et le professeur "Marco" qui n'a aucun module aaq
-    Et l'élève "Pedro" est assigné au module "Histoire" aaq
-    Et l'élève "Madeleine" assigné a aucun module aaq
+    Et le professeur "Marco"
+    Et l'etudiant "Pedro" assigne au module "Histoire"
+    Et l'etudiant "Madeleine"
 
   Scénario: Le professeur "Andrew" récupère le questionnaire "Partiel" du module "Histoire"
     Quand l'utilisateur "Andrew" récupère le questionnaire "Partiel" du module "Histoire"

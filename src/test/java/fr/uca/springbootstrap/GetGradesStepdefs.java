@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetGradesStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "securedPassword";
+    private static final String PASSWORD = "password";
 
     @Autowired
     UserRepository userRepository;
@@ -58,55 +58,6 @@ public class GetGradesStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-
-    @Etantdonné("le professeur {string} assigné au module de {string} gg")
-    public void leProfesseurAssigneAuModuleDeGg(String arg0, String arg1) {
-//        User user = userRepository.findByUsername(arg0)
-//                .orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-//        user.setRoles(new HashSet<>() {{
-//            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-//        }});
-//        userRepository.save(user);
-//        Module module = moduleRepository.findByName(arg1)
-//                .orElse(new Module(arg1));
-//        module.getParticipants().add(user);
-//        moduleRepository.save(module);
-    }
-
-    @Et("un module {string} qui a un enseignant {string}, un etudiant {string} et un etudiant {string} gg")
-    public void unModuleQuiAUnEnseignantEtUnEtudiantGg(String arg0, String arg1, String arg2, String arg3) {
-//        User teacher = userRepository.findByUsername(arg1)
-//                .orElse(new User(arg1, arg1 + "@test.fr", encoder.encode(PASSWORD)));
-//        teacher.setRoles(new HashSet<>() {{
-//            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-//        }});
-//        userRepository.save(teacher);
-//
-//        User student1 = userRepository.findByUsername(arg2)
-//                .orElse(new User(arg2, arg2 + "@test.fr", encoder.encode(PASSWORD)));
-//        student1.setRoles(new HashSet<>() {{
-//            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-//        }});
-//        userRepository.save(student1);
-//
-//        User student2 = userRepository.findByUsername(arg3)
-//                .orElse(new User(arg3, arg3 + "@test.fr", encoder.encode(PASSWORD)));
-//        student2.setRoles(new HashSet<>() {{
-//            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-//        }});
-//        userRepository.save(student2);
-//
-//        Module module = moduleRepository.findByName(arg0)
-//                .orElse(new Module(arg0));
-//        module.getParticipants().add(teacher);
-//        module.getParticipants().add(student1);
-//        module.getParticipants().add(student2);
-//        moduleRepository.save(module);
-    }
 
     @Et("un questionnaire {string} appartenant à un module {string} gg")
     public void unQuestionnaireAppartenantAUnModuleGg(String arg0, String arg1) {

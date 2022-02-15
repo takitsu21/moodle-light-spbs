@@ -4,9 +4,9 @@
 Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et supprimer des textes dans mes cours
 
   Contexte:
-    Etant donné le professeur "Paul" assigné au module de "Maths" atc
+    Etant donné le professeur "Paul" assigne au module "Maths"
     Et le module de "Maths" a une ressource "Pomme" qui a un texte 1 de contenu "Fruit"
-    Et le professeur "Jean" qui n'a aucun module atc
+    Et le professeur "Jean"
 
   Scénario: Le professeur "Paul" ajoute un text a la ressource "Pomme" du module "Maths"
     Quand Le professeur "Paul" ajoute un text 2 de contenu "Arbre" a la ressource "Pomme" du module "Maths"

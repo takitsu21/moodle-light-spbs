@@ -4,11 +4,11 @@
 Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer des utilisateur a mon module
 
   Contexte:
-    Etant donné le professeur "Paul" assigné au module de "Maths"
-    Et le professeur "Paul" assigné au module de "Chimie"
-    Et le professeur "Marie" assigné au module de "Chimie"
-    Et le professeur "Jean" qui n'est assigné a aucun module
-    Et l'élève "Dylann" assigné au module de "Chimie"
+    Etant donné le professeur "Paul" assigne au module "Maths"
+    Et le professeur "Paul" assigne au module "Chimie"
+    Et le professeur "Marie" assigne au module "Chimie"
+    Et le professeur "Jean"
+    Et l'etudiant "Dylann" assigne au module "Chimie"
 
 
   Scénario: Le professeur "Jean" assigne le professeur "Marie" au module "Maths"

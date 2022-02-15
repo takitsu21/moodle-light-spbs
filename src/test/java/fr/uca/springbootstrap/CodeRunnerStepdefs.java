@@ -66,35 +66,6 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("Un enseignant avec le nom de connexion {string} crn")
-    public void unEnseignantAvecLeNomDeConnexionCrn(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
-    @Et("un module {string} qui a un enseignant {string} et un étudiant {string} crn")
-    public void unModuleQuiAUnEnseignantEtUnÉtudiantCrn(String arg0, String arg1, String arg2) {
-        Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-        User teacher = userRepository.findByUsername(arg1).get();
-        User student = userRepository.findByUsername(arg2).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(teacher);
-        userRepository.save(student);
-        module.setParticipants(new HashSet<>() {{
-            add(teacher);
-            add(student);
-        }});
-        moduleRepository.save(module);
-    }
 
     @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} crn")
     public void unModuleQuiAUnEnseignantEtUnÉtudiantEtQuiALaQuestionNuméroAvecDescriptionLaRéponseEstAvecLeTestQuestionNuméroCrn(
@@ -112,7 +83,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         User teacher = userRepository.findByUsername(teacherName).get();
         User student = userRepository.findByUsername(studentName).
                 orElse(new User(studentName, studentName + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<Role>() {{
+        student.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
             add(roleRepository.findByName(ERole.ROLE_ADMIN).
@@ -198,23 +169,10 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 
     @Quand("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string}")
     public void écritSonCodePythonEtSoumetSontCodeAuModuleDeLaQuestionNuméro(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
-        User user = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg2).get();
-        Questionnaire questionnaire = null;
-        for (Ressource ressource : module.getRessources()) {
-            if (arg4.equalsIgnoreCase(ressource.getName())) {
-                questionnaire = (Questionnaire) ressource;
-                break;
-            }
-        }
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg4);
+        CodeRunner codeRunner = (CodeRunner) questionnaire.findQuestionByNum(arg3);
 
-        CodeRunner codeRunner = null;
-        for (Question question : questionnaire.getQuestions()) {
-            if (question.getNumber() == arg3) {
-                codeRunner = (CodeRunner) question;
-                break;
-            }
-        }
         String jwtStudent = authController.generateJwt(arg0, PASSWORD);
         InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
 

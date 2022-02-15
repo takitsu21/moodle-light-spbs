@@ -41,22 +41,6 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("le professeur {string} assigné au module de {string} qui a une ressource {string}")
-    public void leProfesseurAssignéAuModuleDeQuiAUneRessource(String arg0, String arg1, String arg2) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-
-        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
-        module.getParticipants().add(user);
-        moduleRepository.save(module);
-
-        assertTrue(module.getParticipants().contains(user));
-    }
 
     @Et("le module {string} a une ressource {string} invisible")
     public void leModuleAUneRessourceInvisible(String arg0, String arg1) {
@@ -92,20 +76,8 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         assertTrue(module.getRessources().contains(ressource));
     }
 
-    @Et("le professeur {string} qui n'a aucun module")
-    public void leProfesseurQuiNAAucunModule(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
     @Quand("le professeur {string} essaie de rendre la ressource {string} du module {string} visible")
     public void leProfesseurEssaieDeRendreLaRessourceDuModuleVisible(String arg0, String arg1, String arg2) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
@@ -116,7 +88,6 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
 
     @Quand("le professeur {string} essaie de rendre la ressource {string} du module {string} invisible")
     public void leProfesseurEssaieDeRendreLaRessourceDuModuleInvisible(String arg0, String arg1, String arg2) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);

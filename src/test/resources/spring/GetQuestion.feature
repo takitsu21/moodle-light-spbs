@@ -5,8 +5,8 @@ Fonctionnalité: Accéder à une question
   
   Contexte:
     Etant donné le questionnaire "Interrogation" dans le module "Physique" auq
-    Et l'étudiant "Charlie" dans le module "Physique" auq
-    Et l'étudiant "Tanguy" sans module auq
+    Et l'etudiant "Charlie" assigne au module "Physique"
+    Et l'etudiant "Tanguy"
     Et la question "Bonus" numéro 13 dans le questionnaire "Interrogation" du module "Physique" auq
     Et la question "Gratuite" numéro 14 dans le questionnaire "Interrogation" du module "Physique" auq
     

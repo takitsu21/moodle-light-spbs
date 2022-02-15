@@ -50,6 +50,7 @@ public class QCMStepdefs extends SpringIntegration {
     @Autowired
     AnswerRepository answerRepository;
 
+    //TODO factoriser quand j'aurai fait celle des questionnaires
     @Etantdonné("le professeur {string} assigné au module de {string} avec un questionnaire {string} visible qcm")
     public void leProfesseurAssignéAuModuleDeAvecUnQuestionnaireQcm(String arg0, String arg1, String arg2) {
         User user = userRepository.findByUsername(arg0).
@@ -108,32 +109,12 @@ public class QCMStepdefs extends SpringIntegration {
 
         qcm.setPossibleAnswers(answers);
         qcmRepository.save(qcm);
-//        questionnaireRepository.save(questionnaire);
-//        moduleRepository.save(module);
     }
 
 
-
-    @Et("l'élève {string} assigné au module de {string} qcm")
-    public void lÉlèveAssignéAuModuleDeQcm(String arg0, String arg1) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-
-        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
-        module.getParticipants().add(user);
-        moduleRepository.save(module);
-
-        assertTrue(module.getParticipants().contains(user));
-    }
 
     @Quand("le professeur {string} essaie d'ajouter la reponse possible {string} au QCM {string} du questionnaire {string} du module {string}")
     public void leProfesseurEssaieDAjouterLaReponsePossibleAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
@@ -143,7 +124,7 @@ public class QCMStepdefs extends SpringIntegration {
     }
 
     @Et("le dernier status de request est {int} qcm")
-    public void leDernierStatusDeRequestEstQcm(int arg0) throws IOException {
+    public void leDernierStatusDeRequestEstQcm(int arg0) {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
@@ -159,7 +140,6 @@ public class QCMStepdefs extends SpringIntegration {
 
     @Quand("le professeur {string} essaie d'ajouter la bonne reponse {string} au QCM {string} du questionnaire {string} du module {string}")
     public void leProfesseurEssaieDAjouterLaBonneReponseAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
@@ -180,7 +160,6 @@ public class QCMStepdefs extends SpringIntegration {
 
     @Quand("L élève {string} essaie d'ajouter ça reponse {string} au QCM {string} du questionnaire {string} du module {string}")
     public void lÉlèveEssaieDAjouterÇaReponseAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
-        User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);

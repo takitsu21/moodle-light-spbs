@@ -4,12 +4,12 @@
 Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les ressources d'un module
 
   Contexte:
-    Etant donné le professeur "Paul" assigné au module de "Maths" gr
+    Etant donné le professeur "Paul" assigne au module "Maths"
     Et le module "Maths" a un cours "Pomme" invisible gr
     Et le module "Maths" a un cours "Poir" visible gr
-    Et le professeur "Jean" qui n'a aucun module gr
-    Et l'élève "Juliette" est assigné au cours "Maths"
-    Et l'élève "Mia" assigné a aucun module
+    Et le professeur "Jean"
+    Et l'etudiant "Juliette" assigne au module "Maths"
+    Et l'etudiant "Mia"
 
   Scénario: Le professeur "Paul" get les ressources du module "Maths"
     Quand Le professeur "Paul" get les ressources du module "Maths"

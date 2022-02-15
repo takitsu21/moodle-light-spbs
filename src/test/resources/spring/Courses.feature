@@ -4,8 +4,7 @@
 Fonctionnalité: En tant qu'enseignant je veux pouvoir ajouter et retirer un cours (série de texte) à un module
 
   Contexte:
-    Etant donné Un enseignant avec le nom de connexion "Jacques" crs
-      Et un module "Philo" qui a un enseignant "Jacques" crs
+    Etant donné le professeur "Jacques" assigne au module "Philo"
       Et un module "SVT" qui a un cours "Test" et numéro 2 et qui a un enseignant "Jacques" crs
 
   Scénario: Ajout d'une ressource cours d'un module

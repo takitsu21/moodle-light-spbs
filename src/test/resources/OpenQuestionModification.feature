@@ -9,8 +9,8 @@
       Et une question ouverte "Question 1" contenue dans le questionnaire "Questionnaire 1" du module "Maths" oqm
       Et "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ayant comme réponses possibles "A", "B", "C" oqm
       Et "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ayant comme réponses "A" et "B" oqm
-      Et un professeur "Cédric" ayant le module "Maths" oqm
-      Et un professeur "Cinzia" n'ayant pas de module oqm
+      Et le professeur "Cédric" assigne au module "Maths"
+      Et le professeur "Cinzia"
 
     Scénario: Professeur ajoute une réponse possible au questionnaire en ayant le bon module
       Quand le professeur "Cédric" ajoute une réponse possible de contenu "D" a la question "Question 1" du questionnaire "Questionnaire 1" du module "Maths" oqm

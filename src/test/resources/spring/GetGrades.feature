@@ -4,8 +4,10 @@
 Fonctionnalité: En tant que professeur je veux pouvoir voir la note de tous les étudiants
 
   Contexte:
-    Etant donné le professeur "Paul" assigné au module de "Maths" gg
-    Et un module "Prog 2" qui a un enseignant "Jacques", un etudiant "Margaux" et un etudiant "Jeannot" gg
+    Etant donné le professeur "Paul" assigne au module "Maths"
+    Et le professeur "Jaques" assigne au module "Prog 2"
+    Et l'etudiant "Margaux" assigne au module "Prog 2"
+    Et l'etudiant "Jeannot" assigne au module "Prog 2"
     Et un questionnaire "Questionnaire code runner" appartenant à un module "Prog 2" gg
     Et la question numéro 1 "Factorial" avec description "Ecrire la fonction fact(n) qui calcule n!" la réponse est "720" avec le test "print(fact(6))" dans le "Questionnaire code runner" du module "Prog 2" gg
     Et "Margaux" soumet son code dans le fichier "fact_success.py" à la question 1 du questionnaire "Questionnaire code runner" du module "Prog 2"

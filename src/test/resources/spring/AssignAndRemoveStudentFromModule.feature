@@ -4,12 +4,11 @@
 Fonctionnalité: Ajouté ou enlever un étudiant d'un module
 
   Contexte:
-    Etant donné Un enseignant avec le nom de connexion "Jacques"
-    Et un étudiant "Jean"
-    Et un étudiant "Margaux"
-    Et un étudiant "Franck"
-    Et un module "Math" qui a un enseignant "Jacques"
-    Et un module "Français" qui a un enseignant "Jacques" et un étudiant "Franck"
+    Etant donné le professeur "Jacques" assigne au module "Math"
+    Et le professeur "Jacques" assigne au module "Français"
+    Et l'etudiant "Jean"
+    Et l'etudiant "Margaux"
+    Et l'etudiant "Franck" assigne au module "Français"
     Et l enseignant inscrit l'étudiant "Margaux" au module "Math"
 
   Scénario: Ajout d'un étudiant à un module

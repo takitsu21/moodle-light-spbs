@@ -49,33 +49,6 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("le professeur {string} assigné au module de {string} arqqq")
-    public void leProfesseurAssignéAuModuleDeArqqq(String arg0, String arg1) {
-        User teacher = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(teacher);
-
-        Module module = moduleRepository.findByName(arg1)
-                .orElse(new Module(arg1));
-        module.getParticipants().add(teacher);
-        moduleRepository.save(module);
-    }
-
-    @Et("le professeur {string} sans module arqqq")
-    public void leProfesseurSansModuleArqqq(String arg0) {
-        User teacher = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(teacher);
-    }
-
 
     @Et("le questionnaire {string} dans le module {string} arqqq")
     public void leQuestionnaireDansLeModuleArqqq(String arg0, String arg1) {

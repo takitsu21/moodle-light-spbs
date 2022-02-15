@@ -4,9 +4,9 @@
 Fonctionnalité: En tant que professeur je veux pouvoir m'assigner un module
 
   Contexte:
-    Etant donné un professeur "Pierre"
+    Etant donné le professeur "Pierre"
     Et un module "Maths" qui n'a pas de professeur
-    Et au module "Chimie" qui a un professeur assigné
+    Et le professeur "Pedro" assigne au module "Chimie"
 
 
   Scénario: Le module "Maths" n'a pas de professeur assigné

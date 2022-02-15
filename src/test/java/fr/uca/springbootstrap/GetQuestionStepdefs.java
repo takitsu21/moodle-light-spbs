@@ -16,8 +16,6 @@ import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
-import io.cucumber.messages.internal.com.google.gson.JsonArray;
-import io.cucumber.messages.internal.com.google.gson.JsonObject;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetQuestionStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "securedPassword";
+    private static final String PASSWORD = "password";
 
     @Autowired
     UserRepository userRepository;
@@ -60,32 +58,6 @@ public class GetQuestionStepdefs extends SpringIntegration {
         questionnaireRepository.save(questionnaire);
         module.addRessource(questionnaire);
         moduleRepository.save(module);
-    }
-
-
-    @Et("l'étudiant {string} dans le module {string} auq")
-    public void lÉtudiantDansLeModuleAuq(String arg0, String arg1) {
-        User user = userRepository.findByUsername(arg0)
-                .orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-        Module module = moduleRepository.findByName(arg1).get();
-        module.getParticipants().add(user);
-        moduleRepository.save(module);
-    }
-
-    @Et("l'étudiant {string} sans module auq")
-    public void lÉtudiantSansModuleAuq(String arg0) {
-        User user = userRepository.findByUsername(arg0)
-                .orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
     }
 
     @Et("la question {string} numéro {int} dans le questionnaire {string} du module {string} auq")

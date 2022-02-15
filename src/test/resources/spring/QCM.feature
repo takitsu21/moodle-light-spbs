@@ -9,7 +9,7 @@ Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité 
     Et le questionnaire "Exam" du module "Maths" a un QCM "Q2" qcm
     Et le QCM "Q1" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" qcm
     Et le QCM "Q2" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" qcm
-    Et l'élève "Batiste" assigné au module de "Maths" qcm
+    Et l'etudiant "Batiste" assigne au module "Maths"
 
   Scénario: Le professeur "Paul" ajoute une reponse
     Quand le professeur "Paul" essaie d'ajouter la reponse possible "je ne sais pas" au QCM "Q1" du questionnaire "Exam" du module "Maths"
