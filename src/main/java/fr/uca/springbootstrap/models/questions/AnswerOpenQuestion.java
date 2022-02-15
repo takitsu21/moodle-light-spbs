@@ -1,6 +1,7 @@
 package fr.uca.springbootstrap.models.questions;
 
 import fr.uca.springbootstrap.models.User;
+import org.aspectj.apache.bcel.classfile.Module;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,10 +10,10 @@ import java.util.Set;
 public class AnswerOpenQuestion {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Answer> answers;
 
     @OneToOne()

@@ -15,9 +15,9 @@ public class QCM extends Question {
 
 //    @ManyToMany
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "possible_answers",
-            joinColumns = @JoinColumn(name = "open_question"),
-            inverseJoinColumns = @JoinColumn(name = "answers"))
+    @JoinTable(name = "possible_answers_qcm",
+            joinColumns = @JoinColumn(name = "qcm_question"),
+            inverseJoinColumns = @JoinColumn(name = "answers_possible_qcm"))
     private Set<Answer> possibleAnswers=new HashSet<>();
 
 
@@ -28,7 +28,7 @@ public class QCM extends Question {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "student_answer_qcm",
             joinColumns = @JoinColumn(name = "qcm"),
-            inverseJoinColumns = @JoinColumn(name = "student_answer"))
+            inverseJoinColumns = @JoinColumn(name = "answer_qcm"))
     private Set<AnswerQCM> studentsAnswers=new HashSet<>();
 
     public QCM(int number, String name, String description) {

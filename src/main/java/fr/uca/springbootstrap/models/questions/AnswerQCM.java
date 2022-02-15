@@ -8,14 +8,13 @@ import javax.persistence.*;
 public class AnswerQCM {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne
     private Answer answer;
 
     @OneToOne
-    @JoinColumn(name = "student")
     private User student;
 
     public AnswerQCM(){

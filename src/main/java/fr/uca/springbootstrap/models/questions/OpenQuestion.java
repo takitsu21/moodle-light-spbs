@@ -10,20 +10,20 @@ import java.util.Set;
 @DiscriminatorValue("open")
 public class OpenQuestion extends Question {
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "possible_answers",
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable( name = "possible_answers_open",
             joinColumns = @JoinColumn(name ="open_question"),
             inverseJoinColumns = @JoinColumn(name="answers"))
     private Set<Answer> possibleAnswers;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "answers",
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable( name = "answers_to_open",
             joinColumns = @JoinColumn(name ="open_question"),
-            inverseJoinColumns = @JoinColumn(name="answers"))
+            inverseJoinColumns = @JoinColumn(name="answers_open"))
     private Set<Answer> answers;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "students_anwser",
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "students_anwser_open",
             joinColumns = @JoinColumn(name = "open_question"),
             inverseJoinColumns = @JoinColumn(name = "student_anwser_open_question"))
     private Set<AnswerOpenQuestion> studentsAnswers;
@@ -54,9 +54,15 @@ public class OpenQuestion extends Question {
     public void removePossibleAnswer(Answer answer){ possibleAnswers.remove(answer);}
 
     public Set<AnswerOpenQuestion> getStudentsAnswers() { return studentsAnswers; }
-    public void setAnswerstudentAnswerSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.studentsAnswers = answerOpenQuestionSet; }
-    public void addStudentAnswer(AnswerOpenQuestion answerOpenQuestion){ studentsAnswers.add(answerOpenQuestion);}
-    public void removeStudentAnswer(AnswerOpenQuestion answerOpenQuestion){ studentsAnswers.remove(answerOpenQuestion);}
+    public void setAnswerStudentAnswerSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) {
+        this.studentsAnswers = answerOpenQuestionSet;
+        }
+    public void addStudentAnswer(AnswerOpenQuestion answerOpenQuestion){
+        studentsAnswers.add(answerOpenQuestion);
+    }
+    public void removeStudentAnswer(AnswerOpenQuestion answerOpenQuestion){
+        studentsAnswers.remove(answerOpenQuestion);
+    }
 
     public AnswerOpenQuestion getStudentAnswerByStudent(User student){
         for (AnswerOpenQuestion openAnswer : this.studentsAnswers){

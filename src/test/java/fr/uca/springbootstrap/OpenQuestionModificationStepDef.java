@@ -18,6 +18,7 @@ import fr.uca.springbootstrap.repository.RessourceRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import fr.uca.springbootstrap.repository.question.AnswerOpenQuestionRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
+import fr.uca.springbootstrap.repository.question.OpenQuestionRepository;
 import fr.uca.springbootstrap.repository.question.QuestionRepository;
 import io.cucumber.java.en_scouse.An;
 import io.cucumber.java.fr.Alors;
@@ -47,7 +48,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    OpenQuestionRepository openQuestionRepository;
 
     @Autowired
     AnswerRepository answerRepository;
@@ -86,12 +87,12 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
     public void uneQuestionOuverteContenueDansLeLeQuestionnaire(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg2).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
-        Question question = questionnaire.findQuestionByName(arg0);
+        OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg0);
         if (question == null){
-            question = (Question) new OpenQuestion(new HashSet<>(), new HashSet<>(), new HashSet<>(),
+            question =  new OpenQuestion(new HashSet<>(), new HashSet<>(), new HashSet<>(),
                                                     arg0, "Description "+arg0, 1);
         }
-        questionRepository.save(question);
+        openQuestionRepository.save(question);
         questionnaire.addQuestion(question);
         questionnaireRepository.save(questionnaire);
     }
@@ -101,18 +102,29 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg0);
-
+        if (question == null){
+            question = new OpenQuestion(new HashSet<>(), new HashSet<>(), new HashSet<>(),arg0, "Description "+arg0,1);
+        }
         Answer answer1 = new Answer("A");
         Answer answer2 = new Answer("B");
         Answer answer3 = new Answer("C");
-        answerRepository.save(answer1);
-        answerRepository.save(answer2);
-        answerRepository.save(answer3);
-
         question.addPossibleAnswer(answer1);
         question.addPossibleAnswer(answer2);
         question.addPossibleAnswer(answer3);
-        questionRepository.save(question);
+
+        answerRepository.save(answer1);
+        answerRepository.save(answer2);
+        answerRepository.save(answer3);
+        if (question.getPossibleAnswers() == null){
+            System.out.println("NULLLLLLL 1");
+        }
+        if (question.getAnswers()== null){
+            System.out.println("NULLLLLLL 2");
+        }
+        if (question.getStudentsAnswers() == null){
+            System.out.println("NULLLLLLL 3");
+        }
+        openQuestionRepository.save(question);
     }
 
     @Et("la {string} du questionnaire {string} du module {string} a comme réponses {string} et {string}")
@@ -126,8 +138,9 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
 
         question.addAnswer(answer1);
         question.addAnswer(answer2);
-
-        questionRepository.save(question);
+        answerRepository.save(answer1);
+        answerRepository.save(answer2);
+        openQuestionRepository.save(question);
     }
 
     @Et("la {string} du questionnaire {string} du module {string} a commme réponses possibles {string} et comme réponse {string}")
@@ -138,15 +151,14 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
 
         if (question == null){
             question = new OpenQuestion(new HashSet<>(), new HashSet<>(), new HashSet<>(),
-                                        arg0, "Descritpion "+arg0, 2);
+                                        arg0, "Description "+arg0, 2);
         }
 
         Answer answer = new Answer("Z");
-        answerRepository.save(answer);
-
         question.addPossibleAnswer(answer);
         question.addAnswer(answer);
-        questionRepository.save(question);
+        answerRepository.save(answer);
+        openQuestionRepository.save(question);
     }
 
     @Et("un professeur {string} ayant le module {string}")
@@ -198,7 +210,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         answerOpenQuestionRepository.save(studentAnswer);
 
         question.addStudentAnswer(studentAnswer);
-        questionRepository.save(question);
+        openQuestionRepository.save(question);
     }
 
     @Et("{string} a répondu {string} a la question {string} du questionnaire {string} du module {string}")
@@ -220,7 +232,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         question.addStudentAnswer(studentAnswer);
 
         answerOpenQuestionRepository.save(studentAnswer);
-        questionRepository.save(question);
+        openQuestionRepository.save(question);
 
         questionnaire.addQuestion(question);
         questionnaireRepository.save(questionnaire);
@@ -244,7 +256,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
             answer = new Answer(arg1);
         }
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/module/"+module.getId()
+        executeDelete("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/open_question/"+question.getId()
                 +"/possible_answer/"+answer.getId()
@@ -295,7 +307,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         }
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/module/"+module.getId()
+        executeDelete("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/open_question/"+question.getId()
                         +"/answers/"+answer.getId()
@@ -326,7 +338,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         answerSet.add(myAnswer);
         AnswerRequest answerRequest = new AnswerRequest(answerSet);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePut("http://localhost:8080/api/module/"+module.getId()
+        executePut("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/open_question/"+question.getId()
                         +"/possible_answer"
@@ -347,7 +359,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         }
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePut("http://localhost:8080/api/module/"+module.getId()
+        executePut("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/open_question/"+question.getId()
                         +"/answer/"+answer.getId()
@@ -386,7 +398,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         answerSet.add(myAnswer);
         AnswerRequest answerRequest = new AnswerRequest(answerSet);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePut("http://localhost:8080/api/module/"+module.getId()
+        executePut("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/open_question/"+question.getId()
                         +"/student_answer"
@@ -420,7 +432,7 @@ public class OpenQuestionModificationStepDef extends SpringIntegration {
         }
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/module/"+module.getId()
+        executeDelete("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/open_question/"+question.getId()
                         +"/student_answer/"+answer.getId()
