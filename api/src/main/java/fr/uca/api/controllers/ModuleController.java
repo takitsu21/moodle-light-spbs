@@ -137,7 +137,7 @@ public class ModuleController {
     public ResponseEntity<?> getParticipants(Principal principal, @PathVariable long id) {
         Module module = moduleRepository.findById(id).get();
 		UserRef user = userRefRepository.findByUsername(principal.getName()).get();
-        Map<Long, String> paticipantView = new HashMap<>();
+        Map<Integer, String> paticipantView = new HashMap<>();
 
 		if(!module.getParticipants().contains(user)) {
 			return ResponseEntity
@@ -146,7 +146,7 @@ public class ModuleController {
 
 		}
 		for (UserRef participant : module.getParticipants()) {
-			paticipantView.put(participant.getId(), participant.getUsername());
+			paticipantView.put(participant.getUserId(), participant.getUsername());
 		}
 		return ResponseEntity.ok(paticipantView);
 	}

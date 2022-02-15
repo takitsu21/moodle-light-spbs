@@ -1,8 +1,5 @@
 package fr.uca.api.models.questions;
 
-import fr.uca.api.models.Questionnaire;
-import fr.uca.api.models.Text;
-import fr.uca.api.models.User;
 import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;

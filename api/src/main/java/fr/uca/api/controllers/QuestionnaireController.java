@@ -35,7 +35,7 @@ public class QuestionnaireController {
     UserRefRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;

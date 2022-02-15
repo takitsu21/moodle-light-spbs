@@ -3,8 +3,7 @@ package fr.uca.api.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+public class RoleCourses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -13,11 +12,11 @@ public class Role {
     @Column(length = 20)
     private ERole name;
 
-    public Role() {
+    public RoleCourses() {
 
     }
 
-    public Role(ERole name) {
+    public RoleCourses(ERole name) {
         this.name = name;
     }
 

@@ -10,12 +10,10 @@ import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.question.AnswerQCMRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.QCMRepository;
-import fr.uca.api.repository.question.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import payload.request.AnswersRequest;
 import payload.request.MyAnswer;
@@ -39,7 +37,7 @@ public class QCMController {
     UserRefRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;

@@ -1,6 +1,6 @@
 package fr.uca.api.models.questions;
 
-import fr.uca.api.models.User;
+import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +18,7 @@ public class Answer {
     private String answer;
 
     @ManyToOne
-    private User student;
+    private UserRef student;
 
     public Answer() {
 
@@ -28,7 +28,7 @@ public class Answer {
         this.answer=content;
     }
 
-    public Answer(String answer, User user) {
+    public Answer(String answer, UserRef user) {
         this.answer=answer;
         this.student=user;
     }

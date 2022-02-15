@@ -8,7 +8,7 @@ import fr.uca.api.models.questions.AnswerCodeRunner;
 import fr.uca.api.models.questions.CodeRunner;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
-import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.RoleCoursesRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.AnswerCodeRunnerRepository;
 import fr.uca.api.repository.question.AnswerRepository;
@@ -38,7 +38,7 @@ public class CodeRunnerController {
     UserRefRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;

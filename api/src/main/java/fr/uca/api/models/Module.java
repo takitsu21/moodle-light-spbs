@@ -49,7 +49,7 @@ public class Module {
      */
     public boolean containsParticipant(UserRef user) {
         for (UserRef participant : participants) {
-            if (participant.getId().longValue() == user.getId().longValue()) {
+            if (participant.getUserId().longValue() == user.getUserId().longValue()) {
                 return true;
             }
         }

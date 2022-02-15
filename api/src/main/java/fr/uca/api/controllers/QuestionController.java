@@ -2,13 +2,11 @@ package fr.uca.api.controllers;
 
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
-import fr.uca.api.models.User;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.models.questions.Question;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
-import fr.uca.api.repository.UserRepository;
 import fr.uca.api.repository.question.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

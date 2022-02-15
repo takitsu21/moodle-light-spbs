@@ -10,10 +10,12 @@ import java.util.Set;
 
 @Entity
 public class UserRef {
-    @NotNull
     @Id
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    private Integer userId;
 
     @NotBlank
     @Size(max = 20)
@@ -21,9 +23,9 @@ public class UserRef {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+            joinColumns = @JoinColumn(name = "user_ref_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_courses_id", referencedColumnName = "id"))
+    private Set<RoleCourses> roleCourses = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_modules",
@@ -34,25 +36,25 @@ public class UserRef {
     public UserRef() {
     }
 
-    public UserRef(Long id, String username) {
-        this.id = id;
+    public UserRef(Integer userId, String username) {
+        this.userId = userId;
         this.username = username;
     }
 
-    public Long getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Integer id) {
+        this.userId = id;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<RoleCourses> getRoles() {
+        return roleCourses;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Set<RoleCourses> roleCourses) {
+        this.roleCourses = roleCourses;
     }
 
     public Set<Module> getModules() {
@@ -76,17 +78,17 @@ public class UserRef {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserRef user = (UserRef) o;
-        return id.equals(user.getId()) && username.equals(user.getUsername());
+        return userId.equals(user.getUserId()) && username.equals(user.getUsername());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username);
+        return Objects.hash(userId, username);
     }
 
     public boolean isTeacher(){
-        for (Role role: roles){
-            if (role.getName().equals(ERole.ROLE_TEACHER)){
+        for (RoleCourses roleCourses : this.roleCourses){
+            if (roleCourses.getName().equals(ERole.ROLE_TEACHER)){
                 return true;
             }
         }

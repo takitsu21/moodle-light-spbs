@@ -7,7 +7,6 @@ import fr.uca.api.payload.request.VisibilityRequest;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
 import fr.uca.api.repository.RoleRepository;
-import fr.uca.api.repository.UserRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;

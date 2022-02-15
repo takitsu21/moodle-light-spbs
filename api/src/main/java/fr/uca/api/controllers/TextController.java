@@ -32,7 +32,7 @@ public class TextController {
     UserRefRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;

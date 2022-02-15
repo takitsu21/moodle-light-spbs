@@ -1,13 +1,12 @@
 package fr.uca.api.controllers;
 
-import auth.service.security.services.jwt.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.uca.api.models.ERole;
-import fr.uca.api.models.Role;
+import fr.uca.api.models.RoleCourses;
 import fr.uca.api.models.UserRef;
-import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.RoleCoursesRepository;
 import fr.uca.api.repository.UserRefRepository;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -18,7 +17,6 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import payload.request.LoginRequest;
 import payload.request.SignupRequest;
@@ -36,14 +34,12 @@ public class AuthController {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
     @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     UserRefRepository userRepository;
     @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    PasswordEncoder encoder;
-    @Autowired
-    JwtUtils jwtUtils;
+    RoleCoursesRepository roleCoursesRepository;
+
 
     public CloseableHttpResponse executePost(String url, Object entity) throws IOException {
         HttpPost request = new HttpPost(url);
@@ -74,37 +70,37 @@ public class AuthController {
         return ResponseEntity.ok(map);
     }
 
-    public UserRef createUser(Long id, String userName, Set<String> strRoles) {
+    public UserRef createUser(Integer id, String userName, Set<String> strRoles) {
         UserRef user = new UserRef(id, userName);
-        Set<Role> roles = new HashSet<>();
+        Set<RoleCourses> roleCourses = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_STUDENT)
+            RoleCourses userRoleCourses = roleCoursesRepository.findByName(ERole.ROLE_STUDENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
+            roleCourses.add(userRoleCourses);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                        RoleCourses adminRoleCourses = roleCoursesRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
+                        roleCourses.add(adminRoleCourses);
 
                         break;
                     case "teacher":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_TEACHER)
+                        RoleCourses modRoleCourses = roleCoursesRepository.findByName(ERole.ROLE_TEACHER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
+                        roleCourses.add(modRoleCourses);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_STUDENT)
+                        RoleCourses userRoleCourses = roleCoursesRepository.findByName(ERole.ROLE_STUDENT)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                        roleCourses.add(userRoleCourses);
                 }
             });
         }
-        user.setRoles(roles);
+        user.setRoles(roleCourses);
         return user;
     }
 
@@ -123,7 +119,7 @@ public class AuthController {
         System.out.println(map);
 
         // Create new user's account
-        UserRef user = createUser((Long) map.get("id"),
+        UserRef user = createUser((Integer) map.get("id"),
                 signUpRequest.getUsername(),
                 signUpRequest.getRole());
         userRepository.save(user);

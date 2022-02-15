@@ -24,21 +24,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
 #      - POSTGRES_DB=db_users
-#  api:
-#    image: api
-#    build:
-#      context: .
-#      dockerfile: ./api/Dockerfile
-#    container_name: api
-#    depends_on:
-#      - db_courses
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=123
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#    ports:
-#      - '8080:8080'
   auth:
     image: auth-service
     build:
@@ -54,6 +39,21 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - '8081:8081'
+#  api:
+#    image: api
+#    build:
+#      context: .
+#      dockerfile: ./api/Dockerfile
+#    container_name: api
+#    depends_on:
+#      - db_courses
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=123
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    ports:
+#      - '8080:8080'
   #  code-runner:
   #    image: code-runner-service
   #    build: .

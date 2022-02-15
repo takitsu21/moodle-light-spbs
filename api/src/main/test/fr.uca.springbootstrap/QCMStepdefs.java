@@ -10,7 +10,6 @@ import fr.uca.api.payload.request.MyAnswer;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.RoleRepository;
-import fr.uca.api.repository.UserRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.QCMRepository;
 import io.cucumber.java.fr.Alors;

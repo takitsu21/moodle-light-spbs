@@ -7,7 +7,6 @@ import fr.uca.api.payload.request.MyText;
 import fr.uca.api.payload.request.TextRequest;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RoleRepository;
-import fr.uca.api.repository.UserRepository;
 import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
 import io.cucumber.java.fr.Alors;

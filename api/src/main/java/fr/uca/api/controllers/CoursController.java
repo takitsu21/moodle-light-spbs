@@ -1,14 +1,12 @@
 package fr.uca.api.controllers;
 
-import auth.service.repository.UserRepository;
 import fr.uca.api.models.Cours;
 import fr.uca.api.models.Module;
-import fr.uca.api.models.Ressource;
 
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
-import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.RoleCoursesRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
@@ -21,7 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import payload.request.CoursRequest;
 import payload.response.MessageResponse;
-import auth.service.models.User;
+
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
@@ -37,7 +35,7 @@ public class CoursController {
     UserRefRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;

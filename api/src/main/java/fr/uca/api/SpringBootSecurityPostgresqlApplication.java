@@ -1,21 +1,20 @@
 package fr.uca.api;
 
 import fr.uca.api.models.ERole;
-import fr.uca.api.models.Role;
-import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.models.RoleCourses;
+import fr.uca.api.repository.RoleCoursesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"auth.service.repository"})
+@ComponentScan(basePackages = {"auth.service"})
 public class SpringBootSecurityPostgresqlApplication {
 
     public static void main(String[] args) {
@@ -26,23 +25,23 @@ public class SpringBootSecurityPostgresqlApplication {
 @Component
 class AddRoles implements ApplicationRunner {
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleCoursesRepository roleCoursesRepository;
 
     @Override
     public void run(ApplicationArguments args) {
-        Optional<Role> student = roleRepository.findByName(ERole.ROLE_STUDENT);
-        Optional<Role> teacher = roleRepository.findByName(ERole.ROLE_TEACHER);
-        Optional<Role> admin = roleRepository.findByName(ERole.ROLE_ADMIN);
+        Optional<RoleCourses> student = roleCoursesRepository.findByName(ERole.ROLE_STUDENT);
+        Optional<RoleCourses> teacher = roleCoursesRepository.findByName(ERole.ROLE_TEACHER);
+        Optional<RoleCourses> admin = roleCoursesRepository.findByName(ERole.ROLE_ADMIN);
 
         if (teacher.isEmpty()) {
-            roleRepository.save(new Role(ERole.ROLE_TEACHER));
+            roleCoursesRepository.save(new RoleCourses(ERole.ROLE_TEACHER));
         }
         if (student.isEmpty()) {
-            roleRepository.save(new Role(ERole.ROLE_STUDENT));
+            roleCoursesRepository.save(new RoleCourses(ERole.ROLE_STUDENT));
 
         }
         if (admin.isEmpty()) {
-            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+            roleCoursesRepository.save(new RoleCourses(ERole.ROLE_ADMIN));
 
         }
 
