@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.moodle.light.core2</groupId>
-    <artifactId>moodle-light-core2</artifactId>
+    <groupId>org.moodle.light.core</groupId>
+    <artifactId>moodle-light-core</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
