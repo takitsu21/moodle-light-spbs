@@ -20,7 +20,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=db_courses
+#      - POSTGRES_DB=db_courses
     ports:
       - '5434:5432'
   db_users:
@@ -34,21 +34,21 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=db_users
+#      - POSTGRES_DB=db_users
 
-  auth:
-    image: auth-service
-    build: .
-    container_name: auth-service
-    depends_on:
-      - db_users
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5435/db_users
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=123
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    ports:
-      - '8081:8081'
+#  auth:
+#    image: auth-service
+#    build: .
+#    container_name: auth-service
+#    depends_on:
+#      - db_users
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5435/postgres
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=123
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    ports:
+#      - '8081:8081'
 #  code-runner:
 #    image: code-runner-service
 #    build: .

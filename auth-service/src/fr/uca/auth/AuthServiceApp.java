@@ -10,10 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 
-@Configuration
-//@ComponentScan(basePackages = {"fr.uca.auth"})
-@SpringBootApplication(scanBasePackages = "fr.uca.auth.repository",
-        exclude = { SecurityAutoConfiguration.class })
+//@Configuration
+@SpringBootApplication(scanBasePackages = "fr.uca.auth.repository"
+        , exclude = { SecurityAutoConfiguration.class }
+)
 public class AuthServiceApp {
     private static Class<AuthServiceApp> application = AuthServiceApp.class;
     public static void main(String[] args) {

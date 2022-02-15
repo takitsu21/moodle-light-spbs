@@ -1,1 +1,1 @@
-CREATE DATABASE "db_users";
+CREATE DATABASE db_users;
