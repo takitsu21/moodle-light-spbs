@@ -26,7 +26,7 @@ import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module/{module_id}/questionnaire")
+@RequestMapping("/api/modules/{module_id}/questionnaire")
 public class QuestionnaireController {
 
     @Autowired
@@ -209,7 +209,7 @@ public class QuestionnaireController {
         return ResponseEntity.ok(new MessageResponse("Question successfully added."));
     }
 
-    @DeleteMapping("/{questionnaire_id}/question/{question_id}")
+    @DeleteMapping("/{questionnaire_id}/questions/{question_id}")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removeQuestion(Principal principal,
                                             @PathVariable("module_id") long module_id,

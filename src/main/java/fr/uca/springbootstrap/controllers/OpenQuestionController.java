@@ -28,7 +28,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module/")
+@RequestMapping("/api/modules/")
 public class OpenQuestionController {
 
     @Autowired

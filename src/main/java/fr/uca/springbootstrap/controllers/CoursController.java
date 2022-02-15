@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module")
+@RequestMapping("/api/modules/{module_id}")
 public class CoursController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -55,7 +55,7 @@ public class CoursController {
     @Autowired
     CodeRunnerRepository codeRunnerRepository;
 
-    @PostMapping("/{module_id}/cours")
+    @PostMapping("/cours")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addCours(Principal principal,
                                       @Valid @RequestBody CoursRequest coursRequest,
@@ -94,7 +94,7 @@ public class CoursController {
         return ResponseEntity.ok(new MessageResponse("Course added to the module successfully!"));
     }
 
-    @DeleteMapping("/{module_id}/cours/{cours_id}")
+    @DeleteMapping("/cours/{cours_id}")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> deleteCours(Principal principal,
                                          @PathVariable("module_id") long moduleId,

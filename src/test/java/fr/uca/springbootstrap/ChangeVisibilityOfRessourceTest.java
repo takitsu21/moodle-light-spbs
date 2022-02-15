@@ -109,7 +109,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/visibility/" + ressource.getId(),
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(true),
                 jwt);
     }
@@ -120,7 +120,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/visibility/" + ressource.getId(),
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(false),
                 jwt);
     }

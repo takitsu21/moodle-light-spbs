@@ -27,7 +27,7 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module/{module_id}/questionnaire/{questionnaire_id}/question")
+@RequestMapping("/api/modules/{module_id}/questionnaire/{questionnaire_id}/questions")
 public class QuestionController {
 
     @Autowired
@@ -138,8 +138,7 @@ public class QuestionController {
         return ResponseEntity.ok(questions);
     }
 
-
-//    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/question/{id}")
+//    @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
 //    public ResponseEntity<?> deleteQuestionById(@PathVariable long id){
 //

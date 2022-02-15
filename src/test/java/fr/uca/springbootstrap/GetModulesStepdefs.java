@@ -107,7 +107,7 @@ public class GetModulesStepdefs extends SpringIntegration {
     public void lUtilisateurGetCesModules(String arg0) throws IOException {
         User prof = userRepository.findByUsername(arg0).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/module/", jwt);
+        executeGet("http://localhost:8080/api/modules/", jwt);
     }
 
     @Et("le dernier status de request est {int} gm")

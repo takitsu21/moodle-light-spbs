@@ -87,7 +87,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
         User prof2 = userRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + prof2.getId(), jwt);
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + prof2.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie de retirer le professeur {string} au module {string}")
@@ -98,7 +98,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executeDelete("http://localhost:8080/api/module/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Quand("le professeur {string} essaie d assigner l élève {string} au module {string}")
@@ -107,7 +107,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + user.getId(), jwt);
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
 
@@ -119,7 +119,7 @@ public class TeacherAddAnsRemoveUserFromAModuleTest extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executeDelete("http://localhost:8080/api/module/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Alors("{string} est assigner à {string}")

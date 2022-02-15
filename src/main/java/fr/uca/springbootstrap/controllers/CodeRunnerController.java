@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/module")
+@RequestMapping("/api/modules/{module_id}/questionnaire/{questionnaire_id}")
 public class CodeRunnerController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -54,7 +54,8 @@ public class CodeRunnerController {
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner")
+    @PostMapping("/code_runner")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addCodeRunnerQuestion(Principal principal,
                                                    @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
                                                    @PathVariable("module_id") long moduleId,
@@ -101,7 +102,7 @@ public class CodeRunnerController {
         return ResponseEntity.ok(new MessageResponse("Code runner question successfully added!"));
     }
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner/{code_runner_id}")
+    @PostMapping("/code_runner/{code_runner_id}")
     public ResponseEntity<?> submitCodeRunner(Principal principal,
                                               @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
                                               @PathVariable("module_id") long moduleId,
@@ -160,15 +161,10 @@ public class CodeRunnerController {
             question.getStudentsAnswers().add(answerCodeRunner);
         }
         codeRunnerRepository.save(question);
-
-//        CodeRunnerExec codeRunnerExec = new CodeRunnerExec();
-//        Map<String, Object> exec = codeRunnerExec.execPy(codeRunnerRequest.getCode(), question);
-//
-//        return ResponseEntity.ok(exec);
         return ResponseEntity.ok(new MessageResponse("Code runner answer successfully added to the questionnaire!"));
     }
 
-    @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/code_runner/{code_runner_id}/test")
+    @PostMapping("/code_runner/{code_runner_id}/test")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> testCodeRunner(Principal principal,
                                               @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,

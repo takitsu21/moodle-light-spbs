@@ -64,8 +64,8 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
 //        executePost("http://localhost:8080/api/test/mod", jwt);
-//        executePost("http://localhost:8080/api/module/1/participants/7", jwt);
-        executePost("http://localhost:8080/api/module/" + module.getId() + "/participants/" + user.getId(), jwt);
+//        executePost("http://localhost:8080/api/modules/1/participants/7", jwt);
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Then("last request status is {int}")
