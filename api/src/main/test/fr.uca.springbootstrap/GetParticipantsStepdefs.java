@@ -139,8 +139,6 @@ public class GetParticipantsStepdefs extends SpringIntegration {
         Gson gson = builder.create();
         Map<String, String> map = gson.fromJson(jsonString, Map.class);
 
-//        jsonString = gson.toJson(map);
-//        System.out.println(jsonString);
         assertTrue(map.containsKey("message"));
     }
 
