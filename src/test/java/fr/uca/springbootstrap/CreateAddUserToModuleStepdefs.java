@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
 
-public class CreateAddUserToModule {
+public class CreateAddUserToModuleStepdefs {
     private static final String PASSWORD = "password";
 
     @Autowired

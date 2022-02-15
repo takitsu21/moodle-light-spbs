@@ -66,6 +66,35 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
+      //TODO pour quand je retenterai de la factoriser
+//    @Et("la question numero {int} {string} avec description {string} la reponse est {string} avec le test {string} dans le {string} du module {string}")
+//    public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModule(
+//            int num,
+//            String questionName,
+//            String descriptionName,
+//            String answerStr,
+//            String test,
+//            String questionnaireName,
+//            String moduleName) {
+//
+//        Module module = moduleRepository.findByName(moduleName).get();
+//
+//        Answer answer = new Answer(answerStr);
+//        answerRepository.save(answer);
+//        CodeRunner codeRunner = new CodeRunner(
+//                num,
+//                questionName,
+//                descriptionName,
+//                test,
+//                answer
+//        );
+//        codeRunnerRepository.save(codeRunner);
+//
+//        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(questionnaireName);
+//        questionnaire.getQuestions().add(codeRunner);
+//        questionnaireRepository.save(questionnaire);
+//        //moduleRepository.save(module);
+//    }
 
     @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} crn")
     public void unModuleQuiAUnEnseignantEtUnÉtudiantEtQuiALaQuestionNuméroAvecDescriptionLaRéponseEstAvecLeTestQuestionNuméroCrn(

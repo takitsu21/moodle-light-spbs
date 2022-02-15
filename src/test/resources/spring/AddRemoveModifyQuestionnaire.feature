@@ -5,7 +5,7 @@ Fonctionnalité: Ajouter ou enlever une ressource d'un module
 
   Contexte:
     Étant donné le professeur "Jacob" assigne au module "Mathématiques"
-    Et le questionnaire "Examen" du module "Mathématiques"
+    Et le questionnaire "Examen" dans le module "Mathématiques"
     Et un module "Philosophie"
 
   Scénario: Ajout d'un questionnaire par un enseignant autorisé
@@ -27,7 +27,7 @@ Fonctionnalité: Ajouter ou enlever une ressource d'un module
     Et les tables sont videes
 
   Scénario: Suppression illégale d'un questionnaire d'un module par un enseignant n'appartenant pas au module
-    Etant donné que le questionnaire "Examen" soit dans le module "Philosophie"
+    Etant donné que le questionnaire "Examen" dans le module "Philosophie"
     Quand l'enseignant "Jacob" veut supprimer le questionnaire "Examen" du module "Philosophie"
     Alors la réponse est 400
     Et le questionnaire "Examen" est dans le module "Philosophie"

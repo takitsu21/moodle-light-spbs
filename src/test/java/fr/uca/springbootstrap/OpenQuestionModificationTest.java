@@ -66,20 +66,21 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         moduleRepository.save(module);
     }
 
-    @Et("un questionnaire {string} contenu dans le module {string} oqm")
-    public void unQuestionnaireContenuDansLeModuleOqm(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg0));
+//    @Et("un questionnaire {string} contenu dans le module {string} oqm")
+//    public void unQuestionnaireContenuDansLeModuleOqm(String arg0, String arg1) {
+//        Module module = moduleRepository.findByName(arg0).orElse( new Module(arg0));
+//
+//        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
+//        if (questionnaire==null) {
+//            questionnaire = new Questionnaire(arg1, "Description " + arg0, 1);
+//        }
+//
+//        questionnaireRepository.save(questionnaire);
+//
+//        module.addRessource(questionnaire);
+//        moduleRepository.save(module);
+//    }
 
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-        if (questionnaire==null) {
-            questionnaire = new Questionnaire(arg1, "Description " + arg0, 1);
-        }
-
-        questionnaireRepository.save(questionnaire);
-
-        module.addRessource(questionnaire);
-        moduleRepository.save(module);
-    }
     @Et("une question ouverte {string} contenue dans le questionnaire {string} du module {string} oqm")
     public void uneQuestionOuverteContenueDansLeQuestionnaireDuModuleOqm(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg0).orElse( new Module(arg0));

@@ -6,7 +6,7 @@ Fonctionnalité: Ajouter ou retirer une question quelconque d'un questionnaire
   Contexte:
     Etant donné le professeur "Jean-Patrick" assigne au module "Sport"
     Et le professeur "Mariette"
-    Et le questionnaire "Controle" dans le module "Sport" arqqq
+    Et le questionnaire "Controle" dans le module "Sport"
     Et la question "QCM1" dans le questionnaire "Controle" du module "Sport" arqqq
 
   Scénario: Ajouter un QCM dans un module qu'on possède

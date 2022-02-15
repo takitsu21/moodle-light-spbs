@@ -5,7 +5,7 @@
 
     Contexte:
       Etant donné Un module "Maths" oqm
-      Et un questionnaire "Questionnaire 1" contenu dans le module "Maths" oqm
+      Et le questionnaire "Questionnaire 1" dans le module "Maths"
       Et une question ouverte "Question 1" contenue dans le questionnaire "Questionnaire 1" du module "Maths" oqm
       Et "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ayant comme réponses possibles "A", "B", "C" oqm
       Et "Question 1" du questionnaire "Questionnaire 1" du module "Maths" ayant comme réponses "A" et "B" oqm

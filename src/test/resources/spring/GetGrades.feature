@@ -8,7 +8,7 @@ Fonctionnalité: En tant que professeur je veux pouvoir voir la note de tous les
     Et le professeur "Jaques" assigne au module "Prog 2"
     Et l'etudiant "Margaux" assigne au module "Prog 2"
     Et l'etudiant "Jeannot" assigne au module "Prog 2"
-    Et un questionnaire "Questionnaire code runner" appartenant à un module "Prog 2" gg
+    Et le questionnaire "Questionnaire code runner" dans le module "Prog 2"
     Et la question numéro 1 "Factorial" avec description "Ecrire la fonction fact(n) qui calcule n!" la réponse est "720" avec le test "print(fact(6))" dans le "Questionnaire code runner" du module "Prog 2" gg
     Et "Margaux" soumet son code dans le fichier "fact_success.py" à la question 1 du questionnaire "Questionnaire code runner" du module "Prog 2"
     Et "Margaux" soumet le questionnaire "Questionnaire code runner" du module "Prog 2" gg

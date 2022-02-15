@@ -12,7 +12,6 @@ import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.QCMRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,31 +49,12 @@ public class QCMStepdefs extends SpringIntegration {
     @Autowired
     AnswerRepository answerRepository;
 
-    //TODO factoriser quand j'aurai fait celle des questionnaires
-    @Etantdonné("le professeur {string} assigné au module de {string} avec un questionnaire {string} visible qcm")
-    public void leProfesseurAssignéAuModuleDeAvecUnQuestionnaireQcm(String arg0, String arg1, String arg2) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>(){{ add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                orElseThrow(() -> new RuntimeException("Error: Role is not found."))); }});
-        userRepository.save(user);
-
-
-        Module module = moduleRepository.findByName(arg1).orElse(new Module(arg1));
-        module.getParticipants().add(user);
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg2, "null", 1);
-        }
+    @Et("le questionnaire {string} dans le module {string} est visible")
+    public void leQuestionnaireDansLeModuleEstVisible(String arg0, String arg1) {
+        Module module = moduleRepository.findByName(arg1).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
         questionnaire.setVisibility(true);
         questionnaireRepository.save(questionnaire);
-
-        module.getRessources().add(questionnaire);
-        moduleRepository.save(module);
-
-        assertTrue(module.getParticipants().contains(user));
-        assertTrue(module.getRessources().contains(questionnaire));
     }
 
     @Et("le questionnaire {string} du module {string} a un QCM {string} qcm")

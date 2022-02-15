@@ -4,8 +4,10 @@
 Fonctionnalité: Accéder aux questionnaires
   Contexte:
     Etant donné le professeur "Andrew" assigne au module "Histoire"
-    Et le module "Histoire" a un questionnaire "Partiel" invisible aaq
-    Et le module "Histoire" a un questionnaire "Interro" visible aaq
+    #invisible de base
+    Et le questionnaire "Partiel" dans le module "Histoire"
+    Et le questionnaire "Interro" dans le module "Histoire"
+    Et le questionnaire "Interro" du module "Histoire" est visible
     Et le professeur "Marco"
     Et l'etudiant "Pedro" assigne au module "Histoire"
     Et l'etudiant "Madeleine"

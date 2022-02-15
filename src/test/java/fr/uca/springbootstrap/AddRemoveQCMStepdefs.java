@@ -49,20 +49,6 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-
-    @Et("le questionnaire {string} dans le module {string} arqqq")
-    public void leQuestionnaireDansLeModuleArqqq(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1).get();
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg0, "Controle intermediaire", 8);
-        }
-        questionnaireRepository.save(questionnaire);
-
-        module.addRessource(questionnaire);
-        moduleRepository.save(module);
-    }
     @Et("la question {string} dans le questionnaire {string} du module {string} arqqq")
     public void laQuestionDansLeQuestionnaireDuModuleArqqq(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg2).get();

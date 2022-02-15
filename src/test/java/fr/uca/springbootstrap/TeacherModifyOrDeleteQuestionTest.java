@@ -51,26 +51,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
     PasswordEncoder encoder;
 
 
-    @Et("un questionnaire {string} appartenant à un module {string} tmdqc")
-    public void unQuestionnaireAppartenantÀUnModuleTmdqc(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1).
-                orElse(new Module(arg1));
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg0, "Description "+arg0,1);
-        }
-        questionnaireRepository.save(questionnaire);
-
-        Questionnaire finalQuestionnaire = questionnaire;
-        module.setRessources(new HashSet<>(){{
-            add(finalQuestionnaire);
-        }});
-        moduleRepository.save(module);
-    }
-
-
     @Et("une question QCM de nom {string} et de description {string} et de numéro {int} appartenant au questionnaire {string} du module {string} tmdqd")
     public void uneQuestionQCMDeNomEtDeDescriptionEtDeNuméroAppartenantAuQuestionnaireDuModuleTmdqd(String arg0, String arg1, int arg2, String arg3, String arg4) {
         Module module = moduleRepository.findByName(arg4).

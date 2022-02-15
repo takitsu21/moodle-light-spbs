@@ -59,16 +59,16 @@ public class GetGradesStepdefs extends SpringIntegration {
     PasswordEncoder encoder;
 
 
-    @Et("un questionnaire {string} appartenant à un module {string} gg")
-    public void unQuestionnaireAppartenantAUnModuleGg(String arg0, String arg1) {
-//        Module module = moduleRepository.findByName(arg1).get();
-//        Questionnaire questionnaire = new Questionnaire(arg0, "le questionnaire code runner", 1);
-//        questionnaire.setVisibility(true);
-//        questionnaireRepository.save(questionnaire);
-//        System.out.println("Questionnaire " + questionnaire.getId() + " créé");
-//        module.addRessource(questionnaire);
-//        moduleRepository.save(module);
-    }
+//    @Et("un questionnaire {string} appartenant à un module {string} gg")
+//    public void unQuestionnaireAppartenantAUnModuleGg(String arg0, String arg1) {
+////        Module module = moduleRepository.findByName(arg1).get();
+////        Questionnaire questionnaire = new Questionnaire(arg0, "le questionnaire code runner", 1);
+////        questionnaire.setVisibility(true);
+////        questionnaireRepository.save(questionnaire);
+////        System.out.println("Questionnaire " + questionnaire.getId() + " créé");
+////        module.addRessource(questionnaire);
+////        moduleRepository.save(module);
+//    }
 
     @Et("la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} du module {string} gg")
     public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModuleGg(int arg0, String arg1, String arg2, String arg3, String arg4, String arg5, String arg6) {

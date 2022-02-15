@@ -6,7 +6,7 @@ Fonctionnalité: Professeur modifie (nom/description) ou supprime une question
   Contexte:
     Etant donné le professeur "Jean" assigne au module "Gestion de projet"
     Et le professeur "Marie"
-    Et un questionnaire "Test35" appartenant à un module "Gestion de projet" tmdqc
+    Et le questionnaire "Test35" dans le module "Gestion de projet"
     Et une question QCM de nom "Ordinateur" et de description "Bonjour ?" et de numéro 1 appartenant au questionnaire "Test35" du module "Gestion de projet" tmdqd
 
   Scénario: Modifier le nom d'une question appartenant a un module que l'on possède

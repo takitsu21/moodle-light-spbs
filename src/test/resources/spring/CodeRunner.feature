@@ -6,6 +6,10 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir créer une question Code
   Contexte:
     Etant donné le professeur "Jacques" assigne au module "Programmation"
     Et l'etudiant "Margaux" assigne au module "Programmation"
+#    Et le professeur "Jacques" assigne au module "Prog 2"
+#    Et l'etudiant "Margaux" assigne au module "Prog 2"
+#    Et le questionnaire "Questionnaire code runner" dans le module "Prog 2"
+#    Et la question numero 1 "Factorial" avec description "Ecrire la fonction fact(n) qui calcule n!" la reponse est "720" avec le test "print(fact(6))" dans le "Questionnaire code runner" du module "Prog 2"
     Et un module "Prog 2" qui a un enseignant "Jacques" et un étudiant "Margaux" et qui a la question numéro 1 "Factorial" avec description "Ecrire la fonction fact(n) qui calcule n!" la réponse est "720" avec le test "print(fact(6))" dans le "Questionnaire code runner" crn
 
   Scénario: Ajout d'une question Code Runner

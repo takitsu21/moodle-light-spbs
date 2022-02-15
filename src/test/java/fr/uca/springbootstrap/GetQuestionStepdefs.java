@@ -50,15 +50,6 @@ public class GetQuestionStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("le questionnaire {string} dans le module {string} auq")
-    public void leQuestionnaireDansLeModuleAuq(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1)
-                .orElse(new Module(arg1));
-        Questionnaire questionnaire = new Questionnaire(arg0, "Questionnaire", 1);
-        questionnaireRepository.save(questionnaire);
-        module.addRessource(questionnaire);
-        moduleRepository.save(module);
-    }
 
     @Et("la question {string} numéro {int} dans le questionnaire {string} du module {string} auq")
     public void laQuestionNuméroDansLeQuestionnaireDuModuleAuq(String arg0, int arg1, String arg2, String arg3) {

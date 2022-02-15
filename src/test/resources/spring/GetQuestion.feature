@@ -4,7 +4,7 @@
 Fonctionnalité: Accéder à une question
   
   Contexte:
-    Etant donné le questionnaire "Interrogation" dans le module "Physique" auq
+    Etant donné le questionnaire "Interrogation" dans le module "Physique"
     Et l'etudiant "Charlie" assigne au module "Physique"
     Et l'etudiant "Tanguy"
     Et la question "Bonus" numéro 13 dans le questionnaire "Interrogation" du module "Physique" auq

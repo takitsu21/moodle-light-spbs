@@ -10,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import io.cucumber.java.fr.Étantdonné;
 
 public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     private static final String PASSWORD = "password";
@@ -36,34 +33,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
     @Autowired
     PasswordEncoder encoder;
-
-
-    @Et("le questionnaire {string} du module {string}")
-    public void leQuestionnaireDuModule(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1)
-                .orElse(new Module(arg0));
-
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg0, "Questionnaire", 1);
-        }
-
-
-        questionnaireRepository.save(questionnaire);
-        module.getRessources().add(questionnaire);
-        moduleRepository.save(module);
-    }
-
-
-    @Et("le questionnaire {string} dans le module {string}")
-    public void leQuestionnaireDansLeModule(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1).get();
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-
-        module.addRessource(questionnaire);
-        moduleRepository.save(module);
-    }
 
     @Et("un module {string}")
     public void unModuleSansLEnseignant(String arg0) {
@@ -108,29 +77,13 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
     }
 
-
-    @Etantdonnéque("le questionnaire {string} soit dans le module {string}")
-    public void leQuestionnaireSoitDansLeModule(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1).get();
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
-
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg0, "Questionnaire", 1);
-        }
-
-        questionnaireRepository.save(questionnaire);
-
-        module.getRessources().add(questionnaire);
-        moduleRepository.save(module);
-    }
-
-    @Etantdonnéque("l'enseignant {string} soit dans le module {string}")
-    public void lEnseignantSoitDansLeModule(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg1).get();
-        User teacher = userRepository.findByUsername(arg0).get();
-        module.getParticipants().add(teacher);
-        moduleRepository.save(module);
-    }
+//    @Etantdonnéque("l'enseignant {string} soit dans le module {string}")
+//    public void lEnseignantSoitDansLeModule(String arg0, String arg1) {
+//        Module module = moduleRepository.findByName(arg1).get();
+//        User teacher = userRepository.findByUsername(arg0).get();
+//        module.getParticipants().add(teacher);
+//        moduleRepository.save(module);
+//    }
 
     @Alors("la réponse est {int}")
     public void laRéponseEst(int arg0) {

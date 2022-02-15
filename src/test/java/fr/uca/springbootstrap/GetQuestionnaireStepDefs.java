@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,24 +41,12 @@ public class GetQuestionnaireStepDefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-
-    @Et("le module {string} a un questionnaire {string} invisible aaq")
-    public void leModuleAUnQuestionnaireInvisibleAaq(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg0).get();
-        Questionnaire questionnaire = new Questionnaire(arg1, "Questionnaire", 1);
-        questionnaireRepository.save(questionnaire);
-        module.addRessource(questionnaire);
-        moduleRepository.save(module);
-    }
-
-    @Et("le module {string} a un questionnaire {string} visible aaq")
-    public void leModuleAUnQuestionnaireVisibleAaq(String arg0, String arg1) {
-        Module module = moduleRepository.findByName(arg0).get();
-        Questionnaire questionnaire = new Questionnaire(arg1, "Another Questionnaire", 1);
+    @Et("le questionnaire {string} du module {string} est visible")
+    public void leQuestionnaireDuModuleEstVisible(String arg0, String arg1) {
+        Module module = moduleRepository.findByName(arg1).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
         questionnaire.setVisibility(true);
         questionnaireRepository.save(questionnaire);
-        module.addRessource(questionnaire);
-        moduleRepository.save(module);
     }
 
     @Quand("l'utilisateur {string} récupère le questionnaire {string} du module {string}")
