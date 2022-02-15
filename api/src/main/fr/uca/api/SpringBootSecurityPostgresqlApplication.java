@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@ComponentScan(basePackages = {"fr.uca.springbootstrap.repository"})
+@ComponentScan(basePackages = {"fr.uca.springbootstrap.auth.service.repository"})
 @SpringBootApplication(scanBasePackages = "fr.uca.auth")
 public class SpringBootSecurityPostgresqlApplication {
 

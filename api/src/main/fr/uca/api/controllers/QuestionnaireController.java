@@ -2,9 +2,7 @@ package fr.uca.api.controllers;
 
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.GradesQuestionnaire;
-import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.QCMRequest;

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@ComponentScan(basePackages = {"fr.uca.springbootstrap.repository",
-"org.springframework.security.crypto.password",
+@ComponentScan(basePackages = {"fr.uca.springbootstrap.auth.service.repository",
+"org.springframework.auth.service.security.crypto.password",
         "fr.uca.auth.*"})
 @SpringBootApplication
 public class TestApp {
