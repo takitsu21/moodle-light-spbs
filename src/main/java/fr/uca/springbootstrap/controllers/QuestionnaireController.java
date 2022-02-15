@@ -7,8 +7,6 @@ import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.QCMRequest;
 import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.models.questions.*;
-import fr.uca.springbootstrap.payload.request.Grade;
-import fr.uca.springbootstrap.payload.request.QuestionRequest;
 import fr.uca.springbootstrap.payload.request.QuestionnaireRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.*;
@@ -311,6 +309,7 @@ public class QuestionnaireController {
                     }
                 }
             } else if (question instanceof QCM) {
+                //TODO à finir
                 QCM qcm = (QCM) question;
                 User currentStudent;
 //                for (AnswerQCM studentAnswer : qcm.getStudentsAnswers()) {
@@ -338,11 +337,12 @@ public class QuestionnaireController {
     @GetMapping("/{questionnaire_id}/grades")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> getGrades(Principal principal,
-                                                 @PathVariable("module_id") long moduleId,
-                                                 @PathVariable("questionnaire_id") long questionnaireId) {
-        Optional<Module> optionalModule = moduleRepository.findById(moduleId);
+                                                 @PathVariable("module_id") long module_id,
+                                                 @PathVariable("questionnaire_id") long questionnaire_id) {
+        System.out.println("je rentre dans le systeme");
+        Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
-        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
                     .badRequest()
@@ -358,13 +358,9 @@ public class QuestionnaireController {
                     .badRequest()
                     .body(new MessageResponse("Error: No such questionnaire!"));
         }
-        if (!userRepository.existsByUsername(principal.getName())) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageResponse("Error: User does not exist."));
-        }
 
         Module module = optionalModule.get();
-        User user = userRepository.findByUsername(principal.getName()).get();
+        User user = optionalUser.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
 
         if (!module.getParticipants().contains(user)) {
@@ -377,14 +373,10 @@ public class QuestionnaireController {
                     .badRequest()
                     .body(new MessageResponse("Error: questionnaire does not belong to this module!"));
         }
-        Set<Grade> grades = new HashSet<>();
+        Map<String, String> grades = new HashMap<>();
         Set<GradesQuestionnaire> gradesQuestionnaire =  questionnaire.getStudentsGrades();
         for (GradesQuestionnaire grade : gradesQuestionnaire) {
-            grades.add(new Grade(
-                    grade.getNote(),
-                    questionnaire.getNbQuestions(),
-                    grade.getStudent().getUsername()
-            ));
+            grades.put(grade.getStudent().getUsername(),grade.getFinalGradeString());
         }
 
         return ResponseEntity.ok(grades);

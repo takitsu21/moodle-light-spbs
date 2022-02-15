@@ -57,6 +57,15 @@ public class Questionnaire extends Ressource {
         return null;
     }
 
+    public Question findQuestionByNum(int num) {
+        for (Question question : questions) {
+            if (question.getNumber() == num) {
+                return question;
+            }
+        }
+        return null;
+    }
+
     public boolean containsQuestion(String arg1) {
         for(Question question: questions){
             if(Objects.equals(question.getName(), arg1)){

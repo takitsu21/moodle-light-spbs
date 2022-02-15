@@ -32,6 +32,10 @@ public class GradesQuestionnaire {
 
     }
 
+    public String getFinalGradeString() {
+        return note + "/" + questionnaire.getNbQuestions();
+    }
+
     public long getId() {
         return id;
     }
