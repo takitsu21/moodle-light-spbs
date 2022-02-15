@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
-  UserRefRepository userRepository;
+  UserRepository userRepository;
 
   @Override
   @Transactional

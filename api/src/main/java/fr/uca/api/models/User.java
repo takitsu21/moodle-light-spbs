@@ -38,12 +38,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_modules",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "module_id"))
-    private Set<java.lang.Module> modules = new HashSet<>();
-
     public User() {
     }
 
@@ -91,13 +85,6 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-    public Set<java.lang.Module> getModules() {
-        return modules;
-    }
-
-    public void setModules(Set<java.lang.Module> modules) {
-        this.modules = modules;
     }
 
     @Override

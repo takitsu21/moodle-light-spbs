@@ -2,15 +2,14 @@ package fr.uca.api.controllers;
 
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
-import fr.uca.api.models.User;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.models.questions.Answer;
 import fr.uca.api.models.questions.AnswerCodeRunner;
 import fr.uca.api.models.questions.CodeRunner;
-
-import fr.uca.api.repository.*;
-import fr.uca.api.repository.cours.CoursRepository;
-import fr.uca.api.repository.cours.TextRepository;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.AnswerCodeRunnerRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
@@ -63,7 +62,7 @@ public class CodeRunnerController {
                                                    @PathVariable("module_id") long moduleId,
                                                    @PathVariable("questionnaire_id") long questionnaireId) {
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
@@ -81,7 +80,7 @@ public class CodeRunnerController {
                     .body(new MessageResponse("Error: No such questionnaire!"));
         }
 
-        User user = optionalUser.get();
+        UserRef user = optionalUser.get();
         Module module = optionalModule.get();
 
         Questionnaire questionnaire = optionalQuestionnaire.get();
@@ -136,7 +135,7 @@ public class CodeRunnerController {
                     .body(new MessageResponse("Error: No such question!"));
         }
         Module module = optionalModule.get();
-        User user = optionalUser.get();
+        UserRef user = optionalUser.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity
@@ -172,10 +171,10 @@ public class CodeRunnerController {
     @PostMapping("/code_runner/{code_runner_id}/test")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> testCodeRunner(Principal principal,
-                                              @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
-                                              @PathVariable("module_id") long moduleId,
-                                              @PathVariable("questionnaire_id") long questionnaireId,
-                                              @PathVariable("code_runner_id") long codeRunnerId) {
+                                            @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
+                                            @PathVariable("module_id") long moduleId,
+                                            @PathVariable("questionnaire_id") long questionnaireId,
+                                            @PathVariable("code_runner_id") long codeRunnerId) {
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
         Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
@@ -202,7 +201,7 @@ public class CodeRunnerController {
                     .body(new MessageResponse("Error: No such question!"));
         }
         Module module = optionalModule.get();
-        User user = optionalUser.get();
+        UserRef user = optionalUser.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity

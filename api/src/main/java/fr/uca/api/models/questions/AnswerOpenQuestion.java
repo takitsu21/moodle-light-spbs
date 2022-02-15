@@ -1,6 +1,7 @@
 package fr.uca.api.models.questions;
 
 import auth.service.models.User;
+import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,7 +18,7 @@ public class AnswerOpenQuestion {
 
     @OneToOne
     @JoinColumn(name = "student")
-    private User student;
+    private UserRef student;
 
     @OneToOne
     @JoinColumn(name = "open_question")
@@ -27,7 +28,7 @@ public class AnswerOpenQuestion {
 
     }
 
-    public AnswerOpenQuestion(Set<Answer> answers, User student, OpenQuestion openQuestion) {
+    public AnswerOpenQuestion(Set<Answer> answers, UserRef student, OpenQuestion openQuestion) {
         this.answers = answers;
         this.student = student;
         this.openQuestion = openQuestion;
@@ -57,11 +58,11 @@ public class AnswerOpenQuestion {
         this.answers = answers;
     }
 
-    public User getStudent() {
+    public UserRef getStudent() {
         return student;
     }
 
-    public void setStudent(User student) {
+    public void setStudent(UserRef student) {
         this.student = student;
     }
 }

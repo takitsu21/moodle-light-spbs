@@ -7,6 +7,7 @@ import fr.uca.api.models.UserRef;
 import fr.uca.api.models.questions.Question;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.UserRepository;
 import fr.uca.api.repository.question.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +97,7 @@ public class QuestionController {
                     .body(new MessageResponse("Error: No such questionnaire!"));
         }
 
-        User user = ouser.get();
+        UserRef user = ouser.get();
         Questionnaire questionnaire = oQuestionnaire.get();
         Module module = oModule.get();
         Question question = oQuestion.get();
@@ -133,7 +134,7 @@ public class QuestionController {
         Optional<Question> oQuestion = questionRepository.findById(question_id);
         Optional<Module> oModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
 
         if (oQuestion.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
@@ -148,7 +149,7 @@ public class QuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such user!"));
         }
 
-        User user = ouser.get();
+        UserRef user = ouser.get();
         Question question = oQuestion.get();
         Module module = oModule.get();
         Questionnaire questionnaire = oQuestionnaire.get();
@@ -185,7 +186,7 @@ public class QuestionController {
         if (oQuestion.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse(("Error: No such question!")));
         }
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
 
         if (ouser.isEmpty()){
             return ResponseEntity
@@ -203,7 +204,7 @@ public class QuestionController {
                     .body(new MessageResponse("Error: No such questionnaire!"));
         }
 
-        User user = ouser.get();
+        UserRef user = ouser.get();
         Questionnaire questionnaire = oQuestionnaire.get();
         Module module = oModule.get();
         Question question = oQuestion.get();

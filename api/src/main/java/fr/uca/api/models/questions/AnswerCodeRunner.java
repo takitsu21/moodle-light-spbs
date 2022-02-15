@@ -1,6 +1,7 @@
 package fr.uca.api.models.questions;
 
 import fr.uca.api.models.User;
+import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
 
@@ -16,13 +17,13 @@ public class AnswerCodeRunner {
 
     @OneToOne
     @JoinColumn(name = "student")
-    private User student;
+    private UserRef student;
 
     public AnswerCodeRunner() {
 
     }
 
-    public AnswerCodeRunner(Answer answer, User student) {
+    public AnswerCodeRunner(Answer answer, UserRef student) {
         this.answer = answer;
         this.student = student;
     }
@@ -43,11 +44,11 @@ public class AnswerCodeRunner {
         this.answer = answer;
     }
 
-    public User getStudent() {
+    public UserRef getStudent() {
         return student;
     }
 
-    public void setStudent(User student) {
+    public void setStudent(UserRef student) {
         this.student = student;
     }
 }

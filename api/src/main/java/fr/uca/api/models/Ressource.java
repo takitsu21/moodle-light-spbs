@@ -11,7 +11,6 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, length = 20)
 @DiscriminatorValue("ressource")
-
 public abstract class Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +32,7 @@ public abstract class Ressource {
     @JoinTable(	name = "ressources_modules",
             joinColumns = @JoinColumn(name = "ressource_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
-    private Set<java.lang.Module> modules = new HashSet<>();
+    private Set<Module> modules = new HashSet<>();
 
     public Ressource() {
         this.num = 0;

@@ -3,12 +3,14 @@ package fr.uca.api.controllers;
 import auth.service.models.User;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.UserRef;
 import fr.uca.api.models.questions.Answer;
 import fr.uca.api.models.questions.AnswerOpenQuestion;
 import fr.uca.api.models.questions.OpenQuestion;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import auth.service.repository.UserRepository;
+import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.OpenQuestionRepository;
 import fr.uca.api.repository.question.QuestionRepository;
@@ -89,8 +91,8 @@ public class OpenQuestionController {
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(question_id);
         Optional<OpenQuestion> optionalOpenQuestion = openQuestionRepository.findById(question_id);
-        Optional<User> optionalStudent = userRepository.findById(student_id);
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalStudent = userRepository.findById(student_id);
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
 
         if (optionalModule.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse("Error no such module!"));
@@ -111,8 +113,8 @@ public class OpenQuestionController {
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion openQuestion = optionalOpenQuestion.get();
-        User student = optionalStudent.get();
-        User teacher = optionalTeacher.get();
+        UserRef student = optionalStudent.get();
+        UserRef teacher = optionalTeacher.get();
 
         if (!module.getRessources().contains(questionnaire)){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: the module does not contains the questionnaire!"));
@@ -140,7 +142,7 @@ public class OpenQuestionController {
                                                   @PathVariable("question_id") long question_id,
                                                   @PathVariable("answer_id") long answer_id){
 
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -162,7 +164,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such answer!"));
         }
 
-        User teacher = optionalTeacher.get();
+        UserRef teacher = optionalTeacher.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();
@@ -200,7 +202,7 @@ public class OpenQuestionController {
                                           @PathVariable("question_id") long question_id,
                                           @PathVariable("answer_id") long answer_id){
 
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -222,7 +224,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such answer!"));
         }
 
-        User teacher = optionalTeacher.get();
+        UserRef teacher = optionalTeacher.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();
@@ -260,7 +262,7 @@ public class OpenQuestionController {
                                           @PathVariable("question_id") long question_id,
                                           @PathVariable("answer_id") long answer_id){
 
-        Optional<User> optionalStudent = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalStudent = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -282,7 +284,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such answer!"));
         }
 
-        User student = optionalStudent.get();
+        UserRef student = optionalStudent.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();
@@ -322,7 +324,7 @@ public class OpenQuestionController {
                                                  @PathVariable("questionnaire_id") long questionnaire_id,
                                                  @PathVariable("question_id") long question_id){
 
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -340,7 +342,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
         }
 
-        User teacher = optionalTeacher.get();
+        UserRef teacher = optionalTeacher.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();
@@ -375,7 +377,7 @@ public class OpenQuestionController {
                                        @PathVariable("questionnaire_id") long questionnaire_id,
                                        @PathVariable("question_id") long question_id){
 
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -393,7 +395,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
         }
 
-        User teacher = optionalTeacher.get();
+        UserRef teacher = optionalTeacher.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();
@@ -430,7 +432,7 @@ public class OpenQuestionController {
                                               @PathVariable("questionnaire_id") long questionnaire_id,
                                               @PathVariable("question_id") long question_id){
 
-        Optional<User> optionalStudent = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalStudent = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -448,7 +450,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
         }
 
-        User student = optionalStudent.get();
+        UserRef student = optionalStudent.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();
@@ -488,7 +490,7 @@ public class OpenQuestionController {
                                                @PathVariable("question_id") long question_id,
                                                   @PathVariable("answer_id") long answer_id){
 
-        Optional<User> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -506,7 +508,7 @@ public class OpenQuestionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
         }
 
-        User teacher = optionalTeacher.get();
+        UserRef teacher = optionalTeacher.get();
         Module module = optionalModule.get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
         OpenQuestion question = optionalQuestion.get();

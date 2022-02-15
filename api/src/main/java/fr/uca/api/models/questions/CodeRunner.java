@@ -1,6 +1,7 @@
 package fr.uca.api.models.questions;
 
 import fr.uca.api.models.User;
+import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class CodeRunner extends Question {
         this.studentsAnswers = studentsAnswers;
     }
 
-    public AnswerCodeRunner getStudentAnswer(User user) {
+    public AnswerCodeRunner getStudentAnswer(UserRef user) {
         for (AnswerCodeRunner answerCodeRunner : studentsAnswers) {
             if (answerCodeRunner.getStudent().equals(user)) {
                 return answerCodeRunner;
@@ -65,7 +66,7 @@ public class CodeRunner extends Question {
         return null;
     }
 
-    public boolean studentAnswerContains(User user) {
+    public boolean studentAnswerContains(UserRef user) {
         for (AnswerCodeRunner answerCodeRunner : studentsAnswers) {
             if (answerCodeRunner.getStudent().equals(user)) {
                 return true;

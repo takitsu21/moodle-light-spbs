@@ -1,13 +1,8 @@
 package fr.uca.api.controllers;
 
-import fr.uca.api.models.Cours;
+import fr.uca.api.models.*;
 import fr.uca.api.models.Module;
-import fr.uca.api.models.Text;
-import fr.uca.api.models.User;
-import fr.uca.api.repository.ModuleRepository;
-import fr.uca.api.repository.RessourceRepository;
-import fr.uca.api.repository.RoleRepository;
-import fr.uca.api.repository.UserRepository;
+import fr.uca.api.repository.*;
 import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
 import fr.uca.api.repository.question.AnswerRepository;
@@ -65,7 +60,7 @@ public class TextController {
                                      @PathVariable("module_id") long moduleId,
                                      @PathVariable("cours_id") long coursId) {
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Cours> oressource = coursRepository.findById(coursId);
 
         if (omodule.isEmpty()) {
@@ -91,7 +86,7 @@ public class TextController {
         }
 
         Module module = omodule.get();
-        User user = ouser.get();
+        UserRef user = ouser.get();
 
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity
@@ -116,7 +111,7 @@ public class TextController {
                                         @PathVariable("cours_id") long coursId,
                                         @PathVariable("text_id") long textId) {
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Text> otext = textRepository.findById(textId);
         Optional<Cours> ocours = coursRepository.findById(coursId);
 
@@ -148,7 +143,7 @@ public class TextController {
         }
 
         Module module = omodule.get();
-        User user = ouser.get();
+        UserRef user = ouser.get();
         Cours cours = ocours.get();
         Text text = otext.get();
 

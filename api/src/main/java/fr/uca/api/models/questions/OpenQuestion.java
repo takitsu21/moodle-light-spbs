@@ -2,6 +2,7 @@ package fr.uca.api.models.questions;
 
 
 import auth.service.models.User;
+import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -58,9 +59,9 @@ public class OpenQuestion extends Question {
     public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.add(answerOpenQuestion);}
     public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.remove(answerOpenQuestion);}
 
-    public AnswerOpenQuestion getStudentAnswerByStudent(User student){
+    public AnswerOpenQuestion getStudentAnswerByStudent(UserRef student){
         for (AnswerOpenQuestion openAnswer : this.answerOpenQuestionSet){
-            if (openAnswer.getStudent() == student){
+            if (openAnswer.getStudent().equals(student)){
                 return openAnswer;
             }
         }

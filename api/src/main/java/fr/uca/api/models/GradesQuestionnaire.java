@@ -18,11 +18,11 @@ public class GradesQuestionnaire {
     private Questionnaire questionnaire;
 
     @OneToOne
-    private User student;
+    private UserRef student;
 
     private Integer note;
 
-    public GradesQuestionnaire(Questionnaire questionnaire, Integer note, User student) {
+    public GradesQuestionnaire(Questionnaire questionnaire, Integer note, UserRef student) {
         this.questionnaire = questionnaire;
         this.note = note;
         this.student = student;
@@ -56,11 +56,11 @@ public class GradesQuestionnaire {
         this.note = note;
     }
 
-    public User getStudent() {
+    public UserRef getStudent() {
         return student;
     }
 
-    public void setStudent(User student) {
+    public void setStudent(UserRef student) {
         this.student = student;
     }
 }

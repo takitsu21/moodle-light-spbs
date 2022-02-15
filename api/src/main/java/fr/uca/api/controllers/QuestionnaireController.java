@@ -1,11 +1,9 @@
 package fr.uca.api.controllers;
 
+import fr.uca.api.models.*;
 import fr.uca.api.models.Module;
-import fr.uca.api.models.GradesQuestionnaire;
-import fr.uca.api.models.Questionnaire;
 import fr.uca.api.models.questions.QCM;
 import fr.uca.api.models.questions.Question;
-import fr.uca.api.models.User;
 import fr.uca.api.models.questions.*;
 
 import fr.uca.api.repository.*;
@@ -112,7 +110,7 @@ public class QuestionnaireController {
         }
 
         Module module = moduleRepository.findById(module_id).get();
-        User user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername(principal.getName()).get();
         if (!module.containsParticipant(user)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: user does not belong to this module."));
@@ -152,7 +150,7 @@ public class QuestionnaireController {
         }
 
         Module module = moduleRepository.findById(module_id).get();
-        User user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername(principal.getName()).get();
         if (!module.containsParticipant(user)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: user does not belong to this module."));
@@ -174,7 +172,7 @@ public class QuestionnaireController {
                                                  @PathVariable("module_id") long moduleId,
                                                  @PathVariable("questionnaire_id") long questionnaireId) {
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
@@ -196,7 +194,7 @@ public class QuestionnaireController {
         }
 
         Module module = optionalModule.get();
-        User user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername(principal.getName()).get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
 
         if (!module.getParticipants().contains(user)) {
@@ -216,7 +214,7 @@ public class QuestionnaireController {
 
             if (question instanceof CodeRunner) {
                 CodeRunner codeRunner = (CodeRunner) question;
-                User currentStudent;
+                UserRef currentStudent;
 
                 for (AnswerCodeRunner answerCodeRunner : codeRunner.getStudentsAnswers()) {
                     currentStudent = answerCodeRunner.getStudent();
@@ -232,7 +230,7 @@ public class QuestionnaireController {
                 }
             } else if (question instanceof QCM) {
                 QCM qcm = (QCM) question;
-                User currentStudent;
+                UserRef currentStudent;
 //                for (AnswerQCM studentAnswer : qcm.getStudentsAnswers()) {
 //                    currentStudent = studentAnswer.getStudent();
 //                    if (currentStudent.equals(user)) {
@@ -261,7 +259,7 @@ public class QuestionnaireController {
                                                  @PathVariable("module_id") long moduleId,
                                                  @PathVariable("questionnaire_id") long questionnaireId) {
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
@@ -284,7 +282,7 @@ public class QuestionnaireController {
         }
 
         Module module = optionalModule.get();
-        User user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername(principal.getName()).get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
 
         if (!module.getParticipants().contains(user)) {
