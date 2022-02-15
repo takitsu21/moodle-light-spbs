@@ -3,6 +3,7 @@ package fr.uca.api.models.questions;
 import fr.uca.api.models.Questionnaire;
 import fr.uca.api.models.Text;
 import fr.uca.api.models.User;
+import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -49,7 +50,7 @@ public class QCM extends Question {
 
     public Set<AnswerQCM> getStudentsAnswers() { return studentsAnswers; }
 
-    public AnswerQCM getStudentAnswerOf(User user) {
+    public AnswerQCM getStudentAnswerOf(UserRef user) {
         for(AnswerQCM answerQCM: studentsAnswers){
             if(answerQCM.getStudent().equals(user)){
                 return answerQCM;
@@ -67,7 +68,7 @@ public class QCM extends Question {
         return null;
     }
 
-    public boolean StudentAnswerContains(User user) {
+    public boolean StudentAnswerContains(UserRef user) {
         for(AnswerQCM answerQCM: studentsAnswers){
             if(answerQCM.getStudent().equals(user)){
                 return true;

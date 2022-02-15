@@ -100,7 +100,7 @@ public class QCMController {
                                                 @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
 
@@ -133,7 +133,7 @@ public class QCMController {
         }
 
         Module module = omodule.get();
-        User user = ouser.get();
+        UserRef user = ouser.get();
 
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity
@@ -160,7 +160,7 @@ public class QCMController {
                                                 @PathVariable("answer_id") long answerId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
         Optional<Answer> oanswer = answerRepository.findById(QCMId);
@@ -201,7 +201,7 @@ public class QCMController {
         }
 
         Module module = omodule.get();
-        User user = ouser.get();
+        UserRef user = ouser.get();
 
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity
@@ -223,7 +223,7 @@ public class QCMController {
                                                 @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
 
@@ -256,7 +256,7 @@ public class QCMController {
         }
 
         Module module = omodule.get();
-        User user = ouser.get();
+        UserRef user = ouser.get();
 
         if (!module.getParticipants().contains(user) && !user.isTeacher()) {
             return ResponseEntity
@@ -295,7 +295,7 @@ public class QCMController {
                                                @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
 
@@ -328,7 +328,7 @@ public class QCMController {
         }
 
         Module module = omodule.get();
-        User user = ouser.get();
+        UserRef user = ouser.get();
 
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity

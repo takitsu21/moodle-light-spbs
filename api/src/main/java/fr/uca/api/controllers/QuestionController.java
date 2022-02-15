@@ -3,6 +3,7 @@ package fr.uca.api.controllers;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
 import fr.uca.api.models.User;
+import fr.uca.api.models.UserRef;
 import fr.uca.api.models.questions.Question;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
@@ -77,7 +78,7 @@ public class QuestionController {
         if (oQuestion.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse(("Error: No such question!")));
         }
-        Optional<User> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
 
         if (ouser.isEmpty()){
             return ResponseEntity
