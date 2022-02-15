@@ -1,8 +1,8 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.models.ERole;
-import fr.uca.springbootstrap.models.Role;
-import fr.uca.springbootstrap.repository.RoleRepository;
+import fr.uca.api.models.ERole;
+import fr.uca.api.models.Role;
+import fr.uca.api.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

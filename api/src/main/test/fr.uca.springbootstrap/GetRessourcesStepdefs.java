@@ -1,12 +1,12 @@
 package fr.uca.springbootstrap;
 
 import fr.uca.auth.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RessourceRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.*;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.RessourceRepository;
+import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.UserRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;

@@ -1,15 +1,15 @@
 package fr.uca.springbootstrap;
 
 import fr.uca.auth.controllers.AuthController;
-import fr.uca.springbootstrap.models.ERole;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.models.User;
-import fr.uca.springbootstrap.payload.request.QuestionnaireRequest;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.QuestionnaireRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.api.models.ERole;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.User;
+import fr.uca.api.payload.request.QuestionnaireRequest;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.UserRepository;
 import io.cucumber.java.fr.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

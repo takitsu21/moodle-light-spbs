@@ -1,9 +1,9 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.repository.cours.TextRepository;
-import fr.uca.springbootstrap.repository.question.*;
+import fr.uca.api.repository.*;
+import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.repository.cours.TextRepository;
+import fr.uca.api.repository.question.*;
 import io.cucumber.java.fr.Etantdonnéque;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,15 +1,15 @@
 package fr.uca.springbootstrap;
 
 import fr.uca.auth.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.payload.request.MyText;
-import fr.uca.springbootstrap.payload.request.TextRequest;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.repository.cours.TextRepository;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.*;
+import fr.uca.api.payload.request.MyText;
+import fr.uca.api.payload.request.TextRequest;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.RoleRepository;
+import fr.uca.api.repository.UserRepository;
+import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.repository.cours.TextRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
