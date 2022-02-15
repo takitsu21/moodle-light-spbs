@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import fr.uca.auth.models.User;
 
 @Entity
 @Table(name = "modules")

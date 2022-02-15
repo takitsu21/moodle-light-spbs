@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Role;
@@ -98,7 +97,7 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
         User student = userRepository.findByUsername(arg1).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
 
     }
 
@@ -122,7 +121,7 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        executeDelete("http://localhost:8081/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Et("{string} est enlever du module {string} arm")

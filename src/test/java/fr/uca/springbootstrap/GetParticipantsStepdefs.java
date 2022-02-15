@@ -1,9 +1,7 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Role;
 import fr.uca.springbootstrap.models.User;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.RessourceRepository;
@@ -108,7 +106,7 @@ public class GetParticipantsStepdefs extends SpringIntegration {
         User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
+        executeGet("http://localhost:8081/api/modules/" + module.getId() + "/participants", jwt);
     }
 
     @Et("le dernier status de request est {int} gp")

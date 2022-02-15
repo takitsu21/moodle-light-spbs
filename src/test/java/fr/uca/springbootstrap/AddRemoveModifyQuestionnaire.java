@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.payload.request.QuestionnaireRequest;
@@ -102,7 +101,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire",
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/questionnaire",
                 new QuestionnaireRequest(arg1, "Plein de questions", 5),
                 jwtTeacher);
     }
@@ -131,7 +130,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
+        executeDelete("http://localhost:8081/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
     }
 
 

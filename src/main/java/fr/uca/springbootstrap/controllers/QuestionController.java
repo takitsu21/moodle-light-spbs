@@ -2,7 +2,7 @@ package fr.uca.springbootstrap.controllers;
 
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.models.User;
 import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.QuestionRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;

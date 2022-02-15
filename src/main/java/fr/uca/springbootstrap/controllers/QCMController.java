@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import fr.uca.auth.models.User;
 
 import javax.validation.Valid;
 import java.security.Principal;

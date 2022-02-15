@@ -1,7 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.SpringIntegration;
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
@@ -193,7 +191,7 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         Answer answer = new Answer(arg1);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePut("http://localhost:8080/api/modules/"
+        executePut("http://localhost:8081/api/modules/"
                 +module.getId()+"/questionnaire/"
                 +questionnaire.getId()+"/open_question/"+question.getId()+"/possible_answer",
                 new AnswerRequest(new HashSet<>(){{ add(new MyAnswer("Réponse D"));

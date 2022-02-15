@@ -1,7 +1,7 @@
 package fr.uca.springbootstrap.repository;
 
-import fr.uca.springbootstrap.models.ERole;
-import fr.uca.springbootstrap.models.Role;
+import fr.uca.auth.models.ERole;
+import fr.uca.auth.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

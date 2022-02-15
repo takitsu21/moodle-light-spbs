@@ -2,7 +2,7 @@ package fr.uca.springbootstrap.models.questions;
 
 import fr.uca.springbootstrap.models.Questionnaire;
 import fr.uca.springbootstrap.models.Text;
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.models.User;
 
 import javax.persistence.*;
 import java.util.HashSet;

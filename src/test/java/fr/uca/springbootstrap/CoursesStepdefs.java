@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.payload.request.CoursRequest;
@@ -88,7 +87,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
                 jwtTeacher);
     }
@@ -114,10 +113,10 @@ public class CoursesStepdefs extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
         if (cours == null) {
-            executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/-1",
+            executeDelete("http://localhost:8081/api/modules/" + module.getId() + "/cours/-1",
                     jwtTeacher);
         } else {
-            executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId(),
+            executeDelete("http://localhost:8081/api/modules/" + module.getId() + "/cours/" + cours.getId(),
                     jwtTeacher);
         }
 
@@ -137,7 +136,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, "descript", arg2),
                 jwtTeacher);
     }

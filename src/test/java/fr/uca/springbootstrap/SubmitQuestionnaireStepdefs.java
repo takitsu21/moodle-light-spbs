@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.questions.Answer;
@@ -148,7 +147,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             sb.append((char) ch);
         }
         executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d",
+                        "http://localhost:8081/api/modules/%d/questionnaire/%d/code_runner/%d",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
@@ -171,7 +170,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             }
         }
         executePost(String.format(
-                "http://localhost:8080/api/modules/%d/questionnaire/%d",
+                "http://localhost:8081/api/modules/%d/questionnaire/%d",
                 module.getId(),
                 questionnaire.getId()), jwtStudent);
     }

@@ -1,16 +1,16 @@
-package fr.uca.springbootstrap.controllers;
+package fr.uca.auth.controllers;
 
-import fr.uca.springbootstrap.models.ERole;
-import fr.uca.springbootstrap.models.Role;
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.models.ERole;
+import fr.uca.auth.models.Role;
+import fr.uca.auth.models.User;
+import fr.uca.auth.security.jwt.JwtUtils;
+import fr.uca.auth.security.services.UserDetailsImpl;
 import fr.uca.springbootstrap.payload.request.LoginRequest;
 import fr.uca.springbootstrap.payload.request.SignupRequest;
 import fr.uca.springbootstrap.payload.response.JwtResponse;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.security.jwt.JwtUtils;
-import fr.uca.springbootstrap.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

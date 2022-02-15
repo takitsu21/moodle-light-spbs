@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.payload.request.VisibilityRequest;
@@ -109,7 +108,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(true),
                 jwt);
     }
@@ -120,7 +119,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(false),
                 jwt);
     }

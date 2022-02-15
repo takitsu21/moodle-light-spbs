@@ -1,4 +1,4 @@
-package fr.uca.springbootstrap.security.services;
+package fr.uca.auth.security.services;
 
 import fr.uca.auth.models.User;
 import fr.uca.springbootstrap.repository.UserRepository;

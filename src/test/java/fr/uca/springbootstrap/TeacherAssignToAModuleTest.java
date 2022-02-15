@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Role;
@@ -79,7 +78,7 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg0).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
+        executePost("http://localhost:8081/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Et("le dernier status de request est {int}")

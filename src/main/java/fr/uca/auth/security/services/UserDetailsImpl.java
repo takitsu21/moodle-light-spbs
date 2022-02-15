@@ -1,4 +1,4 @@
-package fr.uca.springbootstrap.security.services;
+package fr.uca.auth.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.uca.auth.models.User;

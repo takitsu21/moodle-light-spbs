@@ -1,4 +1,4 @@
-package fr.uca.springbootstrap;
+package fr.uca.auth;
 
 import fr.uca.auth.models.ERole;
 import fr.uca.auth.models.Role;
@@ -8,16 +8,19 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 
 @SpringBootApplication
-public class SpringBootSecurityPostgresqlApplication {
+@ComponentScan(basePackages = {"fr.uca.springbootstrap.repository"})
+public class AuthServiceApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootSecurityPostgresqlApplication.class, args);
+        SpringApplication.run(AuthServiceApp.class, args);
     }
 }
 

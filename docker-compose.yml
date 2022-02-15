@@ -36,19 +36,21 @@ services:
       - POSTGRES_PASSWORD=123
 #      - POSTGRES_DB=db_users
 
-#  auth:
-#    image: auth-service
-#    build: .
-#    container_name: auth-service
-#    depends_on:
-#      - db_users
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5435/postgres
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=123
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#    ports:
-#      - '8081:8081'
+  auth:
+    image: auth-service
+    build:
+      context: .
+      dockerfile: ./auth-service/Dockerfile
+    container_name: auth-service
+    depends_on:
+      - db_users
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5435/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - '8081:8081'
 #  code-runner:
 #    image: code-runner-service
 #    build: .
@@ -58,18 +60,21 @@ services:
 #    networks:
 #      - micro-service-network
 
-#  api:
-#    image: api
-#    container_name: api
-#    depends_on:
-#      - db
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=123
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#    ports:
-#      - '8080:8082'
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    container_name: api
+    depends_on:
+      - db_courses
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5434/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - '8080:8080'
 
 
 #networks:

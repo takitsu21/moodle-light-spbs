@@ -1,7 +1,7 @@
 package fr.uca.springbootstrap.models;
 
 import javax.persistence.*;
-
+import fr.uca.auth.models.User;
 
 @Entity
 @Table(name = "grades_questionnaire")

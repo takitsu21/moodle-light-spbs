@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.repository.ModuleRepository;
@@ -140,7 +139,7 @@ public class GetRessourcesStepdefs extends SpringIntegration {
         User prof = userRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/ressources", jwt);
+        executeGet("http://localhost:8081/api/modules/" + module.getId() + "/ressources", jwt);
     }
 
     @Et("le dernier status de request est {int} gr")

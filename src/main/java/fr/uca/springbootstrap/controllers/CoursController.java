@@ -3,7 +3,7 @@ package fr.uca.springbootstrap.controllers;
 import fr.uca.springbootstrap.models.Cours;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Ressource;
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.models.User;
 import fr.uca.springbootstrap.payload.request.CoursRequest;
 import fr.uca.springbootstrap.payload.response.MessageResponse;
 import fr.uca.springbootstrap.repository.ModuleRepository;

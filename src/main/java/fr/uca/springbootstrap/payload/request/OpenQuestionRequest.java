@@ -1,6 +1,6 @@
 package fr.uca.springbootstrap.payload.request;
 
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.models.User;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.AnswerOpenQuestion;
 

@@ -1,6 +1,6 @@
 package fr.uca.springbootstrap.repository.question;
 
-import fr.uca.springbootstrap.models.User;
+import fr.uca.auth.models.User;
 import fr.uca.springbootstrap.models.questions.AnswerOpenQuestion;
 import fr.uca.springbootstrap.models.questions.OpenQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;

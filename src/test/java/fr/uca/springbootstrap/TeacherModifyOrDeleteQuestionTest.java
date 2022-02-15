@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.questions.QCM;
@@ -135,7 +134,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        executePost("http://localhost:8081/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/questions/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
@@ -161,7 +160,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        executePost("http://localhost:8081/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/questions/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
@@ -186,7 +185,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        executePost("http://localhost:8081/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
@@ -210,7 +209,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        executePost("http://localhost:8081/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
     }
@@ -233,7 +232,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        executePost("http://localhost:8081/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
@@ -256,7 +255,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        executePost("http://localhost:8081/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }

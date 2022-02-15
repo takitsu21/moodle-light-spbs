@@ -1,6 +1,5 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.questions.Answer;
@@ -139,7 +138,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
+        executePost("http://localhost:8081/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
     }
 
     @Et("le dernier status de request est {int} qcm")
@@ -165,7 +164,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
+        executePost("http://localhost:8081/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
     }
 
     @Alors("la bonne reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -186,7 +185,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
+        executePost("http://localhost:8081/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
 
     }
 
