@@ -121,8 +121,7 @@ public class GetQuestionnaireStepDefs extends SpringIntegration {
         Questionnaire questionnaire =  (Questionnaire) module.findRessourceByName(arg1);
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        //TODO adapter la requete avec les s
-        executeGet("http://localhost:8080/api/module/" + module.getId() + "/questionnaire/" + questionnaire.getId(),
+        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(),
                 jwt);
     }
 

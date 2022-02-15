@@ -59,8 +59,8 @@ public class GetGradesStepdefs extends SpringIntegration {
     PasswordEncoder encoder;
 
 
-//    @Etantdonné("le professeur {string} assigné au module de {string} gg")
-//    public void leProfesseurAssigneAuModuleDeGg(String arg0, String arg1) {
+    @Etantdonné("le professeur {string} assigné au module de {string} gg")
+    public void leProfesseurAssigneAuModuleDeGg(String arg0, String arg1) {
 //        User user = userRepository.findByUsername(arg0)
 //                .orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
 //        user.setRoles(new HashSet<>() {{
@@ -72,10 +72,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //                .orElse(new Module(arg1));
 //        module.getParticipants().add(user);
 //        moduleRepository.save(module);
-//    }
-//
-//    @Et("un module {string} qui a un enseignant {string}, un etudiant {string} et un etudiant {string} gg")
-//    public void unModuleQuiAUnEnseignantEtUnEtudiantGg(String arg0, String arg1, String arg2, String arg3) {
+    }
+
+    @Et("un module {string} qui a un enseignant {string}, un etudiant {string} et un etudiant {string} gg")
+    public void unModuleQuiAUnEnseignantEtUnEtudiantGg(String arg0, String arg1, String arg2, String arg3) {
 //        User teacher = userRepository.findByUsername(arg1)
 //                .orElse(new User(arg1, arg1 + "@test.fr", encoder.encode(PASSWORD)));
 //        teacher.setRoles(new HashSet<>() {{
@@ -106,10 +106,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        module.getParticipants().add(student1);
 //        module.getParticipants().add(student2);
 //        moduleRepository.save(module);
-//    }
-//
-//    @Et("un questionnaire {string} appartenant à un module {string} gg")
-//    public void unQuestionnaireAppartenantAUnModuleGg(String arg0, String arg1) {
+    }
+
+    @Et("un questionnaire {string} appartenant à un module {string} gg")
+    public void unQuestionnaireAppartenantAUnModuleGg(String arg0, String arg1) {
 //        Module module = moduleRepository.findByName(arg1).get();
 //        Questionnaire questionnaire = new Questionnaire(arg0, "le questionnaire code runner", 1);
 //        questionnaire.setVisibility(true);
@@ -117,10 +117,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        System.out.println("Questionnaire " + questionnaire.getId() + " créé");
 //        module.addRessource(questionnaire);
 //        moduleRepository.save(module);
-//    }
-//
-//    @Et("la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} du module {string} gg")
-//    public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModuleGg(int arg0, String arg1, String arg2, String arg3, String arg4, String arg5, String arg6) {
+    }
+
+    @Et("la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} du module {string} gg")
+    public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModuleGg(int arg0, String arg1, String arg2, String arg3, String arg4, String arg5, String arg6) {
 //        Answer answer = new Answer(arg3);
 //        answerRepository.save(answer);
 //        CodeRunner codeRunner = new CodeRunner(arg0, arg1, arg2, arg4, answer);
@@ -129,10 +129,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        questionnaire.addQuestion(codeRunner);
 //        System.out.println("Question ajoutée au questionnaire :" + questionnaire.getId());
 //        questionnaireRepository.save(questionnaire);
-//    }
-//
-//    @Et("{string} soumet son code dans le fichier {string} à la question {int} du questionnaire {string} du module {string}")
-//    public void soumetSonCodeDansLeFichierÀLaQuestionDuQuestionnaireDuModule(String arg0, String arg1, int arg2, String arg3, String arg4) throws IOException {
+    }
+
+    @Et("{string} soumet son code dans le fichier {string} à la question {int} du questionnaire {string} du module {string}")
+    public void soumetSonCodeDansLeFichierÀLaQuestionDuQuestionnaireDuModule(String arg0, String arg1, int arg2, String arg3, String arg4) throws IOException {
 //        Module module = moduleRepository.findByName(arg4).get();
 //        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
 //        System.out.println("Questions du questionnaire " + questionnaire.getId());
@@ -159,10 +159,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        );
 //
 //        assertEquals(200, latestHttpResponse.getStatusLine().getStatusCode());
-//    }
-//
-//    @Et("{string} soumet le questionnaire {string} du module {string} gg")
-//    public void soumetLeQuestionnaireDuModuleGg(String arg0, String arg1, String arg2) throws IOException {
+    }
+
+    @Et("{string} soumet le questionnaire {string} du module {string} gg")
+    public void soumetLeQuestionnaireDuModuleGg(String arg0, String arg1, String arg2) throws IOException {
 //        Module module = moduleRepository.findByName(arg2).get();
 //        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 //
@@ -173,10 +173,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //                        questionnaire.getId()),
 //                jwtStudent
 //        );
-//    }
-//
-//    @Quand("{string} récupères les notes du questionnaire {string} du module {string} gg")
-//    public void recuperesLesNotesDuQuestionnaireDuModuleGg(String arg0, String arg1, String arg2) throws IOException {
+    }
+
+    @Quand("{string} récupères les notes du questionnaire {string} du module {string} gg")
+    public void recuperesLesNotesDuQuestionnaireDuModuleGg(String arg0, String arg1, String arg2) throws IOException {
 //        Module module = moduleRepository.findByName(arg2).get();
 //        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 //        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
@@ -186,15 +186,15 @@ public class GetGradesStepdefs extends SpringIntegration {
 //                        questionnaire.getId()),
 //                jwtTeacher
 //        );
-//    }
-//
-//    @Alors("le dernier status de request est {int} gg")
-//    public void leDernierStatusDeRequestEstGg(int arg0) {
+    }
+
+    @Alors("le dernier status de request est {int} gg")
+    public void leDernierStatusDeRequestEstGg(int arg0) {
 //        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-//    }
-//
-//    @Et("les notes de {string} sont affichées et avec un résultat de {string}")
-//    public void lesNotesDeSontAfficheesEtAvecUnResultatDeSur(String arg0, String arg1) throws IOException {
+    }
+
+    @Et("les notes de {string} sont affichées et avec un résultat de {string}")
+    public void lesNotesDeSontAfficheesEtAvecUnResultatDeSur(String arg0, String arg1) throws IOException {
 //        String json_grades = EntityUtils.toString(latestHttpResponse.getEntity());
 //        GsonBuilder builder = new GsonBuilder();
 //        builder.setPrettyPrinting();
@@ -204,5 +204,5 @@ public class GetGradesStepdefs extends SpringIntegration {
 //
 //        assertTrue(grades.containsKey(arg0));
 //        assertTrue(grades.get(arg0).equalsIgnoreCase(arg1));
-//    }
+    }
 }
