@@ -4,7 +4,7 @@ RUN groupadd -r spring && useradd -r spring -g spring
 # user name to run the image
 USER spring:spring
 # build time variable (with default value here)
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=auth-service/final-jar/*.jar
 # copy file from host to container
 COPY ${JAR_FILE} app.jar
 # command to run at start

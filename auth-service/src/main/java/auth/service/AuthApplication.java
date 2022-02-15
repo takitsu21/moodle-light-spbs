@@ -19,28 +19,28 @@ public class AuthApplication {
     }
 }
 
-//@Component
-//class AddRoles implements ApplicationRunner {
-//    @Autowired
-//    private RoleRepository roleRepository;
-//
-//    @Override
-//    public void run(ApplicationArguments args) {
-//        Optional<Role> student = roleRepository.findByName(ERole.ROLE_STUDENT);
-//        Optional<Role> teacher = roleRepository.findByName(ERole.ROLE_TEACHER);
-//        Optional<Role> admin = roleRepository.findByName(ERole.ROLE_ADMIN);
-//
-//        if (teacher.isEmpty()) {
-//            roleRepository.save(new Role(ERole.ROLE_TEACHER));
-//        }
-//        if (student.isEmpty()) {
-//            roleRepository.save(new Role(ERole.ROLE_STUDENT));
-//
-//        }
-//        if (admin.isEmpty()) {
-//            roleRepository.save(new Role(ERole.ROLE_ADMIN));
-//
-//        }
-//
-//    }
-//}
+@Component
+class AddRoles implements ApplicationRunner {
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Override
+    public void run(ApplicationArguments args) {
+        Optional<Role> student = roleRepository.findByName(ERole.ROLE_STUDENT);
+        Optional<Role> teacher = roleRepository.findByName(ERole.ROLE_TEACHER);
+        Optional<Role> admin = roleRepository.findByName(ERole.ROLE_ADMIN);
+
+        if (teacher.isEmpty()) {
+            roleRepository.save(new Role(ERole.ROLE_TEACHER));
+        }
+        if (student.isEmpty()) {
+            roleRepository.save(new Role(ERole.ROLE_STUDENT));
+
+        }
+        if (admin.isEmpty()) {
+            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+
+        }
+
+    }
+}
