@@ -1,6 +1,7 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.api.controllers.AuthController;
+import fr.uca.auth.controllers.AuthController;
+import io.cucumber.java.fr.*;
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AddRemoveQCMStepdefs extends SpringIntegration {

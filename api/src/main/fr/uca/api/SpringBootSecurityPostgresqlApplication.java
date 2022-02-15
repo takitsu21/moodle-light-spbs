@@ -1,4 +1,4 @@
-package api;
+package fr.uca.api;
 
 import fr.uca.springbootstrap.models.ERole;
 import fr.uca.springbootstrap.models.Role;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @ComponentScan(basePackages = {"fr.uca.springbootstrap.repository"})
-@SpringBootApplication(scanBasePackages = "fr.uca.api")
+@SpringBootApplication(scanBasePackages = "fr.uca.auth")
 public class SpringBootSecurityPostgresqlApplication {
 
     public static void main(String[] args) {

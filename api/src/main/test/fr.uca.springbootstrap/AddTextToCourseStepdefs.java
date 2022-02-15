@@ -1,6 +1,6 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.api.controllers.AuthController;
+import fr.uca.auth.controllers.AuthController;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.payload.request.MyText;

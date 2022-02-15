@@ -10,9 +10,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 
-//@Configuration
+@Configuration(proxyBeanMethods = false)
 @SpringBootApplication(scanBasePackages = "fr.uca.auth.repository"
-        , exclude = { SecurityAutoConfiguration.class }
+//        , exclude = { SecurityAutoConfiguration.class }
 )
 public class AuthServiceApp {
     private static Class<AuthServiceApp> application = AuthServiceApp.class;
