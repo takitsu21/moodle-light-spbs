@@ -1,13 +1,14 @@
 package fr.uca.api;
 
-import auth.service.models.ERole;
-import auth.service.models.Role;
-import auth.service.repository.RoleRepository;
+import fr.uca.api.models.ERole;
+import fr.uca.api.models.Role;
+import fr.uca.api.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
