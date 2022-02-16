@@ -21,8 +21,8 @@ public class UserRef {
     @Size(max = 20)
     private String username;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles_courses",
             joinColumns = @JoinColumn(name = "user_ref_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_courses_id", referencedColumnName = "id"))
     private Set<RoleCourses> roleCourses = new HashSet<>();
@@ -73,6 +73,22 @@ public class UserRef {
         this.username = username;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<RoleCourses> getRoleCourses() {
+        return roleCourses;
+    }
+
+    public void setRoleCourses(Set<RoleCourses> roleCourses) {
+        this.roleCourses = roleCourses;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,9 +102,9 @@ public class UserRef {
         return Objects.hash(userId, username);
     }
 
-    public boolean isTeacher(){
-        for (RoleCourses roleCourses : this.roleCourses){
-            if (roleCourses.getName().equals(ERole.ROLE_TEACHER)){
+    public boolean isTeacher() {
+        for (RoleCourses roleCourses : this.roleCourses) {
+            if (roleCourses.getName().equals(ERole.ROLE_TEACHER)) {
                 return true;
             }
         }

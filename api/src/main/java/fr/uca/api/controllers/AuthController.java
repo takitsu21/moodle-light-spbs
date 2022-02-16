@@ -15,6 +15,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +33,6 @@ import java.util.Set;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Autowired
     UserRefRepository userRepository;
@@ -51,13 +50,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws IOException {
-//        String jwt = generateJwt(loginRequest.getUsername(), loginRequest.getPassword());
-//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//        List<String> roles = userDetails.getAuthorities().stream()
-//                .map(item -> item.getAuthority())
-//                .collect(Collectors.toList());
-
-        CloseableHttpResponse resp = executePost("http://localhost:8081/auth/signin", loginRequest);
+        CloseableHttpResponse resp = executePost("http://localhost:8081/api/auth/signin", loginRequest);
         String jsonString = EntityUtils.toString(resp.getEntity());
 
         GsonBuilder builder = new GsonBuilder();
@@ -65,7 +58,6 @@ public class AuthController {
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
-
 
         return ResponseEntity.ok(map);
     }
@@ -107,7 +99,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws IOException {
         CloseableHttpResponse resp = executePost(
-                "http://localhost:8081/auth/signin",
+                "http://localhost:8081/api/auth/signup",
                 signUpRequest);
         String jsonString = EntityUtils.toString(resp.getEntity());
 
@@ -116,14 +108,13 @@ public class AuthController {
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
-        System.out.println(map);
 
         // Create new user's account
-        UserRef user = createUser((Integer) map.get("id"),
+        UserRef user = createUser(((Double) map.get("id")).intValue(),
                 signUpRequest.getUsername(),
                 signUpRequest.getRole());
         userRepository.save(user);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(map);
     }
 }

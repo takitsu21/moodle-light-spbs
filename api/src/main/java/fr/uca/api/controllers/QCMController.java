@@ -30,8 +30,6 @@ import java.util.Set;
 @RequestMapping("/api/qcm")
 public class QCMController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Autowired
     UserRefRepository userRepository;

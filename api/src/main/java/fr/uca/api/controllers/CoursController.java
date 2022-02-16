@@ -2,7 +2,6 @@ package fr.uca.api.controllers;
 
 import fr.uca.api.models.Cours;
 import fr.uca.api.models.Module;
-
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
@@ -15,7 +14,6 @@ import fr.uca.api.repository.question.CodeRunnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import payload.request.CoursRequest;
 import payload.response.MessageResponse;
@@ -28,8 +26,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/modules/{module_id}")
 public class CoursController {
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Autowired
     UserRefRepository userRepository;

@@ -28,9 +28,6 @@ import java.util.*;
 @RequestMapping("/api/modules")
 public class ModuleController {
     @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
     UserRefRepository userRefRepository;
 
     @Autowired

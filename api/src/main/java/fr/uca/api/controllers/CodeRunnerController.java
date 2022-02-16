@@ -32,9 +32,6 @@ import java.util.Optional;
 @RequestMapping("/api/modules/{module_id}/questionnaire/{questionnaire_id}")
 public class CodeRunnerController {
     @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
     UserRefRepository userRepository;
 
     @Autowired

@@ -27,10 +27,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/modules/{module_id}/questionnaire")
 public class QuestionnaireController {
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
     @Autowired
     UserRefRepository userRepository;
 

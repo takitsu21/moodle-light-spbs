@@ -26,9 +26,6 @@ import java.util.Set;
 @RequestMapping("/api/modules/{module_id}/cours/{cours_id}")
 public class TextController {
     @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
     UserRefRepository userRepository;
 
     @Autowired
