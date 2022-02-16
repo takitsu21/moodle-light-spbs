@@ -147,12 +147,8 @@ public class CodeRunnerStepdefs {
     public void écritSonCodePythonEtSoumetSontCodeAuModuleDeLaQuestionNuméro(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
         User user = userRepository.findByUsername(arg0).get();
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-            add(roleRepository.findByName(ERole.ROLE_ADMIN).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
+        user.addRole(roleRepository.findByName(ERole.ROLE_ADMIN).
+                orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         userRepository.save(user);
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg4);
         CodeRunner codeRunner = (CodeRunner) questionnaire.findQuestionByNum(arg3);

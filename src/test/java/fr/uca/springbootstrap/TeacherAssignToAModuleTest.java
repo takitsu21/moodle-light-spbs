@@ -42,17 +42,6 @@ public class TeacherAssignToAModuleTest {
     @Autowired
     PasswordEncoder encoder;
 
-    @Etantdonné("un professeur {string}")
-    public void unProfesseur(String arg0) {
-        User user = userRepository.findByUsername(arg0).
-                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
-    }
-
     @Et("un module {string} qui n'a pas de professeur")
     public void unModuleQuiNAPasDeProfesseur(String arg0) {
         Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));

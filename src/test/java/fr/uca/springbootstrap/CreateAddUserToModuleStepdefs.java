@@ -35,10 +35,8 @@ public class CreateAddUserToModuleStepdefs {
     public void leProfesseur(String arg0) {
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+        teacher.addRole(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
         userRepository.save(teacher);
     }
 
@@ -46,10 +44,8 @@ public class CreateAddUserToModuleStepdefs {
     public void lEtudiant(String arg0) {
         User student = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+        student.addRole(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
         userRepository.save(student);
     }
 
@@ -58,10 +54,8 @@ public class CreateAddUserToModuleStepdefs {
     public void leProfesseurAssigneAuModule(String arg0, String arg1) {
         User teacher = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        teacher.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_TEACHER).
+        teacher.addRole(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
         userRepository.save(teacher);
 
         Module module = moduleRepository.findByName(arg1)
@@ -74,10 +68,8 @@ public class CreateAddUserToModuleStepdefs {
     public void lEtudiantAssigneAuModule(String arg0, String arg1) {
         User student = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+        student.addRole(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
         userRepository.save(student);
 
         Module module = moduleRepository.findByName(arg1)

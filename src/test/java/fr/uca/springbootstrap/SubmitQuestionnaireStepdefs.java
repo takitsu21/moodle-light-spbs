@@ -81,10 +81,8 @@ public class SubmitQuestionnaireStepdefs {
         User teacher = userRepository.findByUsername(teacherName).get();
         User student = userRepository.findByUsername(studentName).
                 orElse(new User(studentName, studentName + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+        student.addRole(roleRepository.findByName(ERole.ROLE_STUDENT).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
         module.setParticipants(new HashSet<>() {{
             add(teacher);
             add(student);
