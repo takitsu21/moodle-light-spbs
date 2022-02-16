@@ -83,7 +83,7 @@ public class QCMController {
 
     @GetMapping("/{id}/student_answer")
     public ResponseEntity<?> getStudentAnswer(@PathVariable("id") long id){
-        if (! qcmRepository.existsById(id)){
+        if (!qcmRepository.existsById(id)){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such QCM"));
         }
         else{
@@ -272,14 +272,14 @@ public class QCMController {
                     .body(new MessageResponse("Error: It's not a valid answer!"));
         }
 
-        Answer answer1=new Answer(answer.getContent());
+        Answer answer1 = new Answer(answer.getContent());
         answerRepository.save(answer1);
 
         if(qcm.StudentAnswerContains(user)){
             qcm.getStudentAnswerOf(user).setAnswer(answer1);
         }
         else{
-            AnswerQCM answerQCM=new AnswerQCM(answer1, user);
+            AnswerQCM answerQCM = new AnswerQCM(answer1, user);
             answerQCMRepository.save(answerQCM);
             qcm.getStudentsAnswers().add(answerQCM);
         }
@@ -337,7 +337,7 @@ public class QCMController {
                     .body(new MessageResponse("Error: You are not allowed!"));
         }
         QCM qcm = oQCM.get();
-        Answer answer1=new Answer(answer.getContent());
+        Answer answer1 = new Answer(answer.getContent());
         answerRepository.save(answer1);
         qcm.setAnswer(answer1);
 

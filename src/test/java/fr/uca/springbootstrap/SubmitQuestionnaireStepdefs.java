@@ -5,12 +5,15 @@ import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.*;
 import fr.uca.springbootstrap.models.questions.Answer;
 import fr.uca.springbootstrap.models.questions.CodeRunner;
+import fr.uca.springbootstrap.models.questions.QCM;
 import fr.uca.springbootstrap.models.questions.Question;
 import fr.uca.springbootstrap.payload.request.CodeRunnerRequest;
 import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import fr.uca.springbootstrap.repository.question.AnswerRepository;
 import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+import fr.uca.springbootstrap.repository.question.QCMRepository;
+import io.cucumber.java.en_scouse.An;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -63,54 +66,50 @@ public class SubmitQuestionnaireStepdefs {
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
+    QCMRepository qcmRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
-
-    @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} sq")
-    public void unModuleQuiAUnEnseignantEtUnÉtudiantEtQuiALaQuestionNuméroAvecDescriptionLaRéponseEstAvecLeTestDansLeSq(
-            String moduleName,
-            String teacherName,
-            String studentName,
+    @Et("le QCM numero {int} {string} avec pour description {string} et pour bonne response {string} dans le {string} du module {string}")
+    public void leQCMNumeroAvecPourDescriptionDansLeDuModule(
             int num,
-            String questionName,
-            String descriptionName,
-            String answerStr,
-            String test,
-            String questionnaireName) {
-        Module module = moduleRepository.findByName(moduleName).orElse(new Module(moduleName));
-        User teacher = userRepository.findByUsername(teacherName).get();
-        User student = userRepository.findByUsername(studentName).
-                orElse(new User(studentName, studentName + "@test.fr", encoder.encode(PASSWORD)));
-        student.addRole(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        module.setParticipants(new HashSet<>() {{
-            add(teacher);
-            add(student);
+            String nameQCM,
+            String descriptionQCM,
+            String correctAnswer,
+            String questionnaireName,
+            String moduleName) {
+
+        Module module = moduleRepository.findByName(moduleName).get();
+
+        Answer answer = new Answer(correctAnswer);
+        Answer wrongAnswer1 = new Answer("Wrong answer");
+        Answer wrongAnswer2 = new Answer("Another wrong answer");
+        Answer wrongAnswer3 = new Answer("Still a wrong answer");
+        answerRepository.save(answer);
+        answerRepository.save(wrongAnswer1);
+        answerRepository.save(wrongAnswer2);
+        answerRepository.save(wrongAnswer3);
+        QCM qcm = new QCM(
+                num,
+                nameQCM,
+                descriptionQCM
+        );
+        qcmRepository.save(qcm);
+
+        qcm.setPossibleAnswers(new HashSet<>() {{
+            add(wrongAnswer1);
+            add(answer);
+            add(wrongAnswer2);
+            add(wrongAnswer3);
         }});
 
-        userRepository.save(student);
-        Answer answer = new Answer(answerStr);
-        answerRepository.save(answer);
-        CodeRunner codeRunner = new CodeRunner(
-                num,
-                questionName,
-                descriptionName,
-                test,
-                answer
-        );
-        codeRunnerRepository.save(codeRunner);
+        qcm.setAnswer(answer);
+        qcmRepository.save(qcm);
 
-        Questionnaire questionnaire = new Questionnaire(
-                questionnaireName,
-                "Test d'un code runner",
-                1
-        );
-        questionnaire.getQuestions().add(codeRunner);
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(questionnaireName);
+        questionnaire.getQuestions().add(qcm);
         questionnaireRepository.save(questionnaire);
-
-        module.getRessources().add(questionnaire);
-
-        moduleRepository.save(module);
     }
 
     @Et("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string} sq")
@@ -149,8 +148,8 @@ public class SubmitQuestionnaireStepdefs {
         );
     }
 
-    @Quand("{string} soumet le questionnaire {string} du module {string} sq")
-    public void soumetLeQuestionnaireDuModuleSq(String arg0, String arg1, String arg2) throws IOException {
+    @Quand("{string} soumet le questionnaire {string} du module {string}")
+    public void soumetLeQuestionnaireDuModule(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
 
         String jwtStudent = authController.generateJwt(arg0, PASSWORD);
@@ -180,6 +179,5 @@ public class SubmitQuestionnaireStepdefs {
         assertEquals(Double.valueOf(arg0), map.get("note"));
         assertEquals(Double.valueOf(arg1), map.get("nbQuestion"));
     }
-
 
 }

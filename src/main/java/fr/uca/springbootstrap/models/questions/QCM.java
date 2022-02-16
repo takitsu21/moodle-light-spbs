@@ -18,7 +18,7 @@ public class QCM extends Question {
     @JoinTable(name = "possible_answers",
             joinColumns = @JoinColumn(name = "open_question"),
             inverseJoinColumns = @JoinColumn(name = "answers"))
-    private Set<Answer> possibleAnswers=new HashSet<>();
+    private Set<Answer> possibleAnswers = new HashSet<>();
 
 
     @OneToOne
@@ -29,7 +29,7 @@ public class QCM extends Question {
     @JoinTable(name = "student_answer_qcm",
             joinColumns = @JoinColumn(name = "qcm"),
             inverseJoinColumns = @JoinColumn(name = "student_answer"))
-    private Set<AnswerQCM> studentsAnswers=new HashSet<>();
+    private Set<AnswerQCM> studentsAnswers = new HashSet<>();
 
     public QCM(int number, String name, String description) {
         super(number, name, description);
@@ -50,7 +50,7 @@ public class QCM extends Question {
     public Set<AnswerQCM> getStudentsAnswers() { return studentsAnswers; }
 
     public AnswerQCM getStudentAnswerOf(User user) {
-        for(AnswerQCM answerQCM: studentsAnswers){
+        for (AnswerQCM answerQCM : studentsAnswers){
             if(answerQCM.getStudent().equals(user)){
                 return answerQCM;
             }
@@ -59,7 +59,7 @@ public class QCM extends Question {
     }
 
     public AnswerQCM getStudentAnswerOf(String user) {
-        for(AnswerQCM answerQCM: studentsAnswers){
+        for (AnswerQCM answerQCM : studentsAnswers){
             if(answerQCM.getStudent().getUsername().equals(user)){
                 return answerQCM;
             }
@@ -68,7 +68,7 @@ public class QCM extends Question {
     }
 
     public boolean StudentAnswerContains(User user) {
-        for(AnswerQCM answerQCM: studentsAnswers){
+        for(AnswerQCM answerQCM : studentsAnswers){
             if(answerQCM.getStudent().equals(user)){
                 return true;
             }
@@ -77,7 +77,7 @@ public class QCM extends Question {
     }
 
     public boolean possibleAnswerContains(String s) {
-        for(Answer answer: possibleAnswers){
+        for(Answer answer : possibleAnswers){
             if(Objects.equals(answer.getAnswer(), s)){
                 return true;
             }

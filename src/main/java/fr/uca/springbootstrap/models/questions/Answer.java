@@ -25,12 +25,12 @@ public class Answer {
     }
 
     public Answer(String content) {
-        this.answer=content;
+        this.answer = content;
     }
 
     public Answer(String answer, User user) {
-        this.answer=answer;
-        this.student=user;
+        this.answer = answer;
+        this.student = user;
     }
 
     public long getId() {

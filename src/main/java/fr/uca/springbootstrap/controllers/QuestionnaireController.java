@@ -309,19 +309,19 @@ public class QuestionnaireController {
                     }
                 }
             } else if (question instanceof QCM) {
-                //TODO à finir
                 QCM qcm = (QCM) question;
                 User currentStudent;
-//                for (AnswerQCM studentAnswer : qcm.getStudentsAnswers()) {
-//                    currentStudent = studentAnswer.getStudent();
-//                    if (currentStudent.equals(user)) {
-//                        Answer studentAnswer = currentStudent.getAnswer();
-//                        if (studentAnswer.getAnswer().equals(qcm.getAnswer().getAnswer()) {
-//                            note ++;
-//                        }
-//                    }
-//                }
+                for (AnswerQCM studentQcmAnswer : qcm.getStudentsAnswers()) {
+                    currentStudent = studentQcmAnswer.getStudent();
+                    if (currentStudent.equals(user)) {
+                        Answer studentAnswer = studentQcmAnswer.getAnswer();
+                        if (studentAnswer.getAnswer().equals(qcm.getAnswer().getAnswer())) {
+                            note ++;
+                        }
+                    }
+                }
             }
+            //TODO faire pour open question
         }
 
         GradesQuestionnaire gradesQuestionnaire = new GradesQuestionnaire(questionnaire, note, user);
@@ -339,7 +339,6 @@ public class QuestionnaireController {
     public ResponseEntity<?> getGrades(Principal principal,
                                                  @PathVariable("module_id") long module_id,
                                                  @PathVariable("questionnaire_id") long questionnaire_id) {
-        System.out.println("je rentre dans le systeme");
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
