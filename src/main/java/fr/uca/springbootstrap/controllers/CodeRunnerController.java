@@ -148,14 +148,11 @@ public class CodeRunnerController {
         }
 
         CodeRunner question = optionalCodeRunner.get();
-        Answer answer;
-        if (question.getStudentsAnswers().contains(user)) {
-            answer = new Answer(codeRunnerRequest.getCode());
-            answerRepository.save(answer);
+        Answer answer = new Answer(codeRunnerRequest.getCode());
+        answerRepository.save(answer);
+        if (question.getStudentAnswer(user) != null) {
             question.getStudentAnswer(user).setAnswer(answer);
         } else {
-            answer = new Answer(codeRunnerRequest.getCode());
-            answerRepository.save(answer);
             AnswerCodeRunner answerCodeRunner = new AnswerCodeRunner(
                     answer,
                     user
@@ -214,14 +211,11 @@ public class CodeRunnerController {
         }
 
         CodeRunner question = optionalCodeRunner.get();
-        Answer answer;
-        if (question.getStudentsAnswers().contains(user)) {
-            answer = new Answer(codeRunnerRequest.getCode());
-            answerRepository.save(answer);
+        Answer answer = new Answer(codeRunnerRequest.getCode());
+        answerRepository.save(answer);
+        if (question.getStudentAnswer(user) != null) {
             question.getStudentAnswer(user).setAnswer(answer);
         } else {
-            answer = new Answer(codeRunnerRequest.getCode());
-            answerRepository.save(answer);
             AnswerCodeRunner answerCodeRunner = new AnswerCodeRunner(
                     answer,
                     user

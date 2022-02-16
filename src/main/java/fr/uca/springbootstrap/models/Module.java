@@ -65,12 +65,10 @@ public class Module {
 
     public void addRessource(Ressource ressource) {
         ressources.add(ressource);
-//        ressource.getModules().add(this);
     }
 
     public void removeRessource(Ressource ressource) {
         ressources.remove(ressource);
-//        ressource.getModules().remove(this);
     }
 
     /**

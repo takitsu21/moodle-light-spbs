@@ -42,7 +42,7 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
     public void aTeacherWithLogin(String arg0) {
         User user = userRepository.findByUsername(arg0).
                 orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-        user.setRoles(new HashSet<Role>() {{
+        user.setRoles(new HashSet<>() {{
             add(roleRepository.findByName(ERole.ROLE_TEACHER).
                     orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
         }});
