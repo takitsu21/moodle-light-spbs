@@ -339,7 +339,6 @@ public class QuestionnaireController {
     public ResponseEntity<?> getGrades(Principal principal,
                                                  @PathVariable("module_id") long module_id,
                                                  @PathVariable("questionnaire_id") long questionnaire_id) {
-        System.out.println("je rentre dans le systeme");
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<User> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
