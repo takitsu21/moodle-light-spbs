@@ -8,11 +8,14 @@ import fr.uca.springbootstrap.repository.RoleRepository;
 import fr.uca.springbootstrap.repository.UserRepository;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
 
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class CreateAddUserToModuleStepdefs {
     private static final String PASSWORD = "password";
 

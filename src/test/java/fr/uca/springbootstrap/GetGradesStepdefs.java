@@ -19,8 +19,10 @@ import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -31,7 +33,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GetGradesStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class GetGradesStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -99,7 +104,7 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        for (int ch; (ch = is.read()) != -1; ) {
 //            sb.append((char) ch);
 //        }
-//        executePost(String.format(
+//        springIntegration.executePost(String.format(
 //                        "http://localhost:8080/api/module/%d/questionnaire/%d/code_runner/%d",
 //                        module.getId(),
 //                        questionnaire.getId(),
@@ -118,7 +123,7 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 //
 //        String jwtStudent = authController.generateJwt(arg0, PASSWORD);
-//        executePost(String.format(
+//        springIntegration.executePost(String.format(
 //                        "http://localhost:8080/api/module/%d/questionnaire/%d",
 //                        module.getId(),
 //                        questionnaire.getId()),
@@ -131,7 +136,7 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        Module module = moduleRepository.findByName(arg2).get();
 //        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 //        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-//        executeGet(String.format(
+//        springIntegration.executeGet(String.format(
 //                        "http://localhost:8080/api/module/%d/questionnaire/%d/grades",
 //                        module.getId(),
 //                        questionnaire.getId()),
@@ -139,9 +144,10 @@ public class GetGradesStepdefs extends SpringIntegration {
 //        );
     }
 
+    //Je le laisse pour le moment pour eviter qu'il s'execute
     @Alors("le dernier status de request est {int} gg")
     public void leDernierStatusDeRequestEstGg(int arg0) {
-//        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+//        assertEquals(arg0, springIntegration.getLattestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Et("les notes de {string} sont affichées et avec un résultat de {string}")

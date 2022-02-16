@@ -17,7 +17,9 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -25,7 +27,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddRemoveQCMStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class AddRemoveQCMStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -73,7 +78,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
                 jwtTeacher);
     }
@@ -87,12 +92,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Question question = questionnaire.findQuestionByName(arg1);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwtTeacher);
-    }
-
-    @Alors("la réponse est {int} arqqq")
-    public void laRéponseEstArqqq(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwtTeacher);
     }
 
     @Et("la question {string} existe dans le questionnaire {string} du module {string} arqqq")

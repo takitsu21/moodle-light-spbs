@@ -18,9 +18,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 @CucumberContextConfiguration
 @SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SpringIntegration {
+    private final static SpringIntegration INSTANCE = new SpringIntegration();
+
     static ResponseResults latestResponse = null;
-    private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    protected HttpResponse latestHttpResponse;
+    private CloseableHttpClient httpClient = HttpClients.createDefault();
+    private HttpResponse latestHttpResponse;
+
+
+    private SpringIntegration(){}
+
+    public static SpringIntegration getInstance() {
+        INSTANCE.setHttpClient(HttpClients.createDefault());
+        return INSTANCE;
+    }
 
     public void executeGet(String url, String jwt) throws IOException {
         HttpGet request = new HttpGet(url);
@@ -82,5 +92,13 @@ public class SpringIntegration {
         }
 
         latestHttpResponse = httpClient.execute(request);
+    }
+
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
+    public HttpResponse getLatestHttpResponse() {
+        return latestHttpResponse;
     }
 }

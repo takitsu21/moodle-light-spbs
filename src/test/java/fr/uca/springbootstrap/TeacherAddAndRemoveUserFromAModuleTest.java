@@ -9,14 +9,19 @@ import fr.uca.springbootstrap.repository.UserRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class TeacherAddAndRemoveUserFromAModuleTest {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -40,7 +45,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         User prof2 = userRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + prof2.getId(), jwt);
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + prof2.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie de retirer le professeur {string} au module {string}")
@@ -50,7 +55,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Quand("le professeur {string} essaie d assigner l élève {string} au module {string}")
@@ -58,7 +63,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
 
@@ -69,7 +74,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Alors("{string} est assigner à {string}")
@@ -84,10 +89,5 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg1).get();
         User user = userRepository.findByUsername(arg0).get();
         assertFalse(module.getParticipants().contains(user));
-    }
-
-    @Et("le dernier status de request est {int} aru")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 }

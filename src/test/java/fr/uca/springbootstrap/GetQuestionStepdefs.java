@@ -16,8 +16,10 @@ import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -26,7 +28,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GetQuestionStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class GetQuestionStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -69,7 +74,7 @@ public class GetQuestionStepdefs extends SpringIntegration {
         assert(question != null);
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(),
+        springIntegration.executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(),
                 jwt);
     }
 
@@ -79,18 +84,13 @@ public class GetQuestionStepdefs extends SpringIntegration {
         Questionnaire questionnaire =  (Questionnaire) module.findRessourceByName(arg1);
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/",
+        springIntegration.executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/",
                 jwt);
-    }
-
-    @Alors("la réponse est {int} auq")
-    public void laRéponseEstAuq(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} en renvoyée auq")
     public void laQuestionEnRenvoyéeAuq(String arg0) throws IOException {
-        String json_question = EntityUtils.toString(latestHttpResponse.getEntity());
+        String json_question = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
 
@@ -107,7 +107,7 @@ public class GetQuestionStepdefs extends SpringIntegration {
         Question question1 = questionnaire.findQuestionByName(arg0);
         Question question2 = questionnaire.findQuestionByName(arg1);
 
-        String json_questions = EntityUtils.toString(latestHttpResponse.getEntity());
+        String json_questions = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
 

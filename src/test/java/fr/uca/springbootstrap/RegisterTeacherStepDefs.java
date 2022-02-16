@@ -12,7 +12,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
 
@@ -20,7 +22,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegisterTeacherStepDefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class RegisterTeacherStepDefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -65,12 +70,12 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
 
 //        executePost("http://localhost:8080/api/test/mod", jwt);
 //        executePost("http://localhost:8080/api/modules/1/participants/7", jwt);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Then("last request status is {int}")
     public void isRegisteredToModule(int status) {
-        assertEquals(status, latestHttpResponse.getStatusLine().getStatusCode());
+        assertEquals(status, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Then("{string} is registered to module {string}")

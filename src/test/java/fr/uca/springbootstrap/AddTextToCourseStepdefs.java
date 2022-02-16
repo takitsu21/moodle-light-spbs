@@ -12,7 +12,9 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -20,7 +22,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddTextToCourseStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class AddTextToCourseStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -76,7 +81,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         Cours cours = (Cours) module.findRessourceByName(arg2);
         Text text = cours.getText(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
+        springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
     }
 
     @Quand("Le professeur {string} ajoute un text {int} de contenu {string} a la ressource {string} du module {string}")
@@ -86,13 +91,8 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
 
         MyText text = new MyText(arg1, arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/",
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/",
                 new TextRequest(text), jwt);
-    }
-
-    @Et("le dernier status de request est {int} at")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Alors("le text {int} de la ressource {string} n'est pas dans le module {string}")

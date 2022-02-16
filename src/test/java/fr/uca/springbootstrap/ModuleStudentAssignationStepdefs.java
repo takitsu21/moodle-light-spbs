@@ -9,14 +9,19 @@ import fr.uca.springbootstrap.repository.UserRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ModuleStudentAssignationStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class ModuleStudentAssignationStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -49,13 +54,7 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
         User student = userRepository.findByUsername(arg1).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
-
-    }
-
-    @Alors("le dernier status de réponse est {int} arm")
-    public void leDernierStatusDeRéponseEstArm(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Et("l'étudiant {string} est ajouter au module {string} arm")
@@ -72,7 +71,7 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
     }
 
     @Et("{string} est enlever du module {string} arm")
@@ -95,6 +94,4 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
         User user = userRepository.findByUsername(arg0).get();
         assertFalse(module.getParticipants().contains(user));
     }
-
-
 }

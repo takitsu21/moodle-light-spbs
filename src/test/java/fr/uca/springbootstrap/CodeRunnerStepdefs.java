@@ -18,8 +18,10 @@ import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -30,7 +32,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CodeRunnerStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class CodeRunnerStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -108,17 +113,12 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         questionnaireRepository.save(questionnaire);
         module.addRessource(questionnaire);
         moduleRepository.save(module);
-        executePost(String.format(
+        springIntegration.executePost(String.format(
                         "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/",
                         module.getId(),
                         questionnaire.getId()),
                 new CodeRunnerRequest(1, arg1, arg2, arg3, arg4),
                 jwtTeacher);
-    }
-
-    @Alors("le dernier status de réponse est {int} crn")
-    public void leDernierStatusDeRéponseEstCrn(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} est créer dans le questionnaire {string} dans le module {string}")
@@ -164,7 +164,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         for (int ch; (ch = is.read()) != -1; ) {
             sb.append((char) ch);
         }
-        executePost(String.format(
+        springIntegration.executePost(String.format(
                         "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d/test",
                         module.getId(),
                         questionnaire.getId(),
@@ -177,7 +177,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 
     @Et("la réponse est vrai {int} crn")
     public void laRéponseEstVraiCrn(int arg0) throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -190,7 +190,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 
     @Et("la réponse est faux {int} crn")
     public void laRéponseEstFauxCrn(int arg0) throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();

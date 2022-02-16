@@ -13,7 +13,9 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -21,8 +23,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class CoursesStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
 
-public class CoursesStepdefs extends SpringIntegration {
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -88,14 +92,9 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
                 jwtTeacher);
-    }
-
-    @Alors("le dernier status de réponse est {int} crs")
-    public void leDernierStatusDeRéponseEstCrs(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("{string} est ajouté au module {string} crs")
@@ -114,10 +113,10 @@ public class CoursesStepdefs extends SpringIntegration {
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
         if (cours == null) {
-            executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/-1",
+            springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/-1",
                     jwtTeacher);
         } else {
-            executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId(),
+            springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId(),
                     jwtTeacher);
         }
 
@@ -137,7 +136,7 @@ public class CoursesStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, "descript", arg2),
                 jwtTeacher);
     }

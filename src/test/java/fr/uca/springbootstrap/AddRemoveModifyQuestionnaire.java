@@ -6,14 +6,19 @@ import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.payload.request.QuestionnaireRequest;
 import fr.uca.springbootstrap.repository.*;
 import io.cucumber.java.fr.*;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddRemoveModifyQuestionnaire extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class AddRemoveModifyQuestionnaire {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -46,7 +51,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/",
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/",
                 new QuestionnaireRequest(arg1, "Plein de questions", 5),
                 jwtTeacher);
     }
@@ -74,12 +79,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 
         String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
+        springIntegration.executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
     }
-
-    @Alors("la réponse est {int}")
-    public void laRéponseEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
 }

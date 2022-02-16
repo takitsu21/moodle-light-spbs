@@ -16,8 +16,10 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -27,7 +29,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SubmitQuestionnaireStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class SubmitQuestionnaireStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -135,7 +140,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         for (int ch; (ch = is.read()) != -1; ) {
             sb.append((char) ch);
         }
-        executePost(String.format(
+        springIntegration.executePost(String.format(
                         "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d",
                         module.getId(),
                         questionnaire.getId(),
@@ -158,20 +163,15 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
                 break;
             }
         }
-        executePost(String.format(
+        springIntegration.executePost(String.format(
                 "http://localhost:8080/api/modules/%d/questionnaire/%d",
                 module.getId(),
                 questionnaire.getId()), jwtStudent);
     }
 
-    @Alors("le dernier status de réponse est {int} sq")
-    public void leDernierStatusDeRéponseEstSq(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("la note est {int} sur {int} sq")
     public void laNoteEstSurSq(int arg0, int arg1) throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();

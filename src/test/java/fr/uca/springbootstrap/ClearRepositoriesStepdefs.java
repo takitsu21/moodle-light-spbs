@@ -5,9 +5,12 @@ import fr.uca.springbootstrap.repository.cours.CoursRepository;
 import fr.uca.springbootstrap.repository.cours.TextRepository;
 import fr.uca.springbootstrap.repository.question.*;
 import io.cucumber.java.fr.Etantdonnéque;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-public class ClearRepositoriesStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class ClearRepositoriesStepdefs {
 
     @Autowired
     ModuleRepository moduleRepository;

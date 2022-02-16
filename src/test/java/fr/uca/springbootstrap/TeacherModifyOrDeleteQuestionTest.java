@@ -15,7 +15,9 @@ import fr.uca.springbootstrap.repository.question.QuestionRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -23,7 +25,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class TeacherModifyOrDeleteQuestionTest {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -58,14 +63,14 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
 
-        if (questionnaire==null){
-            questionnaire=new Questionnaire(arg3, "Description "+arg3,1);
+        if (questionnaire == null){
+            questionnaire = new Questionnaire(arg3, "Description "+arg3,1);
         }
 
 
         QCM question = (QCM) questionnaire.findQuestionByName(arg0);
-        if (question==null){
-            question=new QCM(arg2, arg0, arg1);
+        if (question == null){
+            question = new QCM(arg2, arg0, arg1);
         }
         questionRepository.save(question);
 
@@ -82,17 +87,11 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        springIntegration.executePost("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/questions/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
                         question.getNumber()), jwTeacher);
-    }
-
-
-    @Alors("le status de la dernière requète est {int} tmdqql")
-    public void leStatusDeLaDernièreRequèteEstTmdqql(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("la question de numéro {int} a pour nom {string} tmdqm")
@@ -108,7 +107,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        springIntegration.executePost("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/questions/"+question.getId()+"/name",
                 new QuestionRequest(arg4, question.getDescription(),
@@ -117,7 +116,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
     @Alors("le dernier status de réponse est {int} tmdqqo")
     public void leDernierStatusDeRéponseEstTmdqqo(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Et("la question de numéro {int} s'appelle toujours {string} tmdqp")
@@ -133,7 +132,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        springIntegration.executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
 
@@ -141,7 +140,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
     @Alors("le status de la dernière requète est {int} tmdqr")
     public void leStatusDeLaDernièreRequèteEstTmdqr(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} possède la description {string} tmdqs")
@@ -157,14 +156,14 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        springIntegration.executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqu")
     public void leDernierStatusDeRéponseEstTmdqu(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} possède toujours la description {string} tmdqv")
@@ -180,14 +179,14 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        springIntegration.executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
     @Alors("le dernier status de réponse est {int} tmdqx")
     public void leDernierStatusDeRéponseEstTmdqx(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Et("le question {string} possède le numéro {int} tmdqy")
@@ -203,14 +202,14 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/"+module.getId()
+        springIntegration.executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
     @Alors("le dernier status de réponse et {int} tmdqaa")
     public void leDernierStatusDeRéponseEtTmdqaa(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} possède le numéro {int} tmdqab")

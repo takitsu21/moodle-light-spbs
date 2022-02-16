@@ -19,7 +19,9 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -28,7 +30,10 @@ import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OpenQuestionModificationTest extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class OpenQuestionModificationTest {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -161,7 +166,7 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         Question question = questionnaire.findQuestionByName(arg2);
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePut("http://localhost:8080/api/modules/"
+        springIntegration.executePut("http://localhost:8080/api/modules/"
                 +module.getId()+"/questionnaire/"
                 +questionnaire.getId()+"/open_question/"+question.getId()+"/possible_answer",
                 new AnswerRequest(new HashSet<>(){{ add(new MyAnswer("Réponse D"));
@@ -169,10 +174,10 @@ public class OpenQuestionModificationTest extends SpringIntegration {
                 jwTeacher);
     }
 
-    @Alors("le status de la dernière réponse est {int} oqm")
-    public void leStatusDeLaDernièreRéponseEstOqm(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
+//    @Alors("le status de la dernière réponse est {int} oqm")
+//    public void leStatusDeLaDernièreRéponseEstOqm(int arg0) {
+//        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
+//    }
 
     @Et("les réponses possibles de la question {string} du questionnaire {string} du module {string} possède un réponse de contenu {string} oqm")
     public void lesRéponsesPossiblesDeLaQuestionDuQuestionnaireDuModulePossèdeUnRéponseDeContenuOqm(String arg0, String arg1, String arg2, String arg3) {

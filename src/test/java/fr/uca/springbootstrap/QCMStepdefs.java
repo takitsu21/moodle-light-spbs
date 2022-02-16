@@ -13,7 +13,9 @@ import fr.uca.springbootstrap.repository.question.QCMRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -22,7 +24,10 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QCMStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class QCMStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -100,12 +105,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
-    }
-
-    @Et("le dernier status de request est {int} qcm")
-    public void leDernierStatusDeRequestEstQcm(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        springIntegration.executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
     }
 
     @Alors("la reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -125,7 +125,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
+        springIntegration.executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
     }
 
     @Alors("la bonne reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -145,7 +145,7 @@ public class QCMStepdefs extends SpringIntegration {
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
+        springIntegration.executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
 
     }
 

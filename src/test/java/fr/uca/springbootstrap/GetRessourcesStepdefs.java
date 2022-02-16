@@ -12,8 +12,10 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -22,7 +24,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GetRessourcesStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class GetRessourcesStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -81,17 +86,12 @@ public class GetRessourcesStepdefs extends SpringIntegration {
     public void leProfesseurGetLesRessourcesDuModule(String arg0, String arg1) throws IOException {
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/ressources", jwt);
-    }
-
-    @Et("le dernier status de request est {int} gr")
-    public void leDernierStatusDeRequestEstGr(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        springIntegration.executeGet("http://localhost:8080/api/modules/" + module.getId() + "/ressources", jwt);
     }
 
     @Alors("le cours {string} est renvoyé")
     public void leCoursEstRenvoyé(String arg0) throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -104,7 +104,7 @@ public class GetRessourcesStepdefs extends SpringIntegration {
 
     @Alors("aucun cours n'est renvoyé")
     public void aucunCoursNEstRenvoyé() throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -117,7 +117,7 @@ public class GetRessourcesStepdefs extends SpringIntegration {
 
     @Alors("les cours {string} et {string} sont renvoyé")
     public void lesCoursEtSontRenvoyé(String arg0, String arg1) throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();

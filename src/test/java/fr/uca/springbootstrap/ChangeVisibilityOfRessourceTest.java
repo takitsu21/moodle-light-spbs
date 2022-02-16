@@ -12,7 +12,9 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -20,7 +22,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class ChangeVisibilityOfRessourceTest {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -81,7 +86,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(true),
                 jwt);
     }
@@ -91,15 +96,15 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(false),
                 jwt);
     }
 
-    @Et("le dernier status de request est {int} cv")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
+//    @Et("le dernier status de request est {int} cv")
+//    public void leDernierStatusDeRequestEst(int arg0) {
+//        assertEquals(arg0, springIntegration.getLatestHttpResponse().getStatusLine().getStatusCode());
+//    }
 
     @Alors("la ressource {string} du module {string} est visible")
     public void laRessourceDuModuleEstVisible(String arg0, String arg1) {

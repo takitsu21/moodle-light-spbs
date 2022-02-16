@@ -12,15 +12,19 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetQuestionnaireStepDefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class GetQuestionnaireStepDefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -55,18 +59,13 @@ public class GetQuestionnaireStepDefs extends SpringIntegration {
         Questionnaire questionnaire =  (Questionnaire) module.findRessourceByName(arg1);
 
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(),
+        springIntegration.executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(),
                 jwt);
-    }
-
-    @Alors("la réponse recue est {int}")
-    public void laRéponseRecueEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("le questionnaire {string} est renvoyé")
     public void leQuestionnaireEstRenvoyé(String arg0) throws IOException {
-        String json_question = EntityUtils.toString(latestHttpResponse.getEntity());
+        String json_question = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
 

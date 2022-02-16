@@ -11,8 +11,10 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -22,7 +24,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GetParticipantsStepdefs extends SpringIntegration {
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class GetParticipantsStepdefs {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
+
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -47,17 +52,12 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     public void lUtilisateurGetLesParticipantsDuModule(String arg0, String arg1) throws IOException {
         Module module = moduleRepository.findByName(arg1).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
-    }
-
-    @Et("le dernier status de request est {int} gp")
-    public void leDernierStatusDeRequestEstGp(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        springIntegration.executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
     }
 
     @Alors("les participants sont {string} et {string}")
     public void lesParticipantsSontEt(String arg0, String arg1) throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -71,7 +71,7 @@ public class GetParticipantsStepdefs extends SpringIntegration {
 
     @Alors("il n'y a pas de participant")
     public void ilNYAPasDeParticipant() throws IOException {
-        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();

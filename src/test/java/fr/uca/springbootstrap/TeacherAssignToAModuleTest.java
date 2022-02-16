@@ -11,7 +11,9 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -19,8 +21,10 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class TeacherAssignToAModuleTest {
+    private final SpringIntegration springIntegration = SpringIntegration.getInstance();
 
-public class TeacherAssignToAModuleTest extends SpringIntegration {
     private static final String PASSWORD = "password";
 
     @Autowired
@@ -62,12 +66,7 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
         User user = userRepository.findByUsername(arg0).get();
         String jwt = authController.generateJwt(arg0, PASSWORD);
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
-    }
-
-    @Et("le dernier status de request est {int}")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
+        springIntegration.executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Alors("le professeur {string} est assigner à {string}")

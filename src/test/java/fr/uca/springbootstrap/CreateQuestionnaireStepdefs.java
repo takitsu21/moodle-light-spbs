@@ -5,8 +5,11 @@ import fr.uca.springbootstrap.models.Questionnaire;
 import fr.uca.springbootstrap.repository.ModuleRepository;
 import fr.uca.springbootstrap.repository.QuestionnaireRepository;
 import io.cucumber.java.fr.Etantdonné;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class CreateQuestionnaireStepdefs {
 
     @Autowired
