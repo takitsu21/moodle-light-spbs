@@ -1,5 +1,8 @@
 package fr.uca.api.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.*;
 
@@ -8,6 +11,13 @@ import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
+import fr.uca.api.util.VerifyAuthorizations;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +30,7 @@ import payload.request.VisibilityRequest;
 import payload.response.MessageResponse;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
@@ -50,13 +61,6 @@ public class ModuleController {
 	@Autowired
 	CodeRunnerRepository codeRunnerRepository;
 
-
-//
-//	@Autowired
-//	PasswordEncoder encoder;
-//
-//	@Autowired
-//	JwtUtils jwtUtils;
 
     @PostMapping("/{id}/participants/{userid}")
     @PreAuthorize("hasRole('TEACHER')")
@@ -149,15 +153,21 @@ public class ModuleController {
 	}
 
     @PostMapping("/")
-    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addModule(@Valid @RequestBody ModuleRequest moduleRequest) {
-        if (moduleRepository.existsByName(moduleRequest.getName())) {
+    public ResponseEntity<?> addModule(@Valid @RequestBody ModuleRequest moduleRequest,
+									   @RequestHeader Map<String, String> headers) throws IOException {
+
+		if (!VerifyAuthorizations.verify(headers, null, ERole.ROLE_TEACHER.toString())) {
+			return ResponseEntity.
+					status(HttpStatus.UNAUTHORIZED).
+					body(new MessageResponse("Jwt token not found!"));
+		}
+		if (moduleRepository.existsByName(moduleRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Module already exists!"));
         }
 
-        Module module = new Module(moduleRequest.getName());
+		Module module = new Module(moduleRequest.getName());
         moduleRepository.save(module);
         return ResponseEntity.ok(new MessageResponse("Module created successfully!"));
     }

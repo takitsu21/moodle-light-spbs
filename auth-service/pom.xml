@@ -32,7 +32,7 @@
                     <archive>
                         <index>true</index>
                         <manifest>
-                            <mainClass>auth.service.AuthApplication</mainClass>
+                            <mainClass>auth.AuthApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

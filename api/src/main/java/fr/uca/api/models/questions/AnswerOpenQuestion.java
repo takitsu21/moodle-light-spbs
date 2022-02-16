@@ -1,6 +1,5 @@
 package fr.uca.api.models.questions;
 
-import auth.service.models.User;
 import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;

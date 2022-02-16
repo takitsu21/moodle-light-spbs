@@ -1,6 +1,6 @@
 package fr.uca.api.security;
 
-import auth.service.security.services.UserDetailsImpl;
+import auth.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private static final Logger logger = LoggerFactory.getLogger(auth.service.security.services.jwt.JwtUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(auth.security.services.jwt.JwtUtils.class);
 
     @Value("${bezkoder.app.jwtSecret}")
     private String jwtSecret;

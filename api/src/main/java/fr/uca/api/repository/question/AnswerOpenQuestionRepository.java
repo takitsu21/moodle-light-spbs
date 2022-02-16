@@ -1,7 +1,7 @@
 package fr.uca.api.repository.question;
 
 
-import auth.service.models.User;
+import auth.models.User;
 import fr.uca.api.models.questions.AnswerOpenQuestion;
 import fr.uca.api.models.questions.OpenQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
