@@ -77,14 +77,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
     }
 
-//    @Etantdonnéque("l'enseignant {string} soit dans le module {string}")
-//    public void lEnseignantSoitDansLeModule(String arg0, String arg1) {
-//        Module module = moduleRepository.findByName(arg1).get();
-//        User teacher = userRepository.findByUsername(arg0).get();
-//        module.getParticipants().add(teacher);
-//        moduleRepository.save(module);
-//    }
-
     @Alors("la réponse est {int}")
     public void laRéponseEst(int arg0) {
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());

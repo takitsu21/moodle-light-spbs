@@ -66,64 +66,19 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Autowired
     PasswordEncoder encoder;
 
-      //TODO pour quand je retenterai de la factoriser
-//    @Et("la question numero {int} {string} avec description {string} la reponse est {string} avec le test {string} dans le {string} du module {string}")
-//    public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModule(
-//            int num,
-//            String questionName,
-//            String descriptionName,
-//            String answerStr,
-//            String test,
-//            String questionnaireName,
-//            String moduleName) {
-//
-//        Module module = moduleRepository.findByName(moduleName).get();
-//
-//        Answer answer = new Answer(answerStr);
-//        answerRepository.save(answer);
-//        CodeRunner codeRunner = new CodeRunner(
-//                num,
-//                questionName,
-//                descriptionName,
-//                test,
-//                answer
-//        );
-//        codeRunnerRepository.save(codeRunner);
-//
-//        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(questionnaireName);
-//        questionnaire.getQuestions().add(codeRunner);
-//        questionnaireRepository.save(questionnaire);
-//        //moduleRepository.save(module);
-//    }
-
-    @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} crn")
-    public void unModuleQuiAUnEnseignantEtUnÉtudiantEtQuiALaQuestionNuméroAvecDescriptionLaRéponseEstAvecLeTestQuestionNuméroCrn(
-            String moduleName,
-            String teacherName,
-            String studentName,
+      //TODO voir si je peux encore plus factoriser
+    @Et("la question numero {int} {string} avec description {string} la reponse est {string} avec le test {string} dans le {string} du module {string}")
+    public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModule(
             int num,
             String questionName,
             String descriptionName,
             String answerStr,
             String test,
-            String questionnaireName) {
+            String questionnaireName,
+            String moduleName) {
 
-        Module module = moduleRepository.findByName(moduleName).orElse(new Module(moduleName));
-        User teacher = userRepository.findByUsername(teacherName).get();
-        User student = userRepository.findByUsername(studentName).
-                orElse(new User(studentName, studentName + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-            add(roleRepository.findByName(ERole.ROLE_ADMIN).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        module.setParticipants(new HashSet<>() {{
-            add(teacher);
-            add(student);
-        }});
+        Module module = moduleRepository.findByName(moduleName).get();
 
-        userRepository.save(student);
         Answer answer = new Answer(answerStr);
         answerRepository.save(answer);
         CodeRunner codeRunner = new CodeRunner(
@@ -135,17 +90,9 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         );
         codeRunnerRepository.save(codeRunner);
 
-        Questionnaire questionnaire = new Questionnaire(
-                questionnaireName,
-                "Test d'un code runner",
-                1
-        );
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(questionnaireName);
         questionnaire.getQuestions().add(codeRunner);
         questionnaireRepository.save(questionnaire);
-
-        module.getRessources().add(questionnaire);
-
-        moduleRepository.save(module);
     }
 
     @Quand("{string} veut ajouter la question {string} avec description {string} la réponse est {string} avec le test {string} au module {string} dans le {string} crn")
@@ -199,6 +146,14 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Quand("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string}")
     public void écritSonCodePythonEtSoumetSontCodeAuModuleDeLaQuestionNuméro(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
+        User user = userRepository.findByUsername(arg0).get();
+        user.setRoles(new HashSet<>() {{
+            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+            add(roleRepository.findByName(ERole.ROLE_ADMIN).
+                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }});
+        userRepository.save(user);
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg4);
         CodeRunner codeRunner = (CodeRunner) questionnaire.findQuestionByNum(arg3);
 
