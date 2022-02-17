@@ -87,6 +87,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
         executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(),
                 jwt);
+        System.out.println("juste apres la requete delete");
     }
 
     @Alors("la réponse est {int}")

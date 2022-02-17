@@ -54,8 +54,6 @@ public class CreateAddUserToModuleStepdefs extends SpringIntegration {
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
 
         userToken.put(user.getUsername(), (String) map.get("accessToken"));
-
-
     }
 
     @Et("l'etudiant {string}")
@@ -84,13 +82,13 @@ public class CreateAddUserToModuleStepdefs extends SpringIntegration {
 
     @Et("le professeur {string} assigne au module {string}")
     public void leProfesseurAssigneAuModule(String arg0, String arg1) throws IOException {
+        System.out.println("juste avant post");
         executePost("http://localhost:8080/api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
-
         executePost("http://localhost:8080/api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 

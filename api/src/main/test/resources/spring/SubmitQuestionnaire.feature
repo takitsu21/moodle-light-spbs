@@ -1,7 +1,7 @@
 #language: fr
 #encoding: utf-8
 
-Fonctionnalité: En tant que API REST je veux pouvoir calculé la note d'un élève à un questionnaire quand il le soumet
+Fonctionnalité: En tant que API REST je veux pouvoir calculer la note d'un élève à un questionnaire quand il le soumet
 
 
   Contexte:

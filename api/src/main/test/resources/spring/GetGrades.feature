@@ -5,7 +5,7 @@ Fonctionnalité: En tant que professeur je veux pouvoir voir la note de tous les
 
   Contexte:
     Etant donné le professeur "Paul" assigne au module "Maths"
-    Et le professeur "Jaques" assigne au module "Prog 2"
+    Et le professeur "Jacques" assigne au module "Prog 2"
     Et l'etudiant "Margaux" assigne au module "Prog 2"
     Et l'etudiant "Jeannot" assigne au module "Prog 2"
     Et le questionnaire "Questionnaire code runner" dans le module "Prog 2"

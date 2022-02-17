@@ -36,14 +36,6 @@ public class AnswerOpenQuestion {
         this.id = id;
     }
 
-    public OpenQuestion getOpenQuestion() {
-        return openQuestion;
-    }
-
-    public void setOpenQuestion(OpenQuestion openQuestion) {
-        this.openQuestion = openQuestion;
-    }
-
     public Set<Answer> getAnswers() {
         return answers;
     }

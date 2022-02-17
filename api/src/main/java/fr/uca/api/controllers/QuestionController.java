@@ -44,13 +44,42 @@ public class QuestionController {
     @Autowired
     UserRefRepository userRepository;
 
-    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/questions/")
-    public ResponseEntity<?> getQuestion(@RequestHeader Map<String, String> headers){
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}")
+    public ResponseEntity<?> getQuestion(@RequestHeader Map<String, String> headers,
+                                         @PathVariable("module_id") long module_id,
+                                         @PathVariable("questionnaire_id") long questionnaire_id,
+                                         @PathVariable("question_id") long question_id){
+
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_STUDENT.toString(), ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
+        }
+
+        Optional<Module> optionalModule = moduleRepository.findById(module_id);
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
+        if (optionalModule.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: module does not exist."));
+        }
+        else if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not exist."));
+        }
+        UserRef user = optionalUser.get();
+        Module module = optionalModule.get();
+
+        if (!module.containsParticipant(user)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not belong in this module."));
+        }
+
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        if (optionalQuestionnaire.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not exist."));
         }
         List<Question> questions = questionRepository.findAll();
         return ResponseEntity.ok(questions);

@@ -17,7 +17,5 @@ public interface AnswerOpenQuestionRepository extends JpaRepository<AnswerOpenQu
 
     List<AnswerOpenQuestion> findAllByStudent(User student);
 
-    List<AnswerOpenQuestion> findAllByOpenQuestion(OpenQuestion openQuestion);
-
     List<AnswerOpenQuestion> findAll();
 }

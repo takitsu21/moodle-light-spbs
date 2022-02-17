@@ -316,14 +316,11 @@ public class QuestionnaireController {
                     .badRequest()
                     .body(new MessageResponse("Error: questionnaire does not belong to this module!"));
         }
-        Set<Grade> grades = new HashSet<>();
-        Set<GradesQuestionnaire> gradesQuestionnaire = questionnaire.getStudentsGrades();
+
+        Map<String, String> grades = new HashMap<>();
+        Set<GradesQuestionnaire> gradesQuestionnaire =  questionnaire.getStudentsGrades();
         for (GradesQuestionnaire grade : gradesQuestionnaire) {
-            grades.add(new Grade(
-                    grade.getNote(),
-                    questionnaire.getNbQuestions(),
-                    grade.getStudent().getUsername()
-            ));
+            grades.put(grade.getStudent().getUsername(),grade.getFinalGradeString());
         }
 
         return ResponseEntity.ok(grades);
