@@ -3,6 +3,7 @@ package fr.uca.api.models.questions;
 import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -12,7 +13,7 @@ public class AnswerOpenQuestion {
     @GeneratedValue
     private long id;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Answer> answers;
 
     @OneToOne
@@ -50,5 +51,14 @@ public class AnswerOpenQuestion {
 
     public void setStudent(UserRef student) {
         this.student = student;
+    }
+
+    public boolean answerContains(String s) {
+        for(Answer answer: answers){
+            if(Objects.equals(answer.getAnswer(), s)){
+                return true;
+            }
+        }
+        return false;
     }
 }

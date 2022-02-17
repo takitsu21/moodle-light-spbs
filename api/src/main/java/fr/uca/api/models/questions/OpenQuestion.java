@@ -4,6 +4,7 @@ package fr.uca.api.models.questions;
 import fr.uca.api.models.UserRef;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -62,30 +63,57 @@ public class OpenQuestion extends Question {
     public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ studentAnswers.add(answerOpenQuestion);}
     public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ studentAnswers.remove(answerOpenQuestion);}
 
-    public AnswerOpenQuestion getStudentAnswerByStudent(UserRef student){
-        for (AnswerOpenQuestion openAnswer : this.studentAnswers){
-            if (openAnswer.getStudent().equals(student)){
-                return openAnswer;
+    public AnswerOpenQuestion getStudentAnswerOf(UserRef user) {
+        for(AnswerOpenQuestion answerOpenQuestion: studentAnswers){
+            if(answerOpenQuestion.getStudent().equals(user)){
+                return answerOpenQuestion;
             }
         }
         return null;
     }
 
-    public Answer getPossibleAnswerById(long id){
-        for (Answer answer : possibleAnswers){
-            if (answer.getId() == id){
-                return answer;
+    public AnswerOpenQuestion getStudentAnswerOf(String user) {
+        for(AnswerOpenQuestion answerOpenQuestion: studentAnswers){
+            if(answerOpenQuestion.getStudent().getUsername().equals(user)){
+                return answerOpenQuestion;
             }
         }
         return null;
     }
 
-    public Answer getPossibleAnswerByContent(String content){
-        for (Answer answer : possibleAnswers){
-            if (answer.getAnswer() == content){
-                return answer;
+    public boolean studentAnswerContains(UserRef user) {
+        for(AnswerOpenQuestion answerOpenQuestion: studentAnswers){
+            if(answerOpenQuestion.getStudent().equals(user)){
+                return true;
             }
         }
-        return null;
+        return false;
+    }
+
+    public boolean studentAnswerContainsAnswer(UserRef user, String s) {
+        for(AnswerOpenQuestion answerOpenQuestion: studentAnswers){
+            if(answerOpenQuestion.getStudent().equals(user) && answerOpenQuestion.answerContains(s)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean possibleAnswerContains(String s) {
+        for(Answer answer: possibleAnswers){
+            if(Objects.equals(answer.getAnswer(), s)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean answerContains(String s) {
+        for(Answer answer: answers){
+            if(Objects.equals(answer.getAnswer(), s)){
+                return true;
+            }
+        }
+        return false;
     }
 }

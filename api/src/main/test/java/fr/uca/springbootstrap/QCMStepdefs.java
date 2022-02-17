@@ -6,6 +6,7 @@ import fr.uca.api.models.Module;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.models.questions.Answer;
 import fr.uca.api.models.questions.QCM;
+import fr.uca.api.models.questions.Question;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
@@ -59,6 +60,10 @@ public class QCMStepdefs extends SpringIntegration {
     public void leQuestionnaireDuModuleAUnQCMQcm(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg1).get();
         Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg0);
+        for (Question q: questionnaire.getQuestions()){
+            System.out.println(q.getName());
+            System.out.println(q.getClass());
+        }
         QCM qcm = (QCM) questionnaire.findQuestionByName(arg2);
         if (qcm == null) {
             qcm = new QCM(1, arg2, "null");

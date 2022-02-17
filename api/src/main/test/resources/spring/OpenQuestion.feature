@@ -1,7 +1,7 @@
 #language: fr
 #encoding: utf-8
 
-Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité des ressources
+Fonctionnalité: En tant que professeur je veux pouvoir créer une question ouverte
 
   Contexte:
     Etant donné le professeur "Paul" assigné au module de "Maths" avec un questionnaire "Exam" visible oq

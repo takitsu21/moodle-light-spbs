@@ -22,7 +22,7 @@ public class CreateQuestionnaireStepdefs {
 
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
         if (questionnaire == null){
-            questionnaire = new Questionnaire(arg0, "Questionnaire", 8);
+            questionnaire = new Questionnaire(arg0, "Questionnaire", 1);
         }
         questionnaireRepository.save(questionnaire);
 

@@ -144,8 +144,7 @@ public class ModuleController {
     }
 
     @GetMapping("/{id}/participants")
-    public ResponseEntity<?> getParticipants(
-                                             @RequestHeader Map<String, String> headers,
+    public ResponseEntity<?> getParticipants(@RequestHeader Map<String, String> headers,
                                              @PathVariable long id) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
         if (!VerifyAuthorizations.isSuccess(authVerif)) {

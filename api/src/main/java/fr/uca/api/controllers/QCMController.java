@@ -88,13 +88,12 @@ public class QCMController {
     }
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addPossibleAnswers(@Valid @RequestBody AnswersRequest answerRequest,
                                                 @RequestHeader Map<String, String> headers,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
                                                 @PathVariable("qcm_id") long QCMId) {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
@@ -153,13 +152,13 @@ public class QCMController {
     }
 
     @DeleteMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer/{answer_id}")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removePossibleAnswers(@RequestHeader Map<String, String> headers,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
                                                 @PathVariable("qcm_id") long QCMId,
                                                 @PathVariable("answer_id") long answerId) {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
@@ -228,7 +227,8 @@ public class QCMController {
                                                @PathVariable("module_id") long moduleId,
                                                @PathVariable("questionnaire_id") long questionnaireId,
                                                @PathVariable("qcm_id") long QCMId) {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_STUDENT.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
@@ -305,7 +305,9 @@ public class QCMController {
                                                @PathVariable("module_id") long moduleId,
                                                @PathVariable("questionnaire_id") long questionnaireId,
                                                @PathVariable("qcm_id") long QCMId) {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).

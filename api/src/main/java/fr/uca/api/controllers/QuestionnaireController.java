@@ -2,10 +2,7 @@ package fr.uca.api.controllers;
 
 import fr.uca.api.models.Module;
 import fr.uca.api.models.*;
-import fr.uca.api.models.questions.AnswerCodeRunner;
-import fr.uca.api.models.questions.CodeRunner;
-import fr.uca.api.models.questions.QCM;
-import fr.uca.api.models.questions.Question;
+import fr.uca.api.models.questions.*;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;

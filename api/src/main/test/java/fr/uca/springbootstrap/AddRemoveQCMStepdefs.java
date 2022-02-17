@@ -24,8 +24,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AddRemoveQCMStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -89,11 +87,6 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
         executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwt);
-    }
-
-    @Alors("la réponse est {int} arqqq")
-    public void laRéponseEstArqqq(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} existe dans le questionnaire {string} du module {string} arqqq")
