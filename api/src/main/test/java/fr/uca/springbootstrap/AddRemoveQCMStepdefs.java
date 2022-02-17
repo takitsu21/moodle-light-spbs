@@ -108,5 +108,4 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         assertFalse(questionnaire.containsQuestion(arg0));
     }
 
-
 }

@@ -12,22 +12,22 @@ Fonctionnalité: Accéder à une question
     
   Scénario: l'étudiant "Charlie" récupère la question "Bonus"
     Quand l'étudiant "Charlie" récupère la question "Bonus" du questionnaire "Interrogation" du module "Physique" auq
-    Alors la réponse est 200 auq
+    Alors le code de retour est 200
     Et la question "Bonus" en renvoyée auq
     Et les tables sont videes
 
   Scénario: l'étudiant "Tanguy" récupère la question "Bonus"
     Quand l'étudiant "Tanguy" récupère la question "Bonus" du questionnaire "Interrogation" du module "Physique" auq
-    Alors la réponse est 400 auq
+    Alors le code de retour est 400
     Et les tables sont videes
 
   Scénario: l'étudiant "Charlie" récupère toutes les questions de "Interrogation"
     Quand l'etudiant "Charlie" recupere les questions du questionnaire "Interrogation" du module "Physique" auq
-    Alors la réponse est 200 auq
+    Alors le code de retour est 200
     Et les questions "Gratuite" et "Bonus" du questionnaire "Interrogation" du module "Physique" sont renvoyees
     Et les tables sont videes
 
   Scénario: l'étudiant "Tanguy" récupère toutes les questions de "Interrogation"
     Quand l'etudiant "Tanguy" recupere les questions du questionnaire "Interrogation" du module "Physique" auq
-    Alors la réponse est 400 auq
+    Alors le code de retour est 400
     Et les tables sont videes

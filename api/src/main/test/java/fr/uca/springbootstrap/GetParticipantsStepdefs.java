@@ -44,11 +44,6 @@ public class GetParticipantsStepdefs extends SpringIntegration {
         executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
     }
 
-    @Et("le dernier status de request est {int} gp")
-    public void leDernierStatusDeRequestEstGp(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Alors("les participants sont {string} et {string}")
     public void lesParticipantsSontEt(String arg0, String arg1) throws IOException {
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());

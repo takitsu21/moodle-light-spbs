@@ -94,11 +94,6 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
                 jwt);
     }
 
-    @Et("le dernier status de request est {int} cv")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Alors("la ressource {string} du module {string} est visible")
     public void laRessourceDuModuleEstVisible(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg1).get();

@@ -44,11 +44,6 @@ public class GetModulesStepdefs extends SpringIntegration {
         executeGet("http://localhost:8080/api/modules/", jwt);
     }
 
-    @Et("le dernier status de request est {int} gm")
-    public void leDernierStatusDeRequestEstGm(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Alors("les modules sont {string} et {string}")
     public void lesModulesSontEt(String arg0, String arg1) throws IOException {
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());

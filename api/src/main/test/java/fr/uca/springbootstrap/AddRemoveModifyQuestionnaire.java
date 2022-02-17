@@ -10,7 +10,6 @@ import fr.uca.api.repository.UserRefRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import payload.request.QuestionnaireRequest;
 
@@ -90,11 +89,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
                         + module.getId() + "/questionnaire/" + questionnaire.getId(),
                 jwt);
         System.out.println("juste apres la requete delete");
-    }
-
-    @Alors("la réponse est {int}")
-    public void laRéponseEst(int arg0) throws IOException {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
 }

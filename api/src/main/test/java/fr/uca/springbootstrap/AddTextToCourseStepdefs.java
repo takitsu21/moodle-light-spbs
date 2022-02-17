@@ -90,11 +90,6 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
                 new TextRequest(text), jwt);
     }
 
-    @Et("le dernier status de request est {int} at")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Alors("le text {int} de la ressource {string} n'est pas dans le module {string}")
     public void leTextDeLaRessourceNEstPasDansLeModule(int arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();

@@ -127,11 +127,6 @@ public class GetGradesStepdefs extends SpringIntegration {
         );
     }
 
-    @Alors("le dernier status de request est {int} gg")
-    public void leDernierStatusDeRequestEstGg(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("les notes de {string} sont affichées et avec un résultat de {string}")
     public void lesNotesDeSontAfficheesEtAvecUnResultatDeSur(String arg0, String arg1) throws IOException {
         String json_grades = EntityUtils.toString(latestHttpResponse.getEntity());

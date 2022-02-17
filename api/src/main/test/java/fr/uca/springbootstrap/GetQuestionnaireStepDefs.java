@@ -55,11 +55,6 @@ public class GetQuestionnaireStepDefs extends SpringIntegration {
                 jwt);
     }
 
-    @Alors("la réponse recue est {int}")
-    public void laRéponseRecueEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("le questionnaire {string} est renvoyé")
     public void leQuestionnaireEstRenvoyé(String arg0) throws IOException {
         String json_question = EntityUtils.toString(latestHttpResponse.getEntity());

@@ -28,7 +28,7 @@ public class SpringIntegration {
     protected static Map<String, String> userToken = new HashMap<>();
     static ResponseResults latestResponse = null;
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    protected HttpResponse latestHttpResponse;
+    protected static HttpResponse latestHttpResponse;
 
     public void executeGet(String url, String jwt) throws IOException {
         consume();

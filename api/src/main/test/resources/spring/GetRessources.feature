@@ -13,19 +13,19 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les ressources d'un
 
   Scénario: Le professeur "Paul" get les ressources du module "Maths"
     Quand Le professeur "Paul" get les ressources du module "Maths"
-    Et le dernier status de request est 200 gr
+    Et le code de retour est 200
     Alors les cours "Poir" et "Pomme" sont renvoyé
     Et les tables sont videes
 
   Scénario: Le professeur "Juliette" get les ressources du module "Maths"
     Quand Le professeur "Juliette" get les ressources du module "Maths"
-    Et le dernier status de request est 200 gr
+    Et le code de retour est 200
     Alors le cours "Poir" est renvoyé
     Et les tables sont videes
 
   Scénario: Le professeur "Jean" get les ressources du module "Maths"
     Quand Le professeur "Jean" get les ressources du module "Maths"
-    Et le dernier status de request est 400 gr
+    Et le code de retour est 400
     Alors aucun cours n'est renvoyé
     Et les tables sont videes
 

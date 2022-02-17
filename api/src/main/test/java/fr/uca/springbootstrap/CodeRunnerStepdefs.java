@@ -115,11 +115,6 @@ public class CodeRunnerStepdefs extends SpringIntegration {
                 jwt);
     }
 
-    @Alors("le dernier status de réponse est {int} crn")
-    public void leDernierStatusDeRéponseEstCrn(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("la question {string} est créer dans le questionnaire {string} dans le module {string}")
     public void laQuestionEstCréer(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg2).get();

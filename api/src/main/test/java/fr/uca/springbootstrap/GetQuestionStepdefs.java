@@ -79,11 +79,6 @@ public class GetQuestionStepdefs extends SpringIntegration {
                 jwt);
     }
 
-    @Alors("la réponse est {int} auq")
-    public void laRéponseEstAuq(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("la question {string} en renvoyée auq")
     public void laQuestionEnRenvoyéeAuq(String arg0) throws IOException {
         String json_question = EntityUtils.toString(latestHttpResponse.getEntity());

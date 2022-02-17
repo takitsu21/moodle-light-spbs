@@ -12,7 +12,7 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les modules ou je s
 
   Scénario: Le professeur "Paul" get ses modules
     Quand L'utilisateur "Paul" get ses modules
-    Et le dernier status de request est 200 gm
+    Et le code de retour est 200
     Alors les modules sont "Maths" et "Chimie"
     Et les tables sont videes
 

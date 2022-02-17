@@ -15,7 +15,7 @@ Fonctionnalité: En tant que professeur je veux pouvoir voir la note de tous les
 
   Scénario: Le professeur récupères les notes de chaque étudiant
     Quand "Jacques" récupères les notes du questionnaire "Questionnaire code runner" du module "Prog 2" gg
-    Alors le dernier status de request est 200 gg
+    Alors le code de retour est 200
     Et les notes de "Margaux" sont affichées et avec un résultat de "1/1"
     Et les tables sont videes
 

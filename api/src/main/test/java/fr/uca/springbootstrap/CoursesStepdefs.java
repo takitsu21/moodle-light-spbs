@@ -40,27 +40,6 @@ public class CoursesStepdefs extends SpringIntegration {
     AuthController authController;
 
 
-//    @Etantdonné("Un enseignant avec le nom de connexion {string} crs")
-//    public void unEnseignantAvecLeNomDeConnexionCrs(String arg0) {
-//        User user = userRepository.findByUsername(arg0).
-//                orElse(new User(arg0, arg0 + "@test.fr", encoder.encode(PASSWORD)));
-//        user.setRoles(new HashSet<Role>() {{
-//            add(roleRepository.findByName(ERole.ROLE_TEACHER).
-//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-//        }});
-//        userRepository.save(user);
-//    }
-//
-//    @Et("un module {string} qui a un enseignant {string} crs")
-//    public void unModuleQuiAUnEnseignantCrs(String arg0, String arg1) {
-//        Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
-//        User teacher = userRepository.findByUsername(arg1).get();
-//        module.setParticipants(new HashSet<>() {{
-//            add(teacher);
-//        }});
-//        moduleRepository.save(module);
-//    }
-
     @Et("un module {string} qui a un cours {string} et numéro {int} et qui a un enseignant {string} crs")
     public void unModuleQuiAUnCoursEtNuméroEtQuiAUnEnseignantCrs(String arg0, String arg1, int arg2, String arg3) {
         Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));
@@ -85,12 +64,6 @@ public class CoursesStepdefs extends SpringIntegration {
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
                 jwt);
-    }
-
-    @Alors("le dernier status de réponse est {int} crs")
-    public void leDernierStatusDeRéponseEstCrs(int arg0) throws IOException {
-        System.out.println(EntityUtils.toString(latestHttpResponse.getEntity()));
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("{string} est ajouté au module {string} crs")
