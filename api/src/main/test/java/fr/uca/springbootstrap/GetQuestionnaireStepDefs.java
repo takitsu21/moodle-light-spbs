@@ -35,8 +35,6 @@ public class GetQuestionnaireStepDefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
 
     @Et("le questionnaire {string} du module {string} est visible")
     public void leQuestionnaireDuModuleEstVisible(String arg0, String arg1) {

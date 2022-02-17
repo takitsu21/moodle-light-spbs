@@ -10,6 +10,9 @@ public interface UserRefRepository extends JpaRepository<UserRef, Long> {
 
     Optional<UserRef> findByUsername(String username);
 
+    Optional<UserRef> findByUserId(Integer id);
+
+
     boolean existsById(Long aLong);
 
     Boolean existsByUsername(String username);

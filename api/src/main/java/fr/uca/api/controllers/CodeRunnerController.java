@@ -189,7 +189,8 @@ public class CodeRunnerController {
                                             @PathVariable("module_id") long moduleId,
                                             @PathVariable("questionnaire_id") long questionnaireId,
                                             @PathVariable("code_runner_id") long codeRunnerId) throws IOException {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+        //n'existe que pour les tests
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_STUDENT.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
@@ -255,8 +256,11 @@ public class CodeRunnerController {
         CodeRunnerExec codeRunnerExec = new CodeRunnerExec();
 //        Map<String, Object> exec = codeRunnerExec.execPy(codeRunnerRequest.getCode(), question);
         CloseableHttpResponse resp = VerifyAuthorizations.executePost(
-                "http://localhost:8082/api/coderunner/test",
-                codeRunnerRequest, null);
+                "http://localhost:8082/api/coderunner/",
+                new CodeRunnerRequest(
+                        codeRunnerRequest.getCode(),
+                        question.getTest(),
+                        question.getAnwser().getAnswer()), null);
         String jsonString = EntityUtils.toString(resp.getEntity());
 
         GsonBuilder builder = new GsonBuilder();

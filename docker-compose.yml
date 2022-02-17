@@ -2,28 +2,26 @@ version: '3.8'
 services:
   db_courses:
     image: postgres:14.1
-    build:
-      context: ./db_courses
-      dockerfile: Dockerfile
+#    build:
+#      context: ./db_courses
+#      dockerfile: Dockerfile
     container_name: db_courses
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
-    #      - POSTGRES_DB=db_courses
     ports:
       - '5434:5432'
   db_users:
     image: postgres:14.1
-    build:
-      context: ./db_users
-      dockerfile: Dockerfile
+#    build:
+#      context: ./db_users
+#      dockerfile: Dockerfile
     container_name: db_users
     ports:
       - '5435:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
-#      - POSTGRES_DB=db_users
   auth:
     image: auth-service
     build:
@@ -45,8 +43,6 @@ services:
 #      context: .
 #      dockerfile: ./api/Dockerfile
 #    container_name: api
-#    depends_on:
-#      - db_courses
 #    environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
 #      - SPRING_DATASOURCE_USERNAME=postgres

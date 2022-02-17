@@ -36,8 +36,6 @@ public class GetModulesStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
 
 
     @Quand("L'utilisateur {string} get ses modules")

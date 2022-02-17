@@ -61,6 +61,7 @@ public class VerifyAuthorizations {
 
             Gson gson = builder.create();
             JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+
             boolean success = jsonObject.get("success").getAsBoolean();
             boolean successRoles = true;
             if (success) {
@@ -72,6 +73,7 @@ public class VerifyAuthorizations {
                 }
             }
             ret.put("success", success && successRoles);
+            ret.put("username", jsonObject.getAsJsonObject("user").get("username").getAsString());
         } catch (IOException e) {
             ret.put("success", false);
             ret.put("error", e.toString());

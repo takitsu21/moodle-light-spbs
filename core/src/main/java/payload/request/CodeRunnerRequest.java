@@ -25,6 +25,12 @@ public class CodeRunnerRequest {
         this.test = test;
     }
 
+    public CodeRunnerRequest(String code, String test, String answer) {
+        this.code = code;
+        this.test = test;
+        this.answer = answer;
+    }
+
     public CodeRunnerRequest(String code) {
         this.code = code;
     }

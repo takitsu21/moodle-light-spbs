@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.UserRefRepository;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -25,31 +26,38 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final CloseableHttpClient httpClient = HttpClients.createDefault();
+    private final static CloseableHttpClient httpClient = HttpClients.createDefault();
+    private static HttpResponse latestHttpResponse;
 
     @Autowired
     UserRefRepository userRepository;
 
-
-
-    public CloseableHttpResponse executePost(String url, Object entity) throws IOException {
+    public static void executePost(String url, Object entity) throws IOException {
+        if (latestHttpResponse != null) {
+            EntityUtils.consume(latestHttpResponse.getEntity());
+        }
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
         ObjectMapper ObjMapper = new ObjectMapper();
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
-        return httpClient.execute(request);
+
+        latestHttpResponse = httpClient.execute(request);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws IOException {
-        CloseableHttpResponse resp = executePost("http://localhost:8081/api/auth/signin", loginRequest);
-        String jsonString = EntityUtils.toString(resp.getEntity());
+        executePost("http://localhost:8081/api/auth/signin", loginRequest);
+        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+        System.out.println(jsonString + " jsonString");
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
+
+        map.put("username", loginRequest.getUsername());
+        EntityUtils.consume(latestHttpResponse.getEntity());
 
         return ResponseEntity.ok(map);
     }
@@ -96,7 +104,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(latestHttpResponse.getEntity());
         }
         System.out.println(signUpRequest.getRole());
-        String jsonString = EntityUtils.toString(resp.getEntity());
+        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -109,7 +117,6 @@ public class AuthController {
                 ((Double) map.get("id")).intValue(),
                 signUpRequest.getUsername());
         userRepository.save(user);
-
         return ResponseEntity.ok(map);
     }
 }

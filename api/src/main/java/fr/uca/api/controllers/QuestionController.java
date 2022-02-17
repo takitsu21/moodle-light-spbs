@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,7 +82,79 @@ public class QuestionController {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: questionnaire does not exist."));
         }
-        List<Question> questions = questionRepository.findAll();
+        Questionnaire questionnaire = optionalQuestionnaire.get();
+
+        if (!module.containsRessource(questionnaire)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not belong in this module."));
+        }
+
+        Optional<Question> optionalQuestion = questionRepository.findById(question_id);
+        if (optionalQuestion.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: question does not exist."));
+        }
+
+        Question question = optionalQuestion.get();
+        if (!questionnaire.containsQuestion(question.getName())) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: question does not belong in this questionnaire."));
+        }
+
+        return ResponseEntity.ok(question);
+    }
+
+    @GetMapping("{module_id}/questionnaire/{questionnaire_id}/questions/")
+    public ResponseEntity<?> getQuestions(@RequestHeader Map<String, String> headers,
+                                          @PathVariable("module_id") long module_id,
+                                          @PathVariable("questionnaire_id") long questionnaire_id){
+
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_STUDENT.toString(), ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
+
+        Optional<Module> optionalModule = moduleRepository.findById(module_id);
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
+
+        if (optionalModule.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: module does not exist."));
+        }
+        else if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not exist."));
+        }
+        UserRef user = optionalUser.get();
+        Module module = optionalModule.get();
+
+        if (!module.containsParticipant(user)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: user does not belong in this module."));
+        }
+
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
+        if (optionalQuestionnaire.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not exist."));
+        }
+        Questionnaire questionnaire = optionalQuestionnaire.get();
+
+        if (!module.containsRessource(questionnaire)) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: questionnaire does not belong in this module."));
+        }
+
+        // Je veux renvoyer les questions elles-mêmes mais je dois garder un élément simple a comparer pour les tests avec gson
+        // c'est pour ça qu'il y a l'id et la question
+        Map<Long, Question> questions = new HashMap<>();
+        for (Question question : questionnaire.getQuestions()) {
+            questions.put(question.getId(), question);
+        }
+
         return ResponseEntity.ok(questions);
     }
 

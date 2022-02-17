@@ -26,15 +26,15 @@ public class OpenQuestion extends Question {
     @JoinTable(name = "students_anwser",
             joinColumns = @JoinColumn(name = "open_question"),
             inverseJoinColumns = @JoinColumn(name = "student_anwser_open_question"))
-    private Set<AnswerOpenQuestion> answerOpenQuestionSet;
+    private Set<AnswerOpenQuestion> studentAnswers;
 
 
-    public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> answerOpenQuestionSet,
+    public OpenQuestion(Set<Answer> answers, Set<AnswerOpenQuestion> studentAnswers,
                         Set<Answer> possibleAnswers, String name, String description,
                         int number){
         super(number, name, description);
         this.answers = answers;
-        this.answerOpenQuestionSet = answerOpenQuestionSet;
+        this.studentAnswers = studentAnswers;
         this.possibleAnswers = possibleAnswers;
     }
 
@@ -57,13 +57,13 @@ public class OpenQuestion extends Question {
     public void addPossibleAnswer(Answer answer){ possibleAnswers.add(answer);}
     public void removePossibleAnswer(Answer answer){ possibleAnswers.remove(answer);}
 
-    public Set<AnswerOpenQuestion> getAnswerOpenQuestionSet() { return answerOpenQuestionSet; }
-    public void setAnswerOpenQuestionSet(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.answerOpenQuestionSet = answerOpenQuestionSet; }
-    public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.add(answerOpenQuestion);}
-    public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ answerOpenQuestionSet.remove(answerOpenQuestion);}
+    public Set<AnswerOpenQuestion> getStudentAnswers() { return studentAnswers; }
+    public void setStudentAnswers(Set<AnswerOpenQuestion> answerOpenQuestionSet) { this.studentAnswers = answerOpenQuestionSet; }
+    public void addAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ studentAnswers.add(answerOpenQuestion);}
+    public void removeAnswerOpenQuestion(AnswerOpenQuestion answerOpenQuestion){ studentAnswers.remove(answerOpenQuestion);}
 
     public AnswerOpenQuestion getStudentAnswerByStudent(UserRef student){
-        for (AnswerOpenQuestion openAnswer : this.answerOpenQuestionSet){
+        for (AnswerOpenQuestion openAnswer : this.studentAnswers){
             if (openAnswer.getStudent().equals(student)){
                 return openAnswer;
             }

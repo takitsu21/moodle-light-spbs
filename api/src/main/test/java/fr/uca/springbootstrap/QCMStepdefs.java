@@ -42,9 +42,6 @@ public class QCMStepdefs extends SpringIntegration {
     AuthController authController;
 
     @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
     QCMRepository qcmRepository;
 
     @Autowired

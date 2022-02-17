@@ -9,6 +9,7 @@ import auth.security.services.UserDetailsImpl;
 import auth.security.services.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -132,7 +133,7 @@ public class AuthController {
 
     @PostMapping("/verify")
     public ResponseEntity verifyToken(@Valid @RequestHeader Map<String, String> headers) {
-        System.out.println(headers);
+        System.out.println("here verification token auth");
         String token = headers.get("authorization").substring(7);
         Optional<User> optionalUser = userRepository.findByToken(token);
         Map<String, Object> ret = new HashMap<>();
@@ -146,5 +147,12 @@ public class AuthController {
         ret.put("user", u);
         ret.put("username", u.getUsername());
         return ResponseEntity.ok().body(ret);
+    }
+
+    @PostMapping("/clear")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity clearUsers() {
+        userRepository.deleteAll();
+        return ResponseEntity.ok().body("Successfully cleared");
     }
 }

@@ -100,6 +100,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
+        System.out.println(jwt + " CODE RUNNER " + user.getUsername());
         Questionnaire questionnaire = new Questionnaire(
                 arg6,
                 "Test d'un code runner",

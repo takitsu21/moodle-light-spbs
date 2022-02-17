@@ -87,7 +87,6 @@ public class CreateAddUserToModuleStepdefs extends SpringIntegration {
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
-
         UserRef user = userRefRepository.findByUsername(arg0).get();
         executePost("http://localhost:8080/api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));

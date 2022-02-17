@@ -1,7 +1,7 @@
 package fr.uca.springbootstrap;
 
-import auth.models.ERole;
 import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.ERole;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.UserRefRepository;
@@ -10,13 +10,18 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.messages.internal.com.google.gson.Gson;
+import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
+import payload.request.LoginRequest;
 import payload.request.SignupRequest;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,8 +76,6 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-//        executePost("http://localhost:8080/api/test/mod", jwt);
-//        executePost("http://localhost:8080/api/modules/1/participants/7", jwt);
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 

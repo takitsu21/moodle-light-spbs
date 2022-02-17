@@ -50,6 +50,7 @@ public class SpringIntegration {
 
         request.setEntity(new StringEntity("{}"));
         latestHttpResponse = httpClient.execute(request);
+        System.out.println(latestHttpResponse.getEntity());
     }
 
     public void executePost(String url, Object entity, String jwt) throws IOException {
@@ -76,7 +77,6 @@ public class SpringIntegration {
         ObjMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
         latestHttpResponse = httpClient.execute(request);
-        request.completed();
     }
 
 

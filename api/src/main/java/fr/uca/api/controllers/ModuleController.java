@@ -56,17 +56,18 @@ public class ModuleController {
 
     @PostMapping("/{id}/participants/{userid}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addUser(
-                                     @RequestHeader Map<String, String> headers,
-                                     @PathVariable long id, @PathVariable long userid) {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+    public ResponseEntity<?> addUser(@RequestHeader Map<String, String> headers,
+                                     @PathVariable long id, @PathVariable int userid) {
+        Map<String, Object> authVerif = VerifyAuthorizations
+                .verify(headers, ERole.ROLE_TEACHER.toString());
+        System.out.println("add User: "+headers);
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(id);
-        Optional<UserRef> ouser = userRefRepository.findById(userid);
+        Optional<UserRef> ouser = userRefRepository.findByUserId(userid);
         if (!omodule.isPresent()) {
             return ResponseEntity
                     .badRequest()
@@ -102,9 +103,8 @@ public class ModuleController {
 
     @DeleteMapping("/{id}/participants/{userid}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> remvoveUser(
-                                         @RequestHeader Map<String, String> headers,
-                                         @PathVariable long id, @PathVariable long userid) {
+    public ResponseEntity<?> remvoveUser(@RequestHeader Map<String, String> headers,
+                                         @PathVariable long id, @PathVariable int userid) {
 
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -113,7 +113,7 @@ public class ModuleController {
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(id);
-        Optional<UserRef> ouser = userRefRepository.findById(userid);
+        Optional<UserRef> ouser = userRefRepository.findByUserId(userid);
         if (!omodule.isPresent()) {
             return ResponseEntity
                     .badRequest()
@@ -372,19 +372,23 @@ public class ModuleController {
     }
 
 
-    @PostMapping("{module_id}/questionnaire")
+    @PostMapping("/{module_id}/questionnaire")
 //	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> addQuestionnaire(
-                                              @Valid @RequestBody QuestionnaireRequest questionnaireRequest,
+    public ResponseEntity<?> addQuestionnaire(@Valid @RequestBody QuestionnaireRequest questionnaireRequest,
                                               @RequestHeader Map<String, String> headers,
                                               @PathVariable("module_id") long module_id) {
-        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+        System.out.println("dedans add");
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> oUser = userRefRepository.findByUsername((String) authVerif.get("username"));
+        System.out.println((String) authVerif.get("username") + " laaaaaaaaaa");
+//        System.out.println((String) authVerif.get("username") + "la");
+        Optional<UserRef> oUser = userRefRepository.
+                findByUsername((String) authVerif.get("username"));
         Optional<Module> oModule = moduleRepository.findById(module_id);
 
         if (oUser.isEmpty()) {
