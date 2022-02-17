@@ -57,6 +57,7 @@ public class TextController {
                                      @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long moduleId,
                                      @PathVariable("cours_id") long coursId) {
+        System.out.println("dedans text");
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {

@@ -45,8 +45,9 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
     @Quand("l'enseignant {string} veut ajouter le questionnaire {string} au module {string}")
     public void lEnseignantVeutAjouterLeQuestionnaireAuModule(String arg0, String arg1, String arg2) throws IOException {
+        System.out.println("avant find module");
         Module module = moduleRepository.findByName(arg2).get();
-
+        System.out.println("avant find user");
         UserRef user = userRefRepository.findByUsername(arg0).get();
         System.out.println(user.getUsername());
 

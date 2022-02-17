@@ -27,8 +27,6 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
 
 
     @Quand("le professeur {string} essaie d'assigner le professeur {string} au module {string}")

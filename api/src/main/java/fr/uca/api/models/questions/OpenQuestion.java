@@ -43,6 +43,10 @@ public class OpenQuestion extends Question {
         super();
     }
 
+    public OpenQuestion(int num, String name, String description) {
+        super(num, name, description);
+    }
+
     public Set<Answer> getAnswers() { return answers; }
     public void setAnswers(Set<Answer> answers) { this.answers = answers; }
     public void addAnswer(Answer answer){ answers.add(answer);}

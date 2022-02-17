@@ -37,8 +37,6 @@ public class QCMController {
     @Autowired
     UserRefRepository userRepository;
 
-
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -91,8 +89,8 @@ public class QCMController {
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addPossibleAnswers(@RequestHeader Map<String, String> headers,
-                                                @Valid @RequestBody AnswersRequest answerRequest,
+    public ResponseEntity<?> addPossibleAnswers(@Valid @RequestBody AnswersRequest answerRequest,
+                                                @RequestHeader Map<String, String> headers,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
                                                 @PathVariable("qcm_id") long QCMId) {
@@ -171,7 +169,7 @@ public class QCMController {
         Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
-        Optional<Answer> oanswer = answerRepository.findById(QCMId);
+        Optional<Answer> oanswer = answerRepository.findById(answerId);
 
 
         if (omodule.isEmpty()) {

@@ -36,9 +36,6 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
-
     @Quand("L'utilisateur {string} get les participants du module {string}")
     public void lUtilisateurGetLesParticipantsDuModule(String arg0, String arg1) throws IOException {
         Module module = moduleRepository.findByName(arg1).get();

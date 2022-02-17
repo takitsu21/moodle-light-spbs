@@ -8,9 +8,11 @@ import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.cours.CoursRepository;
+import io.cucumber.java.bs.I;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import payload.request.CoursRequest;
@@ -88,7 +90,8 @@ public class CoursesStepdefs extends SpringIntegration {
     }
 
     @Alors("le dernier status de réponse est {int} crs")
-    public void leDernierStatusDeRéponseEstCrs(int arg0) {
+    public void leDernierStatusDeRéponseEstCrs(int arg0) throws IOException {
+        System.out.println(EntityUtils.toString(latestHttpResponse.getEntity()));
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 

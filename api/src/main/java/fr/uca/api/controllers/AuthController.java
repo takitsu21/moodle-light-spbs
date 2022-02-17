@@ -89,11 +89,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws IOException {
-        CloseableHttpResponse resp = executePost(
+        executePost(
                 "http://localhost:8081/api/auth/signup",
                 signUpRequest);
-        if (resp.getStatusLine().getStatusCode() == 400) {
-            return ResponseEntity.badRequest().body(resp.getEntity());
+        if (latestHttpResponse.getStatusLine().getStatusCode() == 400) {
+            return ResponseEntity.badRequest().body(latestHttpResponse.getEntity());
         }
         System.out.println(signUpRequest.getRole());
         String jsonString = EntityUtils.toString(resp.getEntity());

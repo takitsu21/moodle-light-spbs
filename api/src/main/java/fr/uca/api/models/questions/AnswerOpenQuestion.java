@@ -19,18 +19,13 @@ public class AnswerOpenQuestion {
     @JoinColumn(name = "student")
     private UserRef student;
 
-    @OneToOne
-    @JoinColumn(name = "open_question")
-    private OpenQuestion openQuestion;
-
     public AnswerOpenQuestion() {
 
     }
 
-    public AnswerOpenQuestion(Set<Answer> answers, UserRef student, OpenQuestion openQuestion) {
+    public AnswerOpenQuestion(Set<Answer> answers, UserRef student) {
         this.answers = answers;
         this.student = student;
-        this.openQuestion = openQuestion;
     }
 
     public Long getId() {

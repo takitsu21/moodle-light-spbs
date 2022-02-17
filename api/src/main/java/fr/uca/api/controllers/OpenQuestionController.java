@@ -120,7 +120,7 @@ public class OpenQuestionController {
                     body(authVerif);
         }
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
-        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(question_id);
+        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalOpenQuestion = openQuestionRepository.findById(question_id);
         Optional<UserRef> optionalStudent = userRepository.findById(student_id);
         Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));

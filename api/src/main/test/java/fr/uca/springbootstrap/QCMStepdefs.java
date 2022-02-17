@@ -14,6 +14,7 @@ import fr.uca.api.repository.question.QCMRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import payload.request.AnswersRequest;
@@ -106,7 +107,8 @@ public class QCMStepdefs extends SpringIntegration {
     }
 
     @Et("le dernier status de request est {int} qcm")
-    public void leDernierStatusDeRequestEstQcm(int arg0) {
+    public void leDernierStatusDeRequestEstQcm(int arg0) throws IOException{
+        System.out.println(EntityUtils.toString(latestHttpResponse.getEntity()));
         assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 

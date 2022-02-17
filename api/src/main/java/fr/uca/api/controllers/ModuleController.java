@@ -418,6 +418,7 @@ public class ModuleController {
                                                  @RequestHeader Map<String, String> headers,
                                                  @PathVariable("module_id") long module_id,
                                                  @PathVariable("questionnaire_id") long questionnaire_id) {
+        System.out.println("dedans remove");
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.

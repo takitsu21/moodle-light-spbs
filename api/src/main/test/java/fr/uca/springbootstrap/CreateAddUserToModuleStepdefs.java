@@ -31,6 +31,7 @@ public class CreateAddUserToModuleStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string}")
     public void leProfesseur(String arg0) throws IOException {
+        System.out.println("tout premier");
         executePost("http://localhost:8080/api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
@@ -109,6 +110,7 @@ public class CreateAddUserToModuleStepdefs extends SpringIntegration {
                 .orElse(new Module(arg1));
         module.getParticipants().add(user);
         moduleRepository.save(module);
+        System.out.println("ares requet");
     }
 
     @Et("l'etudiant {string} assigne au module {string}")

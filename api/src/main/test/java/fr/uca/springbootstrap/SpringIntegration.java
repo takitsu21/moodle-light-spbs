@@ -61,6 +61,9 @@ public class SpringIntegration {
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
+        System.out.println("laaaaaa");
+        System.out.println(request);
+        System.out.println(url);
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
         latestHttpResponse = httpClient.execute(request);
     }
@@ -71,7 +74,6 @@ public class SpringIntegration {
         request.addHeader("content-type", "application/json");
         ObjectMapper ObjMapper = new ObjectMapper();
         ObjMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
         latestHttpResponse = httpClient.execute(request);
         request.completed();

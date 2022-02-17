@@ -1,9 +1,7 @@
 package fr.uca.api.controllers;
 
-import fr.uca.api.models.Cours;
-import fr.uca.api.models.ERole;
+import fr.uca.api.models.*;
 import fr.uca.api.models.Module;
-import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
 import fr.uca.api.repository.UserRefRepository;
@@ -85,7 +83,10 @@ public class CoursController {
                     .body(new MessageResponse("Error: You are not allowed to add courses!"));
         }
         Cours cours = new Cours(coursRequest.getName(), coursRequest.getDescription(), coursRequest.getNum());
-
+        System.out.println(cours.getName());
+        for (Ressource r: module.getRessources()){
+            System.out.println(r.getName());
+        }
         if (module.containsRessource(cours)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: this course already exists!"));
         }
