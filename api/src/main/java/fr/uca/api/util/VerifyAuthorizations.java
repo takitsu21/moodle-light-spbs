@@ -48,12 +48,14 @@ public class VerifyAuthorizations {
     public static Map<String, Object> verify(Map<String, String> headers, String... roles) {
         Map<String, Object> ret = new HashMap<>();
         try {
+            System.out.println("Here verify autho");
             CloseableHttpResponse resp = executePost(
                     "http://localhost:8081/api/auth/verify",
                     null,
                     headers);
+            System.out.println("Resp:"+resp.toString());
             String jsonString = EntityUtils.toString(resp.getEntity());
-            System.out.println(jsonString);
+            System.out.println("verify: "+jsonString);
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
 

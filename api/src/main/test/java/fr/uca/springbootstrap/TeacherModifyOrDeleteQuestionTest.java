@@ -70,11 +70,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
     @Quand("Le professeur {string} veut modifier le nom de la question de numéro {int} du questionnaire {string} du module {string} par {string} tmdqk")
     public void leProfesseurVeutModifierLeNomDeLaQuestionDeNuméroDuQuestionnaireDuModuleParTmdqk(String arg0, int arg1, String arg2, String arg3, String arg4) throws IOException {
-        Question question = questionRepository.findByNumber(arg1).get();
         Module module = moduleRepository.findByName(arg3).get();
-        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
-
         UserRef user = userRefRepository.findByUsername(arg0).get();
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
+        Question question = questionnaire.findQuestionByNum(arg1);
 
         String jwTeacher = userToken.get(user.getUsername());
 
