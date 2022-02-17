@@ -50,7 +50,6 @@ public class SpringIntegration {
 
         request.setEntity(new StringEntity("{}"));
         latestHttpResponse = httpClient.execute(request);
-        System.out.println(latestHttpResponse.getEntity());
     }
 
     public void executePost(String url, Object entity, String jwt) throws IOException {
@@ -62,9 +61,6 @@ public class SpringIntegration {
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
-        System.out.println("laaaaaa");
-        System.out.println(request);
-        System.out.println(url);
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
         latestHttpResponse = httpClient.execute(request);
     }

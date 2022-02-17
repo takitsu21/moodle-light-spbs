@@ -268,7 +268,6 @@ public class CodeRunnerController {
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
-        System.out.println(map);
 
         return ResponseEntity.ok(map);
     }

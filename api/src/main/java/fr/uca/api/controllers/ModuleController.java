@@ -55,10 +55,8 @@ public class ModuleController {
 
 
     @PostMapping("/{id}/participants/{userid}")
-//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addUser(@RequestHeader Map<String, String> headers,
                                      @PathVariable long id, @PathVariable int userid) {
-        System.out.println("add User: "+headers);
         Map<String, Object> authVerif = VerifyAuthorizations
                 .verify(headers, ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -102,7 +100,6 @@ public class ModuleController {
     }
 
     @DeleteMapping("/{id}/participants/{userid}")
-//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> remvoveUser(@RequestHeader Map<String, String> headers,
                                          @PathVariable long id, @PathVariable int userid) {
 
@@ -376,7 +373,6 @@ public class ModuleController {
     public ResponseEntity<?> addQuestionnaire(@Valid @RequestBody QuestionnaireRequest questionnaireRequest,
                                               @RequestHeader Map<String, String> headers,
                                               @PathVariable("module_id") long module_id) {
-        System.out.println("dedans add");
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {

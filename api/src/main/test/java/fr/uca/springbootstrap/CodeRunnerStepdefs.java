@@ -62,7 +62,6 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Autowired
     AnswerCodeRunnerRepository answerCodeRunnerRepository;
 
-    //TODO voir si je peux encore plus factoriser
     @Et("la question numero {int} {string} avec description {string} la reponse est {string} avec le test {string} dans le {string} du module {string}")
     public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModule(
             int num,
@@ -98,7 +97,6 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        System.out.println(jwt + " CODE RUNNER " + user.getUsername());
         Questionnaire questionnaire = new Questionnaire(
                 arg6,
                 "Test d'un code runner",

@@ -90,7 +90,7 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
         assertTrue(module.getRessources().contains(questionnaire));
     }
 
-    @Et("le questionnaire {string} du module {string} a une question ouverte {string} oq")
+    @Et("le questionnaire {string} du module {string} a une question ouverte {string}")
     public void leQuestionnaireDuModuleAUnQCMQcm(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg1).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg0);
@@ -104,24 +104,24 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
         }
     }
 
-    @Et("la question ouverte {string} du questionnaire {string} du module {string} a les reponses possible {string} et {string} et {string} oq")
-    public void leQCMDuQuestionnaireDuModuleALesReponsesPossibleEtQcm(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
+    @Et("la question ouverte {string} du questionnaire {string} du module {string} a les reponses possible {string} et {string} et {string}")
+    public void leQCMDuQuestionnaireDuModuleALesReponsesPossibleEt(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) {
         Module module = moduleRepository.findByName(arg2).get();
 
-        Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg1);
-        OpenQuestion openQuestion= (OpenQuestion) questionnaire.findQuestionByName(arg0);
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+        OpenQuestion openQuestion = (OpenQuestion) questionnaire.findQuestionByName(arg0);
 
-        Answer answer=new Answer(arg3);
+        Answer answer = new Answer(arg3);
         answerRepository.save(answer);
 
-        Answer answer1=new Answer(arg4);
+        Answer answer1 = new Answer(arg4);
         answerRepository.save(answer1);
 
-        Answer answer2=new Answer(arg5);
+        Answer answer2 = new Answer(arg5);
         answerRepository.save(answer2);
 
 
-        Set<Answer> answers=new HashSet<>(){{add(answer); add(answer1); add(answer2);}};
+        Set<Answer> answers = new HashSet<>(){{add(answer); add(answer1); add(answer2);}};
 
         openQuestion.setPossibleAnswers(new HashSet<>());
         openQuestionRepository.save(openQuestion);
@@ -174,15 +174,17 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()+"/open_question/"+openQuestion.getId()+"/good_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1)); add(new MyAnswer(arg2));}}), jwt);
+        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()
+                        + "/open_question/" + openQuestion.getId() + "/good_answer",
+                new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1)); add(new MyAnswer(arg2));}}), jwt);
     }
 
     @Alors("les bonnes reponses {string} et {string} sont dans la question ouverte {string} du questionnaire {string} du module {string} oq")
     public void laBonneReponseEstDansLeQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) {
         Module module = moduleRepository.findByName(arg4).get();
 
-        Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg3);
-        OpenQuestion openQuestion= (OpenQuestion) questionnaire.findQuestionByName(arg2);
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
+        OpenQuestion openQuestion = (OpenQuestion) questionnaire.findQuestionByName(arg2);
 
         assertTrue(openQuestion.answerContains(arg0));
         assertTrue(openQuestion.answerContains(arg1));
@@ -201,8 +203,8 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
     }
 
-    @Quand("L élève {string} essaie d'ajouter ces reponses {string} et {string} a la question ouverte {string} du questionnaire {string} du module {string}")
-    public void lÉlèveEssaieDAjouterÇaReponseAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) throws IOException {
+    @Quand("L élève {string} essaie d'ajouter ses reponses {string} et {string} a la question ouverte {string} du questionnaire {string} du module {string}")
+    public void lÉlèveEssaieDAjouterSesReponsesALaQuestionOuverteDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5) throws IOException {
         UserRef user = userRefRepository.findByUsername(arg0).get();
         Module module = moduleRepository.findByName(arg5).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg4);
@@ -210,7 +212,13 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()+"/open_question/"+openQuestion.getId()+"/student_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1)); add(new MyAnswer(arg2));}}), jwt);
+        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()
+                + "/open_question/" + openQuestion.getId() + "/student_answer",
+                new AnswersRequest(new HashSet<>() {{
+                    add(new MyAnswer(arg1));
+                    add(new MyAnswer(arg2));
+                }}),
+                jwt);
 
     }
 

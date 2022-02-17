@@ -40,45 +40,6 @@ public class QuestionnaireController {
     GradesQuestionnaireRepository gradesQuestionnaireRepository;
 
 
-//    @PostMapping("/")
-//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-//    public ResponseEntity<?> createQuestionnaire(
-//                                                 @Valid @RequestBody RessourceRequest ressourceRequest,
-//                                                 @PathVariable("module_id") long module_id) {
-//
-//        if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
-//            return ResponseEntity.badRequest()
-//                    .body(new MessageResponse("Error: User does not exist."));
-//        }
-//
-//        Questionnaire questionnaire = new Questionnaire(ressourceRequest.getName(), ressourceRequest.getDescription());
-//        questionnaireRepository.save(questionnaire);
-//        return ResponseEntity.ok(new MessageResponse("Questionnaire successfully created."));
-//    }
-//
-//
-//    @DeleteMapping("/{questionnaire_id}")
-//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-//    public ResponseEntity<?> deleteQuestionnaire(
-//                                                 @PathVariable("module_id") long module_id,
-//                                                 @PathVariable("questionnaire_id") long questionnaire_id) {
-//        if (!questionnaireRepository.existsById(questionnaire_id)) {
-//            return ResponseEntity.badRequest()
-//                    .body(new MessageResponse("Error: Questionnaire doesn't exist."));
-//        }
-//        else if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
-//            return ResponseEntity.badRequest()
-//                    .body(new MessageResponse("Error: User does not exist."));
-//        }
-//
-//        Module module = moduleRepository.findById(module_id).get();
-//        Questionnaire questionnaire = questionnaireRepository.findById(questionnaire_id).get();
-//        questionnaireRepository.delete(questionnaire);
-//        moduleRepository.delete(module);
-//        return ResponseEntity.ok(new MessageResponse("Questionnaire successfully deleted."));
-//    }
-
-
     @PostMapping("/{questionnaire_id}/qcm")
 //    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addQcm(
@@ -249,7 +210,6 @@ public class QuestionnaireController {
                     }
                 }
             } else if (question instanceof OpenQuestion) {
-                //TODO verif pour open question
                 OpenQuestion openQuestion = (OpenQuestion) question;
                 UserRef currentStudent;
                 for (AnswerOpenQuestion studentOpenAnswer : openQuestion.getStudentAnswers()) {

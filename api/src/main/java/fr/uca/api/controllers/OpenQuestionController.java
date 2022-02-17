@@ -404,7 +404,7 @@ public class OpenQuestionController {
         Set<Answer> setAnswers = new HashSet<>();
 
         for (MyAnswer myAnswer: answersMyAnswer){
-            Answer answer=new Answer(myAnswer.getContent());
+            Answer answer = new Answer(myAnswer.getContent());
             answerRepository.save(answer);
             setAnswers.add(answer);
 

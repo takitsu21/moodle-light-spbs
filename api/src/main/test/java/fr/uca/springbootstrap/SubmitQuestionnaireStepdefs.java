@@ -5,9 +5,7 @@ import fr.uca.api.controllers.AuthController;
 import fr.uca.api.models.Questionnaire;
 import fr.uca.api.models.Ressource;
 import fr.uca.api.models.UserRef;
-import fr.uca.api.models.questions.Answer;
-import fr.uca.api.models.questions.CodeRunner;
-import fr.uca.api.models.questions.Question;
+import fr.uca.api.models.questions.*;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.RessourceRepository;
@@ -16,6 +14,9 @@ import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
 import fr.uca.api.models.Module;
+import fr.uca.api.repository.question.OpenQuestionRepository;
+import fr.uca.api.repository.question.QCMRepository;
+import io.cucumber.java.bs.A;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -60,7 +61,13 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
     AnswerRepository answerRepository;
 
     @Autowired
+    QCMRepository qcmRepository;
+
+    @Autowired
     QuestionnaireRepository questionnaireRepository;
+
+    @Autowired
+    OpenQuestionRepository openQuestionRepository;
 
 
     @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} sq")
@@ -91,7 +98,6 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
-        System.out.println("Map quand on register user : " + map.toString());
 
         userToken.put(student.getUsername(), (String) map.get("accessToken"));
 
@@ -123,6 +129,68 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         module.getRessources().add(questionnaire);
 
         moduleRepository.save(module);
+    }
+
+    @Et("le QCM numero {int} {string} avec pour description {string} et pour bonne response {string} dans le {string} du module {string}")
+    public void leQCMNumeroAvecPourDescriptionDansLeDuModule(
+            int num,
+            String nameQCM,
+            String descriptionQCM,
+            String correctAnswer,
+            String questionnaireName,
+            String moduleName) {
+
+        Module module = moduleRepository.findByName(moduleName).get();
+
+        Answer answer = new Answer(correctAnswer);
+        Answer wrongAnswer1 = new Answer("Wrong answer");
+        Answer wrongAnswer2 = new Answer("Another wrong answer");
+        Answer wrongAnswer3 = new Answer("Still a wrong answer");
+        answerRepository.save(answer);
+        answerRepository.save(wrongAnswer1);
+        answerRepository.save(wrongAnswer2);
+        answerRepository.save(wrongAnswer3);
+        QCM qcm = new QCM(
+                num,
+                nameQCM,
+                descriptionQCM
+        );
+        qcmRepository.save(qcm);
+
+        qcm.setPossibleAnswers(new HashSet<>() {{
+            add(wrongAnswer1);
+            add(answer);
+            add(wrongAnswer2);
+            add(wrongAnswer3);
+        }});
+
+        qcm.setAnswer(answer);
+        qcmRepository.save(qcm);
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(questionnaireName);
+        questionnaire.getQuestions().add(qcm);
+        questionnaireRepository.save(questionnaire);
+    }
+
+    @Et("les bonnes reponses de la question {string} du questionnaire {string} du module {string} sont {string} et {string}")
+    public void laBonneReponseDeLaQuestionDuQuestionnaireDuModuleEst(String arg0, String arg1, String arg2, String arg3, String arg4){
+        Module module = moduleRepository.findByName(arg2).get();
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
+        OpenQuestion openQuestion = (OpenQuestion) questionnaire.findQuestionByName(arg0);
+
+        Answer answer = new Answer(arg3);
+        Answer answer1 = new Answer(arg4);
+
+        answerRepository.save(answer);
+        answerRepository.save(answer1);
+
+        openQuestion.setAnswers(new HashSet<>() {{
+            add(answer);
+            add(answer1);
+        }});
+
+        openQuestionRepository.save(openQuestion);
     }
 
     @Quand("{string} soumet le questionnaire {string} du module {string} sq")

@@ -50,7 +50,6 @@ public class CoursController {
     CodeRunnerRepository codeRunnerRepository;
 
     @PostMapping("/cours")
-//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addCours(
                                       @RequestHeader Map<String, String> headers,
                                       @Valid @RequestBody CoursRequest coursRequest,
@@ -82,11 +81,8 @@ public class CoursController {
                     .badRequest()
                     .body(new MessageResponse("Error: You are not allowed to add courses!"));
         }
+
         Cours cours = new Cours(coursRequest.getName(), coursRequest.getDescription(), coursRequest.getNum());
-        System.out.println(cours.getName());
-        for (Ressource r: module.getRessources()){
-            System.out.println(r.getName());
-        }
         if (module.containsRessource(cours)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: this course already exists!"));
         }
@@ -99,7 +95,6 @@ public class CoursController {
     }
 
     @DeleteMapping("/cours/{cours_id}")
-//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> deleteCours(
                                          @RequestHeader Map<String, String> headers,
                                          @PathVariable("module_id") long moduleId,

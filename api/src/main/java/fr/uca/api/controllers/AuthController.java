@@ -48,7 +48,6 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws IOException {
         executePost("http://localhost:8081/api/auth/signin", loginRequest);
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
-        System.out.println(jsonString + " jsonString");
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();

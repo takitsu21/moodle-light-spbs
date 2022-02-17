@@ -134,8 +134,8 @@ public class QCMStepdefs extends SpringIntegration {
         assertEquals(qcm.getAnswer().getAnswer(), arg0);
     }
 
-    @Quand("L élève {string} essaie d'ajouter ça reponse {string} au QCM {string} du questionnaire {string} du module {string}")
-    public void lÉlèveEssaieDAjouterÇaReponseAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
+    @Quand("L élève {string} essaie d'ajouter sa reponse {string} au QCM {string} du questionnaire {string} du module {string}")
+    public void lÉlèveEssaieDAjouterSaReponseAuQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);

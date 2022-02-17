@@ -26,13 +26,13 @@ Fonctionnalité: En tant que professeur je veux pouvoir créer un QCM
     Et les tables sont videes
 
   Scénario: L'élève "Batiste" ajoute une reponse
-    Quand L élève "Batiste" essaie d'ajouter ça reponse "oui" au QCM "Q1" du questionnaire "ExamQCM" du module "Maths"
+    Quand L élève "Batiste" essaie d'ajouter sa reponse "oui" au QCM "Q1" du questionnaire "ExamQCM" du module "Maths"
     Et le code de retour est 200
     Alors la reponse de l'étudiant "Batiste" est "oui" est dans le QCM "Q1" du questionnaire "ExamQCM" du module "Maths"
     Et les tables sont videes
 
   Scénario: L'élève "Batiste" ajoute une reponse pas valable
-    Quand L élève "Batiste" essaie d'ajouter ça reponse "coucou" au QCM "Q2" du questionnaire "ExamQCM" du module "Maths"
+    Quand L élève "Batiste" essaie d'ajouter sa reponse "coucou" au QCM "Q2" du questionnaire "ExamQCM" du module "Maths"
     Et le code de retour est 400
     Alors "Batiste" n a pas de reponse de l'étudiant au QCM "Q2" du questionnaire "ExamQCM" du module "Maths"
     Et les tables sont videes
