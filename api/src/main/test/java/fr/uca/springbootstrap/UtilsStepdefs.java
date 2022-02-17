@@ -79,13 +79,11 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string}")
     public void leProfesseur(String arg0) throws IOException {
-        System.out.println("tout premier");
         executePost("http://localhost:8080/api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
 
-        System.out.println(EntityUtils.toString(latestHttpResponse.getEntity()));
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
@@ -93,7 +91,6 @@ public class UtilsStepdefs extends SpringIntegration {
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
-        System.out.println(jsonString);
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -130,7 +127,6 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Et("le professeur {string} assigne au module {string}")
     public void leProfesseurAssigneAuModule(String arg0, String arg1) throws IOException {
-        System.out.println("juste avant post");
         executePost("http://localhost:8080/api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
@@ -140,7 +136,6 @@ public class UtilsStepdefs extends SpringIntegration {
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
-        System.out.println(jsonString);
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -155,7 +150,6 @@ public class UtilsStepdefs extends SpringIntegration {
                 .orElse(new Module(arg1));
         module.getParticipants().add(user);
         moduleRepository.save(module);
-        System.out.println("ares requet");
     }
 
     @Et("l'etudiant {string} assigne au module {string}")
@@ -171,7 +165,6 @@ public class UtilsStepdefs extends SpringIntegration {
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
-        System.out.println(jsonString);
 
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
@@ -225,7 +218,6 @@ public class UtilsStepdefs extends SpringIntegration {
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
         executePost("http://localhost:8081/api/auth/clear",
                 (String) map.get("accessToken"));
-        System.out.println("VIDE LES TABLES " + latestHttpResponse.getStatusLine().getStatusCode());
 
         moduleRepository.deleteAll();
         ressourceRepository.deleteAll();

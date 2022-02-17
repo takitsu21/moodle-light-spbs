@@ -61,7 +61,6 @@ public class GetGradesStepdefs extends SpringIntegration {
         codeRunnerRepository.save(codeRunner);
         Questionnaire questionnaire = (Questionnaire) moduleRepository.findByName(arg6).get().findRessourceByName(arg5);
         questionnaire.addQuestion(codeRunner);
-        System.out.println("Question ajoutée au questionnaire :" + questionnaire.getId());
         questionnaireRepository.save(questionnaire);
     }
 
@@ -69,11 +68,7 @@ public class GetGradesStepdefs extends SpringIntegration {
     public void soumetSonCodeDansLeFichierÀLaQuestionDuQuestionnaireDuModule(String arg0, String arg1, int arg2, String arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
-        System.out.println("Questions du questionnaire " + questionnaire.getId());
-        for (Question question : questionnaire.getQuestions()) {
-            System.out.println(question.getNumber());
-        }
-        System.out.println("On cherche " + arg2);
+
         CodeRunner codeRunner = (CodeRunner) questionnaire.findQuestionByNum(arg2);
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
@@ -134,7 +129,6 @@ public class GetGradesStepdefs extends SpringIntegration {
         builder.setPrettyPrinting();
 
         Gson gson = builder.create();
-        System.out.println(gson.fromJson(json_grades, Map.class));
         Map<String, String> grades = gson.fromJson(json_grades, Map.class);
 
         assertTrue(grades.containsKey(arg0));

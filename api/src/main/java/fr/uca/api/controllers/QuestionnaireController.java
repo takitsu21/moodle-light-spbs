@@ -18,10 +18,7 @@ import payload.request.QCMRequest;
 import payload.response.MessageResponse;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -174,7 +171,6 @@ public class QuestionnaireController {
             @RequestHeader Map<String, String> headers,
             @PathVariable("module_id") long moduleId,
             @PathVariable("questionnaire_id") long questionnaireId) {
-        System.out.println("headers de submit questionnaire = " + headers);
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_STUDENT.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -259,12 +255,16 @@ public class QuestionnaireController {
                 for (AnswerOpenQuestion studentOpenAnswer : openQuestion.getStudentAnswers()) {
                     currentStudent = studentOpenAnswer.getStudent();
                     if (currentStudent.equals(user)) {
+                        int tmpNote = 0;
                         for (Answer answer : studentOpenAnswer.getAnswers()) {
                             for (Answer openQuestionAnswer : openQuestion.getAnswers()) {
-                                if (answer.getAnswer().equals(openQuestionAnswer.getAnswer())) {
-                                    note++;
+                                if (Objects.equals(answer.getAnswer(), openQuestionAnswer.getAnswer())) {
+                                    tmpNote++;
                                 }
                             }
+                        }
+                        if (tmpNote == openQuestion.getAnswers().size()) {
+                            note++;
                         }
                     }
                 }

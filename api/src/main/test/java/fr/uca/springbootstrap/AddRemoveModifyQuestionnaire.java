@@ -84,11 +84,9 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        System.out.println("juste avant la requete delete");
         executeDelete("http://localhost:8080/api/modules/"
                         + module.getId() + "/questionnaire/" + questionnaire.getId(),
                 jwt);
-        System.out.println("juste apres la requete delete");
     }
 
 }

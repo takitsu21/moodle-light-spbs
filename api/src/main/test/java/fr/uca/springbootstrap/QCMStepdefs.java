@@ -58,10 +58,6 @@ public class QCMStepdefs extends SpringIntegration {
     public void leQuestionnaireDuModuleAUnQCMQcm(String arg0, String arg1, String arg2) {
         Module module = moduleRepository.findByName(arg1).get();
         Questionnaire questionnaire= (Questionnaire) module.findRessourceByName(arg0);
-        for (Question q: questionnaire.getQuestions()){
-            System.out.println(q.getName());
-            System.out.println(q.getClass());
-        }
         QCM qcm = (QCM) questionnaire.findQuestionByName(arg2);
         if (qcm == null) {
             qcm = new QCM(1, arg2, "null");

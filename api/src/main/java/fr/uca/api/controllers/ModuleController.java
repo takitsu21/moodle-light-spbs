@@ -384,8 +384,6 @@ public class ModuleController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        System.out.println((String) authVerif.get("username") + " laaaaaaaaaa");
-//        System.out.println((String) authVerif.get("username") + "la");
         Optional<UserRef> oUser = userRefRepository.
                 findByUsername((String) authVerif.get("username"));
         Optional<Module> oModule = moduleRepository.findById(module_id);
@@ -421,7 +419,6 @@ public class ModuleController {
                                                  @RequestHeader Map<String, String> headers,
                                                  @PathVariable("module_id") long module_id,
                                                  @PathVariable("questionnaire_id") long questionnaire_id) {
-        System.out.println("dedans remove");
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
