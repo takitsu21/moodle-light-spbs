@@ -38,9 +38,6 @@ public class GetRessourcesStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
-
     @Et("le module {string} a un cours {string} invisible gr")
     public void leModuleAUnCoursInvisibleGr(String arg0, String arg1) {
         Module module = moduleRepository.findByName(arg0).get();
@@ -78,7 +75,9 @@ public class GetRessourcesStepdefs extends SpringIntegration {
     @Quand("Le professeur {string} get les ressources du module {string}")
     public void leProfesseurGetLesRessourcesDuModule(String arg0, String arg1) throws IOException {
         Module module = moduleRepository.findByName(arg1).get();
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executeGet("http://localhost:8080/api/modules/" + module.getId() + "/ressources", jwt);
     }
 

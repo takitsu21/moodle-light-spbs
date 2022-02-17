@@ -3,11 +3,10 @@ package fr.uca.springbootstrap;
 import fr.uca.api.controllers.AuthController;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
-import fr.uca.api.repository.RoleCoursesRepository;
 import fr.uca.api.repository.UserRefRepository;
-import fr.uca.api.security.JwtUtils;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -34,7 +33,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     AuthController authController;
 
     @Autowired
-    JwtUtils jwtUtils;
+    UserRefRepository userRefRepository;
 
 
     @Et("un module {string}")
@@ -48,10 +47,14 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
     public void lEnseignantVeutAjouterLeQuestionnaireAuModule(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
 
-        String jwtTeacher = jwtUtils. (arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/",
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+        System.out.println(user.getUsername());
+
+        String jwt = userToken.get(user.getUsername());
+        System.out.println(jwt);
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire",
                 new QuestionnaireRequest(arg1, "Plein de questions", 5),
-                jwtTeacher);
+                jwt);
     }
 
 
@@ -76,9 +79,13 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
 
-        String jwtTeacher = authController.registerUser(new SignupRequest(
-                arg0, arg0 + "@test.fr", PASSWORD));
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(), jwtTeacher);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
+
+
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId(),
+                jwt);
     }
 
     @Alors("la réponse est {int}")

@@ -3,6 +3,7 @@ package payload.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 public class SignupRequest {
@@ -25,7 +26,7 @@ public class SignupRequest {
     }
 
 
-    public SignupRequest(String username, String email, Set<String> role, String password) {
+    public SignupRequest(String username, String email, String password, Set<String> role) {
         this.username = username;
         this.email = email;
         this.role = role;

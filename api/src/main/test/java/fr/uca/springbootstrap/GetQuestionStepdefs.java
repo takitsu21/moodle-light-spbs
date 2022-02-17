@@ -43,9 +43,6 @@ public class GetQuestionStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
-
 
     @Et("la question {string} numéro {int} dans le questionnaire {string} du module {string} auq")
     public void laQuestionNuméroDansLeQuestionnaireDuModuleAuq(String arg0, int arg1, String arg2, String arg3) {
@@ -64,7 +61,10 @@ public class GetQuestionStepdefs extends SpringIntegration {
         Question question = questionnaire.findQuestionByName(arg1);
         assert(question != null);
 
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
+
         executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(),
                 jwt);
     }
@@ -74,7 +74,9 @@ public class GetQuestionStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         Questionnaire questionnaire =  (Questionnaire) module.findRessourceByName(arg1);
 
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/",
                 jwt);
     }

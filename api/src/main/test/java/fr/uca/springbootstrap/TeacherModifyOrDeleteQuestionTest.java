@@ -74,7 +74,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwTeacher = userToken.get(user.getUsername());
+
         executePost("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/questions/"+question.getId()+"/name",
@@ -100,7 +103,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwTeacher = userToken.get(user.getUsername());
+
         executePost("http://localhost:8080/api/modules/"+module.getId()
                         +"/questionnaire/"+questionnaire.getId()
                         +"/questions/"+question.getId()+"/name",
@@ -125,7 +131,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwTeacher = userToken.get(user.getUsername());
+
         executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
@@ -149,7 +158,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwTeacher = userToken.get(user.getUsername());
+
         executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
@@ -172,7 +184,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwTeacher = userToken.get(user.getUsername());
+
         executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
@@ -195,7 +210,10 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwTeacher = userToken.get(user.getUsername());
+
         executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);

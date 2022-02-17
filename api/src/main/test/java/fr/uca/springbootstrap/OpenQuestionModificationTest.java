@@ -157,13 +157,15 @@ public class OpenQuestionModificationTest extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg3);
         Question question = questionnaire.findQuestionByName(arg2);
 
-        String jwTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executePut("http://localhost:8080/api/modules/"
                 +module.getId()+"/questionnaire/"
                 +questionnaire.getId()+"/open_question/"+question.getId()+"/possible_answer",
                 new AnswerRequest(new HashSet<>(){{ add(new MyAnswer("Réponse D"));
                 }}),
-                jwTeacher);
+                jwt);
     }
 
     @Alors("le status de la dernière réponse est {int} oqm")

@@ -35,7 +35,7 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     AuthController authController;
 
     @Autowired
-    PasswordEncoder encoder;
+    UserRefRepository userRefRepository;
 
 
     @Et("le module {string} a une ressource {string} invisible")
@@ -76,7 +76,9 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     public void leProfesseurEssaieDeRendreLaRessourceDuModuleVisible(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(true),
                 jwt);
@@ -86,7 +88,9 @@ public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
     public void leProfesseurEssaieDeRendreLaRessourceDuModuleInvisible(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
         Ressource ressource = module.findRessourceByName(arg1);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/visibility/" + ressource.getId(),
                 new VisibilityRequest(false),
                 jwt);

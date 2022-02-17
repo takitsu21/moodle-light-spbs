@@ -1,7 +1,11 @@
 package fr.uca.springbootstrap;
 
-import auth.service.repository.RoleRepository;
 import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.models.questions.QCM;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.questions.Question;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
@@ -12,6 +16,8 @@ import io.cucumber.java.fr.Quand;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import payload.request.QCMRequest;
+
 
 import java.io.IOException;
 
@@ -26,8 +32,6 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     QuestionRepository questionRepository;
@@ -39,7 +43,8 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
     AuthController authController;
 
     @Autowired
-    PasswordEncoder encoder;
+    UserRefRepository userRefRepository;
+
 
     @Et("la question {string} dans le questionnaire {string} du module {string} arqqq")
     public void laQuestionDansLeQuestionnaireDuModuleArqqq(String arg0, String arg1, String arg2) {
@@ -69,7 +74,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
-                jwtTeacher);
+                jwt);
     }
 
 
@@ -80,8 +85,10 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
         Question question = questionnaire.findQuestionByName(arg1);
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwtTeacher);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwt);
     }
 
     @Alors("la réponse est {int} arqqq")

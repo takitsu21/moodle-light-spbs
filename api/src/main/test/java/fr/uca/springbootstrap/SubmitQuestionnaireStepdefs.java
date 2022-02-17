@@ -61,9 +61,6 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
-
 
     @Et("un module {string} qui a un enseignant {string} et un étudiant {string} et qui a la question numéro {int} {string} avec description {string} la réponse est {string} avec le test {string} dans le {string} sq")
     public void unModuleQuiAUnEnseignantEtUnÉtudiantEtQuiALaQuestionNuméroAvecDescriptionLaRéponseEstAvecLeTestDansLeSq(
@@ -134,7 +131,9 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
                 break;
             }
         }
-        String jwtStudent = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
 
         StringBuilder sb = new StringBuilder();
@@ -148,7 +147,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
                         codeRunner.getId()),
 
                 new CodeRunnerRequest(sb.toString()),
-                jwtStudent
+                jwt
         );
     }
 
@@ -156,7 +155,9 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
     public void soumetLeQuestionnaireDuModuleSq(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
 
-        String jwtStudent = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         Questionnaire questionnaire = null;
         for (Ressource ressource : module.getRessources()) {
             if (arg1.equalsIgnoreCase(ressource.getName())) {
@@ -167,7 +168,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         executePost(String.format(
                 "http://localhost:8080/api/modules/%d/questionnaire/%d",
                 module.getId(),
-                questionnaire.getId()), jwtStudent);
+                questionnaire.getId()), jwt);
     }
 
     @Alors("le dernier status de réponse est {int} sq")

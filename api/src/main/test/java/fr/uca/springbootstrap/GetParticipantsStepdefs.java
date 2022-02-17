@@ -42,7 +42,10 @@ public class GetParticipantsStepdefs extends SpringIntegration {
     @Quand("L'utilisateur {string} get les participants du module {string}")
     public void lUtilisateurGetLesParticipantsDuModule(String arg0, String arg1) throws IOException {
         Module module = moduleRepository.findByName(arg1).get();
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
+
         executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
     }
 

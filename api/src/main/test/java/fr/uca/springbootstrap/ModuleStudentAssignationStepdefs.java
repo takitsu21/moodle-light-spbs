@@ -27,9 +27,6 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
-
 
     @Et("l enseignant inscrit l'étudiant {string} au module {string}")
     public void lEnseignantInscritLÉtudiantAuModule(String arg0, String arg1) {
@@ -44,8 +41,10 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         UserRef student = userRefRepository.findByUsername(arg1).get();
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
+        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
 
     }
 
@@ -66,9 +65,11 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         UserRef student = userRefRepository.findByUsername(arg1).get();
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        String jwt = userToken.get(user.getUsername());
+
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
     }
 
     @Et("{string} est enlever du module {string} arm")

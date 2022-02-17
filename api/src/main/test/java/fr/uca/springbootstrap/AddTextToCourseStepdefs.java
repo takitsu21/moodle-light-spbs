@@ -1,13 +1,14 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.payload.request.MyText;
-import fr.uca.springbootstrap.payload.request.TextRequest;
-import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.repository.cours.TextRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Cours;
+import fr.uca.api.models.Text;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.repository.cours.TextRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -38,8 +39,6 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
 
 
     @Et("le module de {string} a une ressource {string} qui a un texte {int} de contenu {string}")
@@ -72,7 +71,9 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Cours cours = (Cours) module.findRessourceByName(arg2);
         Text text = cours.getText(arg1);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
     }
 
@@ -82,7 +83,9 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         Cours cours = (Cours) module.findRessourceByName(arg3);
 
         MyText text = new MyText(arg1, arg2);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/",
                 new TextRequest(text), jwt);
     }

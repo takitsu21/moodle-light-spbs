@@ -6,6 +6,10 @@ public class ModuleRequest {
     @NotBlank
     private String name;
 
+    public ModuleRequest(String name){
+        this.name=name;
+    }
+
     public String getName() {
         return name;
     }

@@ -13,7 +13,9 @@ import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
+import payload.request.SignupRequest;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,9 +31,6 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
 
     @Autowired
     AuthController authController;
-
-    @Autowired
-    PasswordEncoder encoder;
 
     @Given("a teacher with login {string}")
     public void aTeacherWithLogin(String arg0) throws IOException {

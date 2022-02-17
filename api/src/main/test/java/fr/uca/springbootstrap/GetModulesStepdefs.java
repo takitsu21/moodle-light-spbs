@@ -42,7 +42,9 @@ public class GetModulesStepdefs extends SpringIntegration {
 
     @Quand("L'utilisateur {string} get ses modules")
     public void lUtilisateurGetSesModules(String arg0) throws IOException {
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executeGet("http://localhost:8080/api/modules/", jwt);
     }
 

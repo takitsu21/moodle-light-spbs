@@ -98,7 +98,9 @@ public class QCMStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
 
         executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
     }
@@ -123,7 +125,9 @@ public class QCMStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
 
         executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
     }
@@ -143,7 +147,9 @@ public class QCMStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg4).get();
         Questionnaire ressource = (Questionnaire) module.findRessourceByName(arg3);
         QCM qcm = (QCM) ressource.findQuestionByName(arg2);
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
 
         executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
 

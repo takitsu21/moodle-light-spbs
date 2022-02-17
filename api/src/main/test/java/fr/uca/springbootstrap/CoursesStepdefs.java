@@ -39,9 +39,6 @@ public class CoursesStepdefs extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
-
 
 //    @Etantdonné("Un enseignant avec le nom de connexion {string} crs")
 //    public void unEnseignantAvecLeNomDeConnexionCrs(String arg0) {
@@ -82,11 +79,12 @@ public class CoursesStepdefs extends SpringIntegration {
     @Quand("{string} veut ajouter le cours {string} qui a pour description {string} et numéro {int} au module {string} crs")
     public void veutAjouterLeCoursQuiAPourDescriptionEtNuméroAuModuleCrs(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg4).get();
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
 
+        String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
-                jwtTeacher);
+                jwt);
     }
 
     @Alors("le dernier status de réponse est {int} crs")
@@ -108,13 +106,15 @@ public class CoursesStepdefs extends SpringIntegration {
         Cours cours = (Cours) module.findRessourceByName(arg1);
 
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         if (cours == null) {
             executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/-1",
-                    jwtTeacher);
+                    jwt);
         } else {
             executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId(),
-                    jwtTeacher);
+                    jwt);
         }
 
 
@@ -131,11 +131,13 @@ public class CoursesStepdefs extends SpringIntegration {
     @Quand("{string} veut ajouter le cours {string} et numéro {int} au module {string} crs")
     public void veutAjouterLeCoursEtNuméroAuModuleCrs(String arg0, String arg1, int arg2, String arg3) throws IOException {
         Module module = moduleRepository.findByName(arg3).get();
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
 
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, "descript", arg2),
-                jwtTeacher);
+                jwt);
     }
 
     @Et("{string} n'est pas ajouté au module {string} crs")

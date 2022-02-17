@@ -30,9 +30,6 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
     @Autowired
     AuthController authController;
 
-    @Autowired
-    PasswordEncoder encoder;
-
     @Et("un module {string} qui n'a pas de professeur")
     public void unModuleQuiNAPasDeProfesseur(String arg0) {
         Module module = moduleRepository.findByName(arg0).orElse(new Module(arg0));

@@ -35,7 +35,9 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
     public void leProfesseurEssaieDAssignerLeProfesseurAuModule(String arg0, String arg1, String arg2) throws IOException {
         UserRef prof2 = userRefRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + prof2.getId(), jwt);
     }
 
@@ -44,16 +46,20 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         UserRef student = userRefRepository.findByUsername(arg1).get();
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        String jwt = userToken.get(user.getUsername());
+
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie d assigner l élève {string} au module {string}")
     public void leProfesseurEssaieDAssignerLÉlèveAuModule(String arg0, String arg1, String arg2) throws IOException {
         UserRef user = userRefRepository.findByUsername(arg1).get();
         Module module = moduleRepository.findByName(arg2).get();
-        String jwt = authController.generateJwt(arg0, PASSWORD);
+        UserRef user1 = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user1);
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
@@ -63,9 +69,11 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         UserRef student = userRefRepository.findByUsername(arg1).get();
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwtTeacher);
+        String jwt = userToken.get(user.getUsername());
+
+        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
     }
 
     @Alors("{string} est assigner à {string}")

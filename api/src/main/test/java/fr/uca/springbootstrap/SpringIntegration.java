@@ -1,9 +1,10 @@
 package fr.uca.springbootstrap;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.uca.api.SpringBootSecurityPostgresqlApplication;
+import fr.uca.api.models.UserRef;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -13,7 +14,12 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @CucumberContextConfiguration
@@ -105,5 +111,15 @@ public class SpringIntegration {
         }
 
         latestHttpResponse = httpClient.execute(request);
+    }
+
+    public Map<String, String> getUserToken() {
+        return userToken;
+    }
+
+    private void consume() throws IOException {
+        if (latestHttpResponse != null) {
+            EntityUtils.consume(latestHttpResponse.getEntity());
+        }
     }
 }
