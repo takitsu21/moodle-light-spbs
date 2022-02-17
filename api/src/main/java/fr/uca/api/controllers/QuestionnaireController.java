@@ -192,6 +192,7 @@ public class QuestionnaireController {
                         Map<String, Object> exec = codeRunnerExec.
                                 execPy(answerCodeRunner.getAnswer().getAnswer(), codeRunner);
 
+
                         if ((Boolean) exec.get("success")) {
                             note++;
                         }
