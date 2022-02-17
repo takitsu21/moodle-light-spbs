@@ -57,7 +57,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg2).get();
         UserRef user1 = userRefRepository.findByUsername(arg0).get();
 
-        String jwt = userToken.get(user1);
+        String jwt = userToken.get(user1.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 

@@ -22,9 +22,11 @@ public class VerifyAuthorizations {
     public static CloseableHttpResponse executePost(String url,
                                                     Object entity,
                                                     Map<String, String> headers) throws IOException {
+        System.out.println("Check si on rentre bien dans le executepost");
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
         if (headers != null) {
+            System.out.println("headers pas null");
             request.addHeader("authorization", headers.get("authorization"));
         }
         ObjectMapper ObjMapper = new ObjectMapper();
@@ -49,6 +51,7 @@ public class VerifyAuthorizations {
 
     public static Map<String, Object> verify(Map<String, String> headers, String... roles) {
         Map<String, Object> ret = new HashMap<>();
+        System.out.println("headers = " + headers);
         try {
             CloseableHttpResponse resp = executePost(
                     "http://localhost:8081/api/auth/verify",
@@ -74,7 +77,6 @@ public class VerifyAuthorizations {
                 }
             }
             ret.put("success", success && successRoles);
-            ret.put("username", jsonObject.getAsJsonObject("user").get("username").getAsString());
         } catch (IOException e) {
             ret.put("success", false);
             ret.put("error", e.toString());

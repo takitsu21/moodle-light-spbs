@@ -111,12 +111,14 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            System.out.println("Deja une " + signUpRequest.getUsername() + " ici");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            System.out.println("Deja une " + signUpRequest.getUsername() + " ici");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
@@ -127,7 +129,7 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()), signUpRequest.getRole());
         userRepository.save(user);
-
+        System.out.println("c'est bon user " + signUpRequest.getUsername() + " enregistré");
         return ResponseEntity.ok(user);
     }
 
@@ -139,6 +141,7 @@ public class AuthController {
         Map<String, Object> ret = new HashMap<>();
 
         if (optionalUser.isEmpty()) {
+            System.out.println("user empty");
             ret.put("success", false);
             return ResponseEntity.badRequest().body(ret);
         }

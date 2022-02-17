@@ -9,7 +9,7 @@ Fonctionnalité: En tant que professeur je veux pouvoir créer une question ouve
     Et le questionnaire "Exam" du module "Maths" a une question ouverte "Q2" oq
     Et la question ouverte "Q1" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" et "noui" oq
     Et la question ouverte "Q2" du questionnaire "Exam" du module "Maths" a les reponses possible "oui" et "non" et "noui" oq
-    Et l'élève "Batiste" assigné au module "Maths"
+    Et l'etudiant "Batiste" assigne au module "Maths"
 
   Scénario: Le professeur "Paul" ajoute une reponse
     Quand le professeur "Paul" essaie d'ajouter la reponse possible "je ne sais pas" a la question ouverte "Q1" du questionnaire "Exam" du module "Maths"

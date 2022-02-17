@@ -82,6 +82,16 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
                 }}));
 
         UserRef student = userRefRepository.findByUsername(studentName).get();
+        String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+
+        Gson gson = builder.create();
+        Map<String, Object> map = gson.fromJson(jsonString, Map.class);
+        System.out.println("Map quand on register user : " + map.toString());
+
+        userToken.put(student.getUsername(), (String) map.get("accessToken"));
 
         module.setParticipants(new HashSet<>() {{
             add(teacher);
@@ -111,44 +121,6 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         module.getRessources().add(questionnaire);
 
         moduleRepository.save(module);
-    }
-
-    @Et("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string} sq")
-    public void écritSonCodePythonDansLeFichierEtSoumetSontCodeAuModuleDeLaQuestionNuméroDansLeSq(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
-        Module module = moduleRepository.findByName(arg2).get();
-        Questionnaire questionnaire = null;
-        for (Ressource ressource : module.getRessources()) {
-            if (arg4.equalsIgnoreCase(ressource.getName())) {
-                questionnaire = (Questionnaire) ressource;
-                break;
-            }
-        }
-
-        CodeRunner codeRunner = null;
-        for (Question question : questionnaire.getQuestions()) {
-            if (question.getNumber() == arg3) {
-                codeRunner = (CodeRunner) question;
-                break;
-            }
-        }
-        UserRef user = userRefRepository.findByUsername(arg0).get();
-
-        String jwt = userToken.get(user.getUsername());
-        InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
-
-        StringBuilder sb = new StringBuilder();
-        for (int ch; (ch = is.read()) != -1; ) {
-            sb.append((char) ch);
-        }
-        executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d",
-                        module.getId(),
-                        questionnaire.getId(),
-                        codeRunner.getId()),
-
-                new CodeRunnerRequest(sb.toString()),
-                jwt
-        );
     }
 
     @Quand("{string} soumet le questionnaire {string} du module {string} sq")

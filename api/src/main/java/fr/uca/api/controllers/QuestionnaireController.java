@@ -168,7 +168,6 @@ public class QuestionnaireController {
     }
 
     @PostMapping("/{questionnaire_id}")
-//    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> submitQuestionnaire(
             @RequestHeader Map<String, String> headers,
             @PathVariable("module_id") long moduleId,
@@ -242,15 +241,31 @@ public class QuestionnaireController {
             } else if (question instanceof QCM) {
                 QCM qcm = (QCM) question;
                 UserRef currentStudent;
-//                for (AnswerQCM studentAnswer : qcm.getStudentsAnswers()) {
-//                    currentStudent = studentAnswer.getStudent();
-//                    if (currentStudent.equals(user)) {
-//                        Answer studentAnswer = currentStudent.getAnswer();
-//                        if (studentAnswer.getAnswer().equals(qcm.getAnswer().getAnswer()) {
-//                            note ++;
-//                        }
-//                    }
-//                }
+                for (AnswerQCM studentQcmAnswer : qcm.getStudentsAnswers()) {
+                    currentStudent = studentQcmAnswer.getStudent();
+                    if (currentStudent.equals(user)) {
+                        Answer studentAnswer = studentQcmAnswer.getAnswer();
+                        if (studentAnswer.getAnswer().equals(qcm.getAnswer().getAnswer())) {
+                            note++;
+                        }
+                    }
+                }
+            } else if (question instanceof OpenQuestion) {
+                //TODO verif pour open question
+                OpenQuestion openQuestion = (OpenQuestion) question;
+                UserRef currentStudent;
+                for (AnswerOpenQuestion studentOpenAnswer : openQuestion.getStudentAnswers()) {
+                    currentStudent = studentOpenAnswer.getStudent();
+                    if (currentStudent.equals(user)) {
+                        for (Answer answer : studentOpenAnswer.getAnswers()) {
+                            for (Answer openQuestionAnswer : openQuestion.getAnswers()) {
+                                if (answer.getAnswer().equals(openQuestionAnswer.getAnswer())) {
+                                    note++;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
