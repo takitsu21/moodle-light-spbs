@@ -2,6 +2,7 @@ version: '3.8'
 services:
   db_courses:
     image: postgres:14.1
+    restart: always
 #    build:
 #      context: ./db_courses
 #      dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
       - '5434:5432'
   db_users:
     image: postgres:14.1
+    restart: always
 #    build:
 #      context: ./db_users
 #      dockerfile: Dockerfile
@@ -24,6 +26,7 @@ services:
       - POSTGRES_PASSWORD=123
   auth:
     image: auth-service
+    restart: always
     build:
       context: .
       dockerfile: ./auth-service/Dockerfile
@@ -39,6 +42,7 @@ services:
       - '8081:8081'
   api:
     image: maven:3.8.1-adoptopenjdk-11
+    restart: always
     build: .
     container_name: api
     environment:
@@ -51,6 +55,7 @@ services:
 
   code-runner:
     image: coder-runner-service
+    restart: always
     build:
       context: .
       dockerfile: ./code-runner-service/Dockerfile

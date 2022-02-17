@@ -1,12 +1,14 @@
 #FROM openjdk:11
-FROM maven:3.8.1-adoptopenjdk-11
-# command to run when building
-
-# user name to run the image
-USER api:api
-# build time variable (with default value here)
-ARG JAR_FILE=api/final-jar/*.jar
-# copy file from host to container
-COPY . /
-# command to run at start
-ENTRYPOINT mvn test
+FROM maven:3.8.1-adoptopenjdk-11 AS MAVEN_TOOL_CHAIN
+USER root
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
+ENV SPRING_DATASOURCE_USERNAME=postgres
+ENV SPRING_DATASOURCE_PASSWORD=123
+ENV SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#RUN mkdir -p /home/spring
+#RUN chown api /home/spring
+#RUN mkdir -p /home/spring/.m2
+RUN mkdir -p /home/spring/.m2/repository
+WORKDIR /app
+COPY . .
+#RUN mvn package
