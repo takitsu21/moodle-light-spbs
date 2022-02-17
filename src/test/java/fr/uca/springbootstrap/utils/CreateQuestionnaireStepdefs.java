@@ -1,5 +1,6 @@
-package fr.uca.springbootstrap;
+package fr.uca.springbootstrap.utils;
 
+import fr.uca.springbootstrap.SpringBootSecurityPostgresqlApplication;
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;
 import fr.uca.springbootstrap.repository.ModuleRepository;

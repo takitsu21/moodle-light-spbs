@@ -1,5 +1,7 @@
-package fr.uca.springbootstrap;
+package fr.uca.springbootstrap.utils;
 
+import fr.uca.springbootstrap.SpringBootSecurityPostgresqlApplication;
+import fr.uca.springbootstrap.SpringIntegration;
 import io.cucumber.java.fr.Etantdonné;
 import org.springframework.boot.test.context.SpringBootTest;
 
