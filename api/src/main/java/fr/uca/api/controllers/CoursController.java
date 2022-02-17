@@ -1,17 +1,19 @@
 package fr.uca.api.controllers;
 
 import fr.uca.api.models.Cours;
+import fr.uca.api.models.ERole;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
-import fr.uca.api.repository.RoleCoursesRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import payload.response.MessageResponse;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -29,9 +32,6 @@ public class CoursController {
 
     @Autowired
     UserRefRepository userRepository;
-
-    @Autowired
-    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -52,10 +52,17 @@ public class CoursController {
     CodeRunnerRepository codeRunnerRepository;
 
     @PostMapping("/cours")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addCours(Principal principal,
+                                      @RequestHeader Map<String, String> headers,
                                       @Valid @RequestBody CoursRequest coursRequest,
                                       @PathVariable("module_id") long moduleId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
 
@@ -91,11 +98,17 @@ public class CoursController {
     }
 
     @DeleteMapping("/cours/{cours_id}")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> deleteCours(Principal principal,
+                                         @RequestHeader Map<String, String> headers,
                                          @PathVariable("module_id") long moduleId,
                                          @PathVariable("cours_id") long coursId) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Cours> ocourse = coursRepository.findById(coursId);

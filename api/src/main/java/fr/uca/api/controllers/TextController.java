@@ -7,7 +7,9 @@ import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import payload.response.MessageResponse;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,9 +30,6 @@ import java.util.Set;
 public class TextController {
     @Autowired
     UserRefRepository userRepository;
-
-    @Autowired
-    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -51,11 +51,19 @@ public class TextController {
 
 
     @PostMapping("/texts")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addText(Principal principal,
                                      @Valid @RequestBody TextRequest textRequest,
+                                     @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long moduleId,
                                      @PathVariable("cours_id") long coursId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Cours> oressource = coursRepository.findById(coursId);
@@ -102,11 +110,19 @@ public class TextController {
     }
 
     @DeleteMapping("/texts/{text_id}")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removeText(Principal principal,
+                                        @RequestHeader Map<String, String> headers,
                                         @PathVariable("module_id") long moduleId,
                                         @PathVariable("cours_id") long coursId,
                                         @PathVariable("text_id") long textId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
         Optional<Text> otext = textRepository.findById(textId);
@@ -161,8 +177,16 @@ public class TextController {
     }
 
     @GetMapping("/{module_id}/cours/{cours_id}/texts")
-    public ResponseEntity<?> getTexts(@PathVariable("module_id") long moduleId,
+    public ResponseEntity<?> getTexts(@RequestHeader Map<String, String> headers,
+                                      @PathVariable("module_id") long moduleId,
                                       @PathVariable("cours_id") long coursId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<Cours> ocours = coursRepository.findById(coursId);
 

@@ -10,7 +10,9 @@ import fr.uca.api.repository.*;
 import fr.uca.api.repository.question.GradesQuestionnaireRepository;
 import fr.uca.api.repository.question.QuestionRepository;
 import fr.uca.api.util.CodeRunnerExec;
+import fr.uca.api.util.VerifyAuthorizations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,9 +31,6 @@ import java.util.*;
 public class QuestionnaireController {
     @Autowired
     UserRefRepository userRepository;
-
-    @Autowired
-    RoleCoursesRepository roleCoursesRepository;
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -86,12 +85,19 @@ public class QuestionnaireController {
 
 
     @PostMapping("/{questionnaire_id}/qcm")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addQcm(Principal principal,
                                     @Valid @RequestBody QCMRequest qcmRequest,
+                                    @RequestHeader Map<String, String> headers,
                                     @PathVariable("module_id") long module_id,
                                     @PathVariable("questionnaire_id") long questionnaire_id) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         if (!userRepository.existsByUsername(principal.getName())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
@@ -126,12 +132,19 @@ public class QuestionnaireController {
     }
 
     @DeleteMapping("/{questionnaire_id}/questions/{question_id}")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> removeQuestion(Principal principal,
+                                            @RequestHeader Map<String, String> headers,
                                             @PathVariable("module_id") long module_id,
                                             @PathVariable("questionnaire_id") long questionnaire_id,
                                             @PathVariable("question_id") long question_id) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         if (!userRepository.existsByUsername(principal.getName())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
@@ -163,10 +176,18 @@ public class QuestionnaireController {
     }
 
     @PostMapping("/{questionnaire_id}")
-    @PreAuthorize("hasRole('STUDENT')")
+//    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> submitQuestionnaire(Principal principal,
+                                                 @RequestHeader Map<String, String> headers,
                                                  @PathVariable("module_id") long moduleId,
                                                  @PathVariable("questionnaire_id") long questionnaireId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_STUDENT.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
         Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
@@ -250,10 +271,18 @@ public class QuestionnaireController {
     }
 
     @GetMapping("/{questionnaire_id}/grades")
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> getGrades(Principal principal,
+                                                 @RequestHeader Map<String, String> headers,
                                                  @PathVariable("module_id") long moduleId,
                                                  @PathVariable("questionnaire_id") long questionnaireId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
         Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);

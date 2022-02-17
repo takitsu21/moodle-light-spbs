@@ -22,6 +22,7 @@ import payload.response.MessageResponse;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,8 +35,7 @@ public class QCMController {
     @Autowired
     UserRefRepository userRepository;
 
-    @Autowired
-    RoleCoursesRepository roleCoursesRepository;
+
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -213,10 +213,11 @@ public class QCMController {
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/student_answer")
     public ResponseEntity<?> addStudentAnswers(Principal principal,
-                                                @Valid @RequestBody MyAnswer answer,
-                                                @PathVariable("module_id") long moduleId,
-                                                @PathVariable("questionnaire_id") long questionnaireId,
-                                                @PathVariable("qcm_id") long QCMId) {
+                                               @Valid @RequestBody MyAnswer answer,
+                                               @RequestHeader Map<String, String> headers,
+                                               @PathVariable("module_id") long moduleId,
+                                               @PathVariable("questionnaire_id") long questionnaireId,
+                                               @PathVariable("qcm_id") long QCMId) {
 
         Optional<Module> omodule = moduleRepository.findById(moduleId);
         Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
@@ -254,7 +255,7 @@ public class QCMController {
         Module module = omodule.get();
         UserRef user = ouser.get();
 
-        if (!module.getParticipants().contains(user) && !user.isTeacher()) {
+        if (!module.getParticipants().contains(user) && !user.isTeacher(headers)) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: You are not allowed!"));

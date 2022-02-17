@@ -8,7 +8,6 @@ import fr.uca.api.models.questions.AnswerCodeRunner;
 import fr.uca.api.models.questions.CodeRunner;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
-import fr.uca.api.repository.RoleCoursesRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.AnswerCodeRunnerRepository;
 import fr.uca.api.repository.question.AnswerRepository;
@@ -17,7 +16,6 @@ import fr.uca.api.util.CodeRunnerExec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import payload.request.CodeRunnerRequest;
 import payload.response.MessageResponse;
@@ -34,8 +32,7 @@ public class CodeRunnerController {
     @Autowired
     UserRefRepository userRepository;
 
-    @Autowired
-    RoleCoursesRepository roleCoursesRepository;
+
 
     @Autowired
     ModuleRepository moduleRepository;

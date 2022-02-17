@@ -1,5 +1,6 @@
 package fr.uca.api.controllers;
 
+import fr.uca.api.models.ERole;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
 import fr.uca.api.models.UserRef;
@@ -8,11 +9,14 @@ import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.QuestionRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +45,13 @@ public class QuestionController {
     UserRefRepository userRepository;
 
     @GetMapping("{module_id}/questionnaire/{questionnaire_id}/questions/")
-    public ResponseEntity<?> getQuestion(){
+    public ResponseEntity<?> getQuestion(@RequestHeader Map<String, String> headers){
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         List<Question> questions = questionRepository.findAll();
         return ResponseEntity.ok(questions);
     }
@@ -65,12 +75,20 @@ public class QuestionController {
 
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/name")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setName(Principal principal,
                                     @Valid @RequestBody QuestionRequest questionRequest,
+                                     @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long module_id,
                                      @PathVariable("questionnaire_id") long questionnaire_id,
                                      @PathVariable("question_id") long question_id){
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Question> oQuestion = questionRepository.findById(question_id);
         Optional<Module> oModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
@@ -123,12 +141,20 @@ public class QuestionController {
     }
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/description")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setDescription(Principal principal,
                                             @Valid @RequestBody QuestionRequest questionRequest,
+                                            @RequestHeader Map<String, String> headers,
                                             @PathVariable("module_id") long module_id,
                                             @PathVariable("questionnaire_id") long questionnaire_id,
                                             @PathVariable("question_id") long question_id){
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Question> oQuestion = questionRepository.findById(question_id);
         Optional<Module> oModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
@@ -172,12 +198,20 @@ public class QuestionController {
     }
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/number")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
     public ResponseEntity<?> setNumber(Principal principal,
                                      @Valid @RequestBody QuestionRequest questionRequest,
+                                     @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long module_id,
                                      @PathVariable("questionnaire_id") long questionnaire_id,
                                      @PathVariable("question_id") long question_id){
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
+                ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Question> oQuestion = questionRepository.findById(question_id);
         Optional<Module> oModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);

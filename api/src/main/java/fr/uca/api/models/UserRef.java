@@ -1,10 +1,13 @@
 package fr.uca.api.models;
 
+import fr.uca.api.util.VerifyAuthorizations;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,12 +23,6 @@ public class UserRef {
     @NotBlank
     @Size(max = 20)
     private String username;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles_courses",
-            joinColumns = @JoinColumn(name = "user_ref_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_courses_id", referencedColumnName = "id"))
-    private Set<RoleCourses> roleCourses = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_modules",
@@ -49,13 +46,6 @@ public class UserRef {
         this.userId = id;
     }
 
-    public Set<RoleCourses> getRoles() {
-        return roleCourses;
-    }
-
-    public void setRoles(Set<RoleCourses> roleCourses) {
-        this.roleCourses = roleCourses;
-    }
 
     public Set<Module> getModules() {
         return modules;
@@ -81,13 +71,6 @@ public class UserRef {
         this.id = id;
     }
 
-    public Set<RoleCourses> getRoleCourses() {
-        return roleCourses;
-    }
-
-    public void setRoleCourses(Set<RoleCourses> roleCourses) {
-        this.roleCourses = roleCourses;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -102,12 +85,8 @@ public class UserRef {
         return Objects.hash(userId, username);
     }
 
-    public boolean isTeacher() {
-        for (RoleCourses roleCourses : this.roleCourses) {
-            if (roleCourses.getName().equals(ERole.ROLE_TEACHER)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean isTeacher(Map<String, String> headers) {
+        return VerifyAuthorizations.isSuccess(VerifyAuthorizations.
+                verify(headers, ERole.ROLE_TEACHER.toString()));
     }
 }
