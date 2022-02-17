@@ -30,6 +30,7 @@
         <commons-io.version>1.3.2</commons-io.version>
         <httpclient.version>4.5.2</httpclient.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
+        <testSourceDirectory>api/src/main/java/test</testSourceDirectory>
     </properties>
     <dependencies>
         <dependency>

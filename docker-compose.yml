@@ -42,9 +42,10 @@ services:
       - '8081:8081'
   api:
     image: maven:3.8.1-adoptopenjdk-11
-    restart: always
     build: .
     container_name: api
+    depends_on:
+      - db_courses
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
