@@ -112,42 +112,6 @@ public class SubmitQuestionnaireStepdefs {
         questionnaireRepository.save(questionnaire);
     }
 
-    @Et("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string} sq")
-    public void écritSonCodePythonDansLeFichierEtSoumetSontCodeAuModuleDeLaQuestionNuméroDansLeSq(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
-        Module module = moduleRepository.findByName(arg2).get();
-        Questionnaire questionnaire = null;
-        for (Ressource ressource : module.getRessources()) {
-            if (arg4.equalsIgnoreCase(ressource.getName())) {
-                questionnaire = (Questionnaire) ressource;
-                break;
-            }
-        }
-
-        CodeRunner codeRunner = null;
-        for (Question question : questionnaire.getQuestions()) {
-            if (question.getNumber() == arg3) {
-                codeRunner = (CodeRunner) question;
-                break;
-            }
-        }
-        String jwtStudent = authController.generateJwt(arg0, PASSWORD);
-        InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
-
-        StringBuilder sb = new StringBuilder();
-        for (int ch; (ch = is.read()) != -1; ) {
-            sb.append((char) ch);
-        }
-        springIntegration.executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d",
-                        module.getId(),
-                        questionnaire.getId(),
-                        codeRunner.getId()),
-
-                new CodeRunnerRequest(sb.toString()),
-                jwtStudent
-        );
-    }
-
     @Quand("{string} soumet le questionnaire {string} du module {string}")
     public void soumetLeQuestionnaireDuModule(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
@@ -166,8 +130,8 @@ public class SubmitQuestionnaireStepdefs {
                 questionnaire.getId()), jwtStudent);
     }
 
-    @Et("la note est {int} sur {int} sq")
-    public void laNoteEstSurSq(int arg0, int arg1) throws IOException {
+    @Et("la note est {int} sur {int}")
+    public void laNoteEstSur(int arg0, int arg1) throws IOException {
         String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();

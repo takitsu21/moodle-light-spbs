@@ -20,12 +20,12 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir créer une question Code
   Scénario: Execution du code envoyé par un élève
     Quand "Margaux" écrit son code python dans le fichier "fact_success.py" et soumet sont code au module "Prog 2" de la question numéro 1 dans le "Questionnaire code runner"
     Alors le code de retour est 200
-    Et la réponse est vrai 1 crn
+    Et la réponse est vrai 1
     Et les tables sont videes
 
   Scénario: Execution d'un code faux envoyé par un élève
     Quand "Margaux" écrit son code python dans le fichier "fact_wrong.py" et soumet sont code au module "Prog 2" de la question numéro 1 dans le "Questionnaire code runner"
     Alors le code de retour est 200
-    Et la réponse est faux 0 crn
+    Et la réponse est faux 0
     Et les tables sont videes
 

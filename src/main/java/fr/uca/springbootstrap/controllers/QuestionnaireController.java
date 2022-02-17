@@ -320,8 +320,23 @@ public class QuestionnaireController {
                         }
                     }
                 }
+            } else if (question instanceof OpenQuestion) {
+                //TODO verif pour open question
+                OpenQuestion openQuestion = (OpenQuestion) question;
+                User currentStudent;
+                for (AnswerOpenQuestion studentOpenAnswer : openQuestion.getAnswerOpenQuestionSet()) {
+                    currentStudent = studentOpenAnswer.getStudent();
+                    if (currentStudent.equals(user)) {
+                        for (Answer answer : studentOpenAnswer.getAnswers()) {
+                            for (Answer openQuestionAnswer : openQuestion.getAnswers()) {
+                                if (answer.getAnswer().equals(openQuestionAnswer.getAnswer())) {
+                                    note ++;
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            //TODO faire pour open question
         }
 
         GradesQuestionnaire gradesQuestionnaire = new GradesQuestionnaire(questionnaire, note, user);

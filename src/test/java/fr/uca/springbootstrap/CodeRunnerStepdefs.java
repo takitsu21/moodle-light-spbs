@@ -71,7 +71,6 @@ public class CodeRunnerStepdefs {
     @Autowired
     PasswordEncoder encoder;
 
-      //TODO voir si je peux encore plus factoriser
     @Et("la question numero {int} {string} avec description {string} la reponse est {string} avec le test {string} dans le {string} du module {string}")
     public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModule(
             int num,
@@ -144,7 +143,7 @@ public class CodeRunnerStepdefs {
 
 
     @Quand("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string}")
-    public void écritSonCodePythonEtSoumetSontCodeAuModuleDeLaQuestionNuméro(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
+    public void écritSonCodePythonEtSoumetSontCodeAuModuleDeLaQuestionNuméroDansLe(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
         User user = userRepository.findByUsername(arg0).get();
         user.addRole(roleRepository.findByName(ERole.ROLE_ADMIN).
@@ -171,8 +170,8 @@ public class CodeRunnerStepdefs {
         );
     }
 
-    @Et("la réponse est vrai {int} crn")
-    public void laRéponseEstVraiCrn(int arg0) throws IOException {
+    @Et("la réponse est vrai {int}")
+    public void laRéponseEstVrai(int arg0) throws IOException {
         String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();
@@ -184,8 +183,8 @@ public class CodeRunnerStepdefs {
         assertEquals(b, map.get("success"));
     }
 
-    @Et("la réponse est faux {int} crn")
-    public void laRéponseEstFauxCrn(int arg0) throws IOException {
+    @Et("la réponse est faux {int}")
+    public void laRéponseEstFaux(int arg0) throws IOException {
         String jsonString = EntityUtils.toString(springIntegration.getLatestHttpResponse().getEntity());
 
         GsonBuilder builder = new GsonBuilder();

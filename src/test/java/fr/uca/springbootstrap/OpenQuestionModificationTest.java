@@ -115,7 +115,7 @@ public class OpenQuestionModificationTest {
 
 
         OpenQuestion question = (OpenQuestion) questionnaire.findQuestionByName(arg0);
-        if (question==null) {
+        if (question == null) {
             question = new OpenQuestion(new HashSet<>(),new HashSet<>(), new HashSet<>(),
                     arg0, "Descritpion "+arg0, 1 );
         }
@@ -167,8 +167,8 @@ public class OpenQuestionModificationTest {
 
         String jwTeacher = authController.generateJwt(arg0, PASSWORD);
         springIntegration.executePut("http://localhost:8080/api/modules/"
-                +module.getId()+"/questionnaire/"
-                +questionnaire.getId()+"/open_question/"+question.getId()+"/possible_answer",
+                + module.getId() + "/questionnaire/"
+                + questionnaire.getId() + "/open_question/" + question.getId() + "/possible_answer",
                 new AnswerRequest(new HashSet<>(){{ add(new MyAnswer("Réponse D"));
                 }}),
                 jwTeacher);
