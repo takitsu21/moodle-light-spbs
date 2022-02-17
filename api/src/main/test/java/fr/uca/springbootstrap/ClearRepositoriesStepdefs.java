@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import fr.uca.springbootstrap.repository.*;
 import fr.uca.springbootstrap.repository.cours.CoursRepository;
@@ -6,6 +6,8 @@ import fr.uca.springbootstrap.repository.cours.TextRepository;
 import fr.uca.springbootstrap.repository.question.*;
 import io.cucumber.java.fr.Etantdonnéque;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
 
 public class ClearRepositoriesStepdefs extends SpringIntegration {
 

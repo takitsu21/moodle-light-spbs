@@ -92,6 +92,10 @@ public class AuthController {
         CloseableHttpResponse resp = executePost(
                 "http://localhost:8081/api/auth/signup",
                 signUpRequest);
+        if (resp.getStatusLine().getStatusCode() == 400) {
+            return ResponseEntity.badRequest().body(resp.getEntity());
+        }
+        System.out.println(signUpRequest.getRole());
         String jsonString = EntityUtils.toString(resp.getEntity());
 
         GsonBuilder builder = new GsonBuilder();

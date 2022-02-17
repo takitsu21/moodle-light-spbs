@@ -52,7 +52,7 @@ public class TextController {
 
     @PostMapping("/texts")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addText(Principal principal,
+    public ResponseEntity<?> addText(
                                      @Valid @RequestBody TextRequest textRequest,
                                      @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long moduleId,
@@ -65,7 +65,7 @@ public class TextController {
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Cours> oressource = coursRepository.findById(coursId);
 
         if (omodule.isEmpty()) {
@@ -111,7 +111,7 @@ public class TextController {
 
     @DeleteMapping("/texts/{text_id}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> removeText(Principal principal,
+    public ResponseEntity<?> removeText(
                                         @RequestHeader Map<String, String> headers,
                                         @PathVariable("module_id") long moduleId,
                                         @PathVariable("cours_id") long coursId,
@@ -124,7 +124,7 @@ public class TextController {
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Text> otext = textRepository.findById(textId);
         Optional<Cours> ocours = coursRepository.findById(coursId);
 

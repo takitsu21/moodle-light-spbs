@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import java.io.IOException;
 
@@ -19,11 +19,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @CucumberContextConfiguration
 @SpringBootTest(classes = SpringBootSecurityPostgresqlApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SpringIntegration {
+    protected static Map<String, String> userToken = new HashMap<>();
     static ResponseResults latestResponse = null;
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
     protected HttpResponse latestHttpResponse;
 
     public void executeGet(String url, String jwt) throws IOException {
+        consume();
         HttpGet request = new HttpGet(url);
         request.addHeader("Accept", "application/json");
         if (jwt != null) {
@@ -33,6 +35,7 @@ public class SpringIntegration {
     }
 
     public void executePost(String url, String jwt) throws IOException {
+        consume();
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
         if (jwt != null) {
@@ -44,15 +47,30 @@ public class SpringIntegration {
     }
 
     public void executePost(String url, Object entity, String jwt) throws IOException {
+        consume();
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
         ObjectMapper ObjMapper = new ObjectMapper();
+        ObjMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
         latestHttpResponse = httpClient.execute(request);
     }
+
+    public void executePost(String url, Object entity) throws IOException {
+        consume();
+        HttpPost request = new HttpPost(url);
+        request.addHeader("content-type", "application/json");
+        ObjectMapper ObjMapper = new ObjectMapper();
+        ObjMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+        request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
+        latestHttpResponse = httpClient.execute(request);
+        request.completed();
+    }
+
 
     public void executePut(String url, String jwt) throws IOException {
         HttpPut request = new HttpPut(url);
@@ -65,9 +83,12 @@ public class SpringIntegration {
     }
 
     public void executePut(String url, Object entity, String jwt) throws IOException {
+        consume();
         HttpPut request = new HttpPut(url);
         request.addHeader("content-type", "application/json");
         ObjectMapper ObjMapper = new ObjectMapper();
+        ObjMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
         if (jwt != null) {
             request.addHeader("Authorization", "Bearer " + jwt);
         }
@@ -76,6 +97,7 @@ public class SpringIntegration {
     }
 
     public void executeDelete(String url, String jwt) throws IOException {
+        consume();
         HttpDelete request = new HttpDelete(url);
         request.addHeader("content-type", "application/json");
         if (jwt != null) {

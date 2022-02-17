@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import fr.uca.springbootstrap.models.Module;
 import fr.uca.springbootstrap.models.Questionnaire;

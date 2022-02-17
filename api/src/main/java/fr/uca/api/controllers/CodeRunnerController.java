@@ -1,5 +1,8 @@
 package fr.uca.api.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fr.uca.api.models.ERole;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.Questionnaire;
 import fr.uca.api.models.UserRef;
@@ -13,7 +16,11 @@ import fr.uca.api.repository.question.AnswerCodeRunnerRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
 import fr.uca.api.util.CodeRunnerExec;
+import fr.uca.api.util.VerifyAuthorizations;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +28,7 @@ import payload.request.CodeRunnerRequest;
 import payload.response.MessageResponse;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
@@ -31,8 +39,6 @@ import java.util.Optional;
 public class CodeRunnerController {
     @Autowired
     UserRefRepository userRepository;
-
-
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -50,13 +56,20 @@ public class CodeRunnerController {
     QuestionnaireRepository questionnaireRepository;
 
     @PostMapping("/code_runner")
-    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addCodeRunnerQuestion(Principal principal,
+//    @PreAuthorize("hasRole('TEACHER')")
+    public ResponseEntity<?> addCodeRunnerQuestion(
+                                                   @RequestHeader Map<String, String> headers,
                                                    @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
                                                    @PathVariable("module_id") long moduleId,
                                                    @PathVariable("questionnaire_id") long questionnaireId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
@@ -74,7 +87,6 @@ public class CodeRunnerController {
                     .body(new MessageResponse("Error: No such questionnaire!"));
         }
 
-        UserRef user = optionalUser.get();
         Module module = optionalModule.get();
 
         Questionnaire questionnaire = optionalQuestionnaire.get();
@@ -98,13 +110,20 @@ public class CodeRunnerController {
     }
 
     @PostMapping("/code_runner/{code_runner_id}")
-    public ResponseEntity<?> submitCodeRunner(Principal principal,
+    public ResponseEntity<?> submitCodeRunner(
+                                              @RequestHeader Map<String, String> headers,
                                               @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
                                               @PathVariable("module_id") long moduleId,
                                               @PathVariable("questionnaire_id") long questionnaireId,
                                               @PathVariable("code_runner_id") long codeRunnerId) {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         Optional<CodeRunner> optionalCodeRunner = codeRunnerRepository.findById(codeRunnerId);
 
@@ -163,14 +182,21 @@ public class CodeRunnerController {
     }
 
     @PostMapping("/code_runner/{code_runner_id}/test")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> testCodeRunner(Principal principal,
+//    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    public ResponseEntity<?> testCodeRunner(
                                             @Valid @RequestBody CodeRunnerRequest codeRunnerRequest,
+                                            @RequestHeader Map<String, String> headers,
                                             @PathVariable("module_id") long moduleId,
                                             @PathVariable("questionnaire_id") long questionnaireId,
-                                            @PathVariable("code_runner_id") long codeRunnerId) {
+                                            @PathVariable("code_runner_id") long codeRunnerId) throws IOException {
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         Optional<CodeRunner> optionalCodeRunner = codeRunnerRepository.findById(codeRunnerId);
 
@@ -227,8 +253,19 @@ public class CodeRunnerController {
         codeRunnerRepository.save(question);
 
         CodeRunnerExec codeRunnerExec = new CodeRunnerExec();
-        Map<String, Object> exec = codeRunnerExec.execPy(codeRunnerRequest.getCode(), question);
+//        Map<String, Object> exec = codeRunnerExec.execPy(codeRunnerRequest.getCode(), question);
+        CloseableHttpResponse resp = VerifyAuthorizations.executePost(
+                "http://localhost:8082/api/coderunner/test",
+                codeRunnerRequest, null);
+        String jsonString = EntityUtils.toString(resp.getEntity());
 
-        return ResponseEntity.ok(exec);
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+
+        Gson gson = builder.create();
+        Map<String, Object> map = gson.fromJson(jsonString, Map.class);
+        System.out.println(map);
+
+        return ResponseEntity.ok(map);
     }
 }

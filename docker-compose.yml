@@ -54,14 +54,14 @@ services:
 #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 #    ports:
 #      - '8080:8080'
-  #  code-runner:
-  #    image: code-runner-service
-  #    build: .
-  #    container_name: code-runner-service
-  #    ports:
-  #      - '8083:8084'
-  #    networks:
-  #      - micro-service-network
+  code-runner:
+    image: coder-runner-service
+    build:
+      context: .
+      dockerfile: ./code-runner-service/Dockerfile
+    container_name: code-runner-service
+    ports:
+      - '8082:8082'
 
 
 

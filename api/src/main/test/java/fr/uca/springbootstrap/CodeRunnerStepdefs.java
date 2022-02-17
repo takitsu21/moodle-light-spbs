@@ -1,26 +1,30 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.models.questions.Answer;
-import fr.uca.springbootstrap.models.questions.CodeRunner;
-import fr.uca.springbootstrap.models.questions.Question;
-import fr.uca.springbootstrap.payload.request.CodeRunnerRequest;
-import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.repository.question.AnswerCodeRunnerRepository;
-import fr.uca.springbootstrap.repository.question.AnswerRepository;
-import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.Ressource;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.models.questions.Answer;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.questions.CodeRunner;
+import fr.uca.api.models.questions.Question;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.RessourceRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.repository.question.AnswerCodeRunnerRepository;
+import fr.uca.api.repository.question.AnswerRepository;
+import fr.uca.api.repository.question.CodeRunnerRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
 import io.cucumber.messages.internal.com.google.gson.Gson;
 import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import payload.request.CodeRunnerRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,10 +41,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     ModuleRepository moduleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     RessourceRepository ressourceRepository;
@@ -63,10 +64,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Autowired
     AnswerCodeRunnerRepository answerCodeRunnerRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
-
-      //TODO voir si je peux encore plus factoriser
+    //TODO voir si je peux encore plus factoriser
     @Et("la question numero {int} {string} avec description {string} la reponse est {string} avec le test {string} dans le {string} du module {string}")
     public void laQuestionNumeroAvecDescriptionLaReponseEstAvecLeTestDansLeDuModule(
             int num,
@@ -99,7 +97,9 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     public void veutAjouterLaQuestionAvecDescriptionLaRéponseEstAvecLeTestCrn(String arg0, String arg1, String arg2, String arg3, String arg4, String arg5, String arg6) throws IOException {
 
         Module module = moduleRepository.findByName(arg5).get();
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         Questionnaire questionnaire = new Questionnaire(
                 arg6,
                 "Test d'un code runner",
@@ -113,7 +113,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
                         module.getId(),
                         questionnaire.getId()),
                 new CodeRunnerRequest(1, arg1, arg2, arg3, arg4),
-                jwtTeacher);
+                jwt);
     }
 
     @Alors("le dernier status de réponse est {int} crn")
@@ -146,18 +146,20 @@ public class CodeRunnerStepdefs extends SpringIntegration {
     @Quand("{string} écrit son code python dans le fichier {string} et soumet sont code au module {string} de la question numéro {int} dans le {string}")
     public void écritSonCodePythonEtSoumetSontCodeAuModuleDeLaQuestionNuméro(String arg0, String arg1, String arg2, int arg3, String arg4) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
-        User user = userRepository.findByUsername(arg0).get();
-        user.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-            add(roleRepository.findByName(ERole.ROLE_ADMIN).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
-        userRepository.save(user);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+//        user.setRoles(new HashSet<>() {{
+//            add(roleRepository.findByName(ERole.ROLE_STUDENT).
+//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+//            add(roleRepository.findByName(ERole.ROLE_ADMIN).
+//                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+//        }});
+//        userRefRepository.save(user);
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg4);
         CodeRunner codeRunner = (CodeRunner) questionnaire.findQuestionByNum(arg3);
 
-        String jwtStudent = authController.generateJwt(arg0, PASSWORD);
+//        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
 
         StringBuilder sb = new StringBuilder();
@@ -171,7 +173,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
                         codeRunner.getId()),
 
                 new CodeRunnerRequest(sb.toString()),
-                jwtStudent
+                jwt
         );
     }
 

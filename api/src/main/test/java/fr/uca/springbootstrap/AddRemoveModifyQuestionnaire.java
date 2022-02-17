@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import fr.uca.api.controllers.AuthController;
 import fr.uca.api.models.Module;
@@ -27,9 +27,6 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
     @Autowired
     QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
-    RoleCoursesRepository roleRepository;
 
     @Autowired
     UserRefRepository userRepository;

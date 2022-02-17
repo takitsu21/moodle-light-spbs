@@ -106,7 +106,7 @@ public class OpenQuestionController {
 
     @GetMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/student_answers/{student_id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getStudentAnswers(Principal principal,
+    public ResponseEntity<?> getStudentAnswers(
                                                @RequestHeader Map<String, String> headers,
                                                @PathVariable("module_id") long module_id,
                                                @PathVariable("questionnaire_id") long questionnaire_id,
@@ -123,7 +123,7 @@ public class OpenQuestionController {
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(question_id);
         Optional<OpenQuestion> optionalOpenQuestion = openQuestionRepository.findById(question_id);
         Optional<UserRef> optionalStudent = userRepository.findById(student_id);
-        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));
 
         if (optionalModule.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error no such module!"));
@@ -167,7 +167,7 @@ public class OpenQuestionController {
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/possible_answer/{possible_answer_id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deletePossibleAnswer(Principal principal,
+    public ResponseEntity<?> deletePossibleAnswer(
                                                   @RequestHeader Map<String, String> headers,
                                                   @PathVariable("module_id") long module_id,
                                                   @PathVariable("questionnaire_id") long questionnaire_id,
@@ -180,7 +180,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -234,7 +234,7 @@ public class OpenQuestionController {
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/answers/{answer_id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteAnswer(Principal principal,
+    public ResponseEntity<?> deleteAnswer(
                                           @RequestHeader Map<String, String> headers,
                                           @PathVariable("module_id") long module_id,
                                           @PathVariable("questionnaire_id") long questionnaire_id,
@@ -247,7 +247,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -301,7 +301,7 @@ public class OpenQuestionController {
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/student_answers/{answer_id}")
 //    @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<?> deleteStudentAnswer(Principal principal,
+    public ResponseEntity<?> deleteStudentAnswer(
                                                  @RequestHeader Map<String, String> headers,
                                                  @PathVariable("module_id") long module_id,
                                                  @PathVariable("questionnaire_id") long questionnaire_id,
@@ -314,7 +314,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalStudent = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalStudent = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -370,7 +370,7 @@ public class OpenQuestionController {
 
     @PutMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/possible_answer")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> addPossibleAnswer(Principal principal,
+    public ResponseEntity<?> addPossibleAnswer(
                                                @Valid @RequestBody AnswerRequest answerRequest,
                                                @RequestHeader Map<String, String> headers,
                                                @PathVariable("module_id") long module_id,
@@ -383,7 +383,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -430,7 +430,7 @@ public class OpenQuestionController {
 
     @PutMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/answer/{answer_id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> addAnswer(Principal principal,
+    public ResponseEntity<?> addAnswer(
                                        @Valid @RequestBody AnswerRequest answerRequest,
                                        @RequestHeader Map<String, String> headers,
                                        @PathVariable("module_id") long module_id,
@@ -443,7 +443,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -492,7 +492,7 @@ public class OpenQuestionController {
 
     @PutMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/student_answer")
 //    @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<?> addStudentAnswer(Principal principal,
+    public ResponseEntity<?> addStudentAnswer(
                                               @Valid @RequestBody AnswerRequest answerRequest,
                                               @RequestHeader Map<String, String> headers,
                                               @PathVariable("module_id") long module_id,
@@ -505,7 +505,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalStudent = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalStudent = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);
@@ -556,7 +556,7 @@ public class OpenQuestionController {
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/possible_answer/{answer_id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> modifyPossibleAnswer(Principal principal,
+    public ResponseEntity<?> modifyPossibleAnswer(
                                                   @Valid @RequestBody MyAnswer myAnswer,
                                                   @RequestHeader Map<String, String> headers,
                                                   @PathVariable("module_id") long module_id,
@@ -570,7 +570,7 @@ public class OpenQuestionController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> optionalTeacher = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalTeacher = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> optionalModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaire_id);
         Optional<OpenQuestion> optionalQuestion = openQuestionRepository.findById(question_id);

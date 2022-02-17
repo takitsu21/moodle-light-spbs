@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import auth.service.repository.RoleRepository;
 import fr.uca.api.controllers.AuthController;

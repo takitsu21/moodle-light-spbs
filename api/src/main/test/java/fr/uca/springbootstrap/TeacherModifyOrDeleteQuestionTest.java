@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import fr.uca.springbootstrap.controllers.AuthController;
 import fr.uca.springbootstrap.models.*;
@@ -42,13 +42,7 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
     QCMRepository qcmRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder encoder;
+    UserRefRepository userRefRepository;
 
 
     @Et("une question QCM de nom {string} et de description {string} et de numéro {int} appartenant au questionnaire {string} du module {string} tmdqd")

@@ -56,7 +56,7 @@ public class ModuleController {
 
     @PostMapping("/{id}/participants/{userid}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addUser(Principal principal,
+    public ResponseEntity<?> addUser(
                                      @RequestHeader Map<String, String> headers,
                                      @PathVariable long id, @PathVariable long userid) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers, ERole.ROLE_TEACHER.toString());
@@ -80,7 +80,7 @@ public class ModuleController {
 
         Module module = omodule.get();
         UserRef user = ouser.get();
-        UserRef actor = userRefRepository.findByUsername(principal.getName()).get();
+        UserRef actor = userRefRepository.findByUsername((String) authVerif.get("username")).get();
 
         Set<UserRef> participants = module.getParticipants();
         if (participants.contains(user)) {
@@ -102,7 +102,7 @@ public class ModuleController {
 
     @DeleteMapping("/{id}/participants/{userid}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> remvoveUser(Principal principal,
+    public ResponseEntity<?> remvoveUser(
                                          @RequestHeader Map<String, String> headers,
                                          @PathVariable long id, @PathVariable long userid) {
 
@@ -127,7 +127,7 @@ public class ModuleController {
 
         Module module = omodule.get();
         UserRef user = ouser.get();
-        UserRef actor = userRefRepository.findByUsername(principal.getName()).get();
+        UserRef actor = userRefRepository.findByUsername((String) authVerif.get("username")).get();
 
         Set<UserRef> participants = module.getParticipants();
         if (!participants.isEmpty()
@@ -144,7 +144,7 @@ public class ModuleController {
     }
 
     @GetMapping("/{id}/participants")
-    public ResponseEntity<?> getParticipants(Principal principal,
+    public ResponseEntity<?> getParticipants(
                                              @RequestHeader Map<String, String> headers,
                                              @PathVariable long id) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
@@ -154,7 +154,7 @@ public class ModuleController {
                     body(authVerif);
         }
         Module module = moduleRepository.findById(id).get();
-        UserRef user = userRefRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRefRepository.findByUsername((String) authVerif.get("username")).get();
         Map<Integer, String> paticipantView = new HashMap<>();
 
         if (!module.getParticipants().contains(user)) {
@@ -191,7 +191,7 @@ public class ModuleController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> getModules(Principal principal,
+    public ResponseEntity<?> getModules(
                                         @RequestHeader Map<String, String> headers) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -199,7 +199,7 @@ public class ModuleController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        UserRef user = userRefRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRefRepository.findByUsername((String) authVerif.get("username")).get();
         List<Module> modules = moduleRepository.findAll();
         Map<Long, String> modulesView = new HashMap<>();
 
@@ -235,7 +235,7 @@ public class ModuleController {
 
     @PostMapping("/{module_id}/visibility/{ressource_id}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> updateVisibility(Principal principal,
+    public ResponseEntity<?> updateVisibility(
                                               @Valid @RequestBody VisibilityRequest visibilityRequest,
                                               @RequestHeader Map<String, String> headers,
                                               @PathVariable("module_id") long moduleId,
@@ -247,7 +247,7 @@ public class ModuleController {
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRefRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRefRepository.findByUsername((String) authVerif.get("username"));
         Optional<Ressource> oressource = ressourceRepository.findById(ressourceId);
 
         if (omodule.isEmpty()) {
@@ -290,7 +290,7 @@ public class ModuleController {
     }
 
     @GetMapping("/{id}/ressources")
-    public ResponseEntity<?> getRessources(Principal principal,
+    public ResponseEntity<?> getRessources(
                                            @RequestHeader Map<String, String> headers,
                                            @PathVariable("id") long id) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
@@ -300,7 +300,7 @@ public class ModuleController {
                     body(authVerif);
         }
         Module module = moduleRepository.findById(id).get();
-        UserRef user = userRefRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRefRepository.findByUsername((String) authVerif.get("username")).get();
         Map<Long, String> ressourceView = new HashMap<>();
 
         if (!module.getParticipants().contains(user)) {
@@ -320,7 +320,7 @@ public class ModuleController {
     }
 
     @GetMapping("/{module_id}/questionnaire/{questionnaire_id}")
-    public ResponseEntity<?> getQuestionnaire(Principal principal,
+    public ResponseEntity<?> getQuestionnaire(
                                               @RequestHeader Map<String, String> headers,
                                               @PathVariable("module_id") long module_id,
                                               @PathVariable("questionnaire_id") long questionnaire_id) {
@@ -331,7 +331,7 @@ public class ModuleController {
                     body(authVerif);
         }
         Optional<Module> oModule = moduleRepository.findById(module_id);
-        Optional<UserRef> oUser = userRefRepository.findByUsername(principal.getName());
+        Optional<UserRef> oUser = userRefRepository.findByUsername((String) authVerif.get("username"));
 
         if (oModule.isEmpty()) {
             return ResponseEntity.badRequest()
@@ -374,7 +374,7 @@ public class ModuleController {
 
     @PostMapping("{module_id}/questionnaire")
 //	@PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> addQuestionnaire(Principal principal,
+    public ResponseEntity<?> addQuestionnaire(
                                               @Valid @RequestBody QuestionnaireRequest questionnaireRequest,
                                               @RequestHeader Map<String, String> headers,
                                               @PathVariable("module_id") long module_id) {
@@ -384,7 +384,7 @@ public class ModuleController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        Optional<UserRef> oUser = userRefRepository.findByUsername(principal.getName());
+        Optional<UserRef> oUser = userRefRepository.findByUsername((String) authVerif.get("username"));
         Optional<Module> oModule = moduleRepository.findById(module_id);
 
         if (oUser.isEmpty()) {
@@ -414,7 +414,7 @@ public class ModuleController {
 
     @DeleteMapping("{module_id}/questionnaire/{questionnaire_id}")
 //	@PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> removeQuestionnaire(Principal principal,
+    public ResponseEntity<?> removeQuestionnaire(
                                                  @RequestHeader Map<String, String> headers,
                                                  @PathVariable("module_id") long module_id,
                                                  @PathVariable("questionnaire_id") long questionnaire_id) {
@@ -424,7 +424,7 @@ public class ModuleController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        if (!userRefRepository.existsByUsername(principal.getName())) {
+        if (!userRefRepository.existsByUsername((String) authVerif.get("username"))) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
         } else if (!questionnaireRepository.existsById(questionnaire_id)) {
@@ -432,7 +432,7 @@ public class ModuleController {
                     .body(new MessageResponse("Error: questionnaire does not exist."));
         }
         Module module = moduleRepository.findById(module_id).get();
-        UserRef user = userRefRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRefRepository.findByUsername((String) authVerif.get("username")).get();
 
         if (!module.getParticipants().contains(user)) {
             return ResponseEntity

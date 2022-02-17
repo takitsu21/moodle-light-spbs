@@ -53,7 +53,7 @@ public class CoursController {
 
     @PostMapping("/cours")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addCours(Principal principal,
+    public ResponseEntity<?> addCours(
                                       @RequestHeader Map<String, String> headers,
                                       @Valid @RequestBody CoursRequest coursRequest,
                                       @PathVariable("module_id") long moduleId) {
@@ -64,7 +64,7 @@ public class CoursController {
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
 
         if (omodule.isEmpty()) {
             return ResponseEntity
@@ -99,7 +99,7 @@ public class CoursController {
 
     @DeleteMapping("/cours/{cours_id}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> deleteCours(Principal principal,
+    public ResponseEntity<?> deleteCours(
                                          @RequestHeader Map<String, String> headers,
                                          @PathVariable("module_id") long moduleId,
                                          @PathVariable("cours_id") long coursId) {
@@ -110,7 +110,7 @@ public class CoursController {
                     body(authVerif);
         }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Cours> ocourse = coursRepository.findById(coursId);
 
         if (omodule.isEmpty()) {

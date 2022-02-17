@@ -1,4 +1,4 @@
-package java.fr.uca.springbootstrap;
+package fr.uca.springbootstrap;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;

@@ -76,7 +76,7 @@ public class QuestionController {
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/name")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> setName(Principal principal,
+    public ResponseEntity<?> setName(
                                     @Valid @RequestBody QuestionRequest questionRequest,
                                      @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long module_id,
@@ -95,7 +95,7 @@ public class QuestionController {
         if (oQuestion.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse(("Error: No such question!")));
         }
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
 
         if (ouser.isEmpty()){
             return ResponseEntity
@@ -142,7 +142,7 @@ public class QuestionController {
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/description")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> setDescription(Principal principal,
+    public ResponseEntity<?> setDescription(
                                             @Valid @RequestBody QuestionRequest questionRequest,
                                             @RequestHeader Map<String, String> headers,
                                             @PathVariable("module_id") long module_id,
@@ -158,7 +158,7 @@ public class QuestionController {
         Optional<Question> oQuestion = questionRepository.findById(question_id);
         Optional<Module> oModule = moduleRepository.findById(module_id);
         Optional<Questionnaire> oQuestionnaire = questionnaireRepository.findById(questionnaire_id);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
 
         if (oQuestion.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: No such question!"));
@@ -199,7 +199,7 @@ public class QuestionController {
 
     @PostMapping("{module_id}/questionnaire/{questionnaire_id}/questions/{question_id}/number")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-    public ResponseEntity<?> setNumber(Principal principal,
+    public ResponseEntity<?> setNumber(
                                      @Valid @RequestBody QuestionRequest questionRequest,
                                      @RequestHeader Map<String, String> headers,
                                      @PathVariable("module_id") long module_id,
@@ -218,7 +218,7 @@ public class QuestionController {
         if (oQuestion.isEmpty()){
             return ResponseEntity.badRequest().body(new MessageResponse(("Error: No such question!")));
         }
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
 
         if (ouser.isEmpty()){
             return ResponseEntity

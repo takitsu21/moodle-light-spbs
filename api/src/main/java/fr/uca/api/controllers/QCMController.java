@@ -10,7 +10,9 @@ import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.question.AnswerQCMRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.QCMRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -89,14 +91,19 @@ public class QCMController {
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addPossibleAnswers(Principal principal,
+    public ResponseEntity<?> addPossibleAnswers(@RequestHeader Map<String, String> headers,
                                                 @Valid @RequestBody AnswersRequest answerRequest,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
                                                 @PathVariable("qcm_id") long QCMId) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
 
@@ -149,14 +156,19 @@ public class QCMController {
 
     @DeleteMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/possible_answer/{answer_id}")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> removePossibleAnswers(Principal principal,
+    public ResponseEntity<?> removePossibleAnswers(@RequestHeader Map<String, String> headers,
                                                 @PathVariable("module_id") long moduleId,
                                                 @PathVariable("questionnaire_id") long questionnaireId,
                                                 @PathVariable("qcm_id") long QCMId,
                                                 @PathVariable("answer_id") long answerId) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
         Optional<Answer> oanswer = answerRepository.findById(QCMId);
@@ -212,15 +224,20 @@ public class QCMController {
     }
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/student_answer")
-    public ResponseEntity<?> addStudentAnswers(Principal principal,
+    public ResponseEntity<?> addStudentAnswers(
                                                @Valid @RequestBody MyAnswer answer,
                                                @RequestHeader Map<String, String> headers,
                                                @PathVariable("module_id") long moduleId,
                                                @PathVariable("questionnaire_id") long questionnaireId,
                                                @PathVariable("qcm_id") long QCMId) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
 
@@ -285,14 +302,19 @@ public class QCMController {
     }
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/qcm/{qcm_id}/good_answer")
-    public ResponseEntity<?> setAnswer(Principal principal,
+    public ResponseEntity<?> setAnswer(@RequestHeader Map<String, String> headers,
                                                @Valid @RequestBody MyAnswer answer,
                                                @PathVariable("module_id") long moduleId,
                                                @PathVariable("questionnaire_id") long questionnaireId,
                                                @PathVariable("qcm_id") long QCMId) {
-
+        Map<String, Object> authVerif = VerifyAuthorizations.verify(headers);
+        if (!VerifyAuthorizations.isSuccess(authVerif)) {
+            return ResponseEntity.
+                    status(HttpStatus.UNAUTHORIZED).
+                    body(authVerif);
+        }
         Optional<Module> omodule = moduleRepository.findById(moduleId);
-        Optional<UserRef> ouser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> ouser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> oressource = questionnaireRepository.findById(questionnaireId);
         Optional<QCM> oQCM = qcmRepository.findById(QCMId);
 

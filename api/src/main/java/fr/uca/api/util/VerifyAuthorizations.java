@@ -24,7 +24,9 @@ public class VerifyAuthorizations {
                                                     Map<String, String> headers) throws IOException {
         HttpPost request = new HttpPost(url);
         request.addHeader("content-type", "application/json");
-        request.addHeader("authorization", headers.get("authorization"));
+        if (headers != null) {
+            request.addHeader("authorization", headers.get("authorization"));
+        }
         ObjectMapper ObjMapper = new ObjectMapper();
         request.setEntity(new StringEntity(ObjMapper.writeValueAsString(entity)));
         return httpClient.execute(request);
@@ -51,7 +53,7 @@ public class VerifyAuthorizations {
                     null,
                     headers);
             String jsonString = EntityUtils.toString(resp.getEntity());
-
+            System.out.println(jsonString);
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
 

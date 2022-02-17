@@ -1,12 +1,14 @@
 package fr.uca.api.controllers;
 
-import fr.uca.api.models.*;
 import fr.uca.api.models.Module;
+import fr.uca.api.models.*;
+import fr.uca.api.models.questions.AnswerCodeRunner;
+import fr.uca.api.models.questions.CodeRunner;
 import fr.uca.api.models.questions.QCM;
 import fr.uca.api.models.questions.Question;
-import fr.uca.api.models.questions.*;
-
-import fr.uca.api.repository.*;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.GradesQuestionnaireRepository;
 import fr.uca.api.repository.question.QuestionRepository;
 import fr.uca.api.util.CodeRunnerExec;
@@ -14,15 +16,12 @@ import fr.uca.api.util.VerifyAuthorizations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import payload.request.Grade;
 import payload.request.QCMRequest;
 import payload.response.MessageResponse;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -47,11 +46,11 @@ public class QuestionnaireController {
 
 //    @PostMapping("/")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-//    public ResponseEntity<?> createQuestionnaire(Principal principal,
+//    public ResponseEntity<?> createQuestionnaire(
 //                                                 @Valid @RequestBody RessourceRequest ressourceRequest,
 //                                                 @PathVariable("module_id") long module_id) {
 //
-//        if (!userRepository.existsByUsername(principal.getName())) {
+//        if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
 //            return ResponseEntity.badRequest()
 //                    .body(new MessageResponse("Error: User does not exist."));
 //        }
@@ -64,14 +63,14 @@ public class QuestionnaireController {
 //
 //    @DeleteMapping("/{questionnaire_id}")
 //    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
-//    public ResponseEntity<?> deleteQuestionnaire(Principal principal,
+//    public ResponseEntity<?> deleteQuestionnaire(
 //                                                 @PathVariable("module_id") long module_id,
 //                                                 @PathVariable("questionnaire_id") long questionnaire_id) {
 //        if (!questionnaireRepository.existsById(questionnaire_id)) {
 //            return ResponseEntity.badRequest()
 //                    .body(new MessageResponse("Error: Questionnaire doesn't exist."));
 //        }
-//        else if (!userRepository.existsByUsername(principal.getName())) {
+//        else if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
 //            return ResponseEntity.badRequest()
 //                    .body(new MessageResponse("Error: User does not exist."));
 //        }
@@ -86,11 +85,11 @@ public class QuestionnaireController {
 
     @PostMapping("/{questionnaire_id}/qcm")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> addQcm(Principal principal,
-                                    @Valid @RequestBody QCMRequest qcmRequest,
-                                    @RequestHeader Map<String, String> headers,
-                                    @PathVariable("module_id") long module_id,
-                                    @PathVariable("questionnaire_id") long questionnaire_id) {
+    public ResponseEntity<?> addQcm(
+            @Valid @RequestBody QCMRequest qcmRequest,
+            @RequestHeader Map<String, String> headers,
+            @PathVariable("module_id") long module_id,
+            @PathVariable("questionnaire_id") long questionnaire_id) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -98,21 +97,19 @@ public class QuestionnaireController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        if (!userRepository.existsByUsername(principal.getName())) {
+        if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
-        }
-        else if (!questionnaireRepository.existsById(questionnaire_id)) {
+        } else if (!questionnaireRepository.existsById(questionnaire_id)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Questionnaire does not exist."));
-        }
-        else if (!moduleRepository.existsById(module_id)) {
+        } else if (!moduleRepository.existsById(module_id)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Module does not exist."));
         }
 
         Module module = moduleRepository.findById(module_id).get();
-        UserRef user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername((String) authVerif.get("username")).get();
         if (!module.containsParticipant(user)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: user does not belong to this module."));
@@ -133,11 +130,11 @@ public class QuestionnaireController {
 
     @DeleteMapping("/{questionnaire_id}/questions/{question_id}")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> removeQuestion(Principal principal,
-                                            @RequestHeader Map<String, String> headers,
-                                            @PathVariable("module_id") long module_id,
-                                            @PathVariable("questionnaire_id") long questionnaire_id,
-                                            @PathVariable("question_id") long question_id) {
+    public ResponseEntity<?> removeQuestion(
+            @RequestHeader Map<String, String> headers,
+            @PathVariable("module_id") long module_id,
+            @PathVariable("questionnaire_id") long questionnaire_id,
+            @PathVariable("question_id") long question_id) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -145,21 +142,19 @@ public class QuestionnaireController {
                     status(HttpStatus.UNAUTHORIZED).
                     body(authVerif);
         }
-        if (!userRepository.existsByUsername(principal.getName())) {
+        if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
-        }
-        else if (!questionRepository.existsById(question_id)) {
+        } else if (!questionRepository.existsById(question_id)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Question does not exist."));
-        }
-        else if (!moduleRepository.existsById(module_id)) {
+        } else if (!moduleRepository.existsById(module_id)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: Module does not exist."));
         }
 
         Module module = moduleRepository.findById(module_id).get();
-        UserRef user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername((String) authVerif.get("username")).get();
         if (!module.containsParticipant(user)) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: user does not belong to this module."));
@@ -177,10 +172,10 @@ public class QuestionnaireController {
 
     @PostMapping("/{questionnaire_id}")
 //    @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<?> submitQuestionnaire(Principal principal,
-                                                 @RequestHeader Map<String, String> headers,
-                                                 @PathVariable("module_id") long moduleId,
-                                                 @PathVariable("questionnaire_id") long questionnaireId) {
+    public ResponseEntity<?> submitQuestionnaire(
+            @RequestHeader Map<String, String> headers,
+            @PathVariable("module_id") long moduleId,
+            @PathVariable("questionnaire_id") long questionnaireId) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_STUDENT.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -189,7 +184,7 @@ public class QuestionnaireController {
                     body(authVerif);
         }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
@@ -205,13 +200,14 @@ public class QuestionnaireController {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: No such questionnaire!"));
-        }        if (!userRepository.existsByUsername(principal.getName())) {
+        }
+        if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
         }
 
         Module module = optionalModule.get();
-        UserRef user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername((String) authVerif.get("username")).get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
 
         if (!module.getParticipants().contains(user)) {
@@ -272,10 +268,10 @@ public class QuestionnaireController {
 
     @GetMapping("/{questionnaire_id}/grades")
 //    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> getGrades(Principal principal,
-                                                 @RequestHeader Map<String, String> headers,
-                                                 @PathVariable("module_id") long moduleId,
-                                                 @PathVariable("questionnaire_id") long questionnaireId) {
+    public ResponseEntity<?> getGrades(
+            @RequestHeader Map<String, String> headers,
+            @PathVariable("module_id") long moduleId,
+            @PathVariable("questionnaire_id") long questionnaireId) {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_TEACHER.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -284,7 +280,7 @@ public class QuestionnaireController {
                     body(authVerif);
         }
         Optional<Module> optionalModule = moduleRepository.findById(moduleId);
-        Optional<UserRef> optionalUser = userRepository.findByUsername(principal.getName());
+        Optional<UserRef> optionalUser = userRepository.findByUsername((String) authVerif.get("username"));
         Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
         if (optionalModule.isEmpty()) {
             return ResponseEntity
@@ -301,13 +297,13 @@ public class QuestionnaireController {
                     .badRequest()
                     .body(new MessageResponse("Error: No such questionnaire!"));
         }
-        if (!userRepository.existsByUsername(principal.getName())) {
+        if (!userRepository.existsByUsername((String) authVerif.get("username"))) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Error: User does not exist."));
         }
 
         Module module = optionalModule.get();
-        UserRef user = userRepository.findByUsername(principal.getName()).get();
+        UserRef user = userRepository.findByUsername((String) authVerif.get("username")).get();
         Questionnaire questionnaire = optionalQuestionnaire.get();
 
         if (!module.getParticipants().contains(user)) {
@@ -321,7 +317,7 @@ public class QuestionnaireController {
                     .body(new MessageResponse("Error: questionnaire does not belong to this module!"));
         }
         Set<Grade> grades = new HashSet<>();
-        Set<GradesQuestionnaire> gradesQuestionnaire =  questionnaire.getStudentsGrades();
+        Set<GradesQuestionnaire> gradesQuestionnaire = questionnaire.getStudentsGrades();
         for (GradesQuestionnaire grade : gradesQuestionnaire) {
             grades.add(new Grade(
                     grade.getNote(),
