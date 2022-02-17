@@ -13,7 +13,6 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import payload.request.QuestionnaireRequest;
-import payload.request.SignupRequest;
 
 import java.io.IOException;
 

@@ -1,41 +1,25 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.questions.Answer;
-import fr.uca.springbootstrap.models.questions.CodeRunner;
-import fr.uca.springbootstrap.models.questions.Question;
-import fr.uca.springbootstrap.payload.request.CodeRunnerRequest;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.QuestionnaireRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.repository.question.AnswerRepository;
-import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.question.AnswerRepository;
+import fr.uca.api.repository.question.CodeRunnerRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
-import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Quand;
-import io.cucumber.messages.internal.com.google.gson.Gson;
-import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetGradesStepdefs extends SpringIntegration {
     private static final String PASSWORD = "password";
 
     @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     ModuleRepository moduleRepository;
@@ -48,9 +32,6 @@ public class GetGradesStepdefs extends SpringIntegration {
 
     @Autowired
     AnswerRepository answerRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     AuthController authController;

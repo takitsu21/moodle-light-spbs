@@ -1,9 +1,9 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.QuestionnaireRepository;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
 import io.cucumber.java.fr.Etantdonné;
 import org.springframework.beans.factory.annotation.Autowired;
 

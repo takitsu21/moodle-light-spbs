@@ -1,16 +1,21 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.models.questions.Answer;
-import fr.uca.springbootstrap.models.questions.CodeRunner;
-import fr.uca.springbootstrap.models.questions.Question;
-import fr.uca.springbootstrap.payload.request.CodeRunnerRequest;
-import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.repository.question.AnswerRepository;
-import fr.uca.springbootstrap.repository.question.CodeRunnerRepository;
+import auth.models.ERole;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.Ressource;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.models.questions.Answer;
+import fr.uca.api.models.questions.CodeRunner;
+import fr.uca.api.models.questions.Question;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.RessourceRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.repository.question.AnswerRepository;
+import fr.uca.api.repository.question.CodeRunnerRepository;
+import fr.uca.api.models.Module;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -19,6 +24,8 @@ import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import payload.request.CodeRunnerRequest;
+import payload.request.SignupRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,10 +41,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
     ModuleRepository moduleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     RessourceRepository ressourceRepository;
@@ -71,21 +75,23 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
             String descriptionName,
             String answerStr,
             String test,
-            String questionnaireName) {
+            String questionnaireName) throws IOException {
         Module module = moduleRepository.findByName(moduleName).orElse(new Module(moduleName));
-        User teacher = userRepository.findByUsername(teacherName).get();
-        User student = userRepository.findByUsername(studentName).
-                orElse(new User(studentName, studentName + "@test.fr", encoder.encode(PASSWORD)));
-        student.setRoles(new HashSet<>() {{
-            add(roleRepository.findByName(ERole.ROLE_STUDENT).
-                    orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-        }});
+        UserRef teacher = userRefRepository.findByUsername(teacherName).get();
+
+        executePost("http://localhost:8080/api/auth/signup",
+                new SignupRequest(studentName, studentName + "@test.fr", PASSWORD, new HashSet<>() {{
+                    add(String.valueOf(ERole.ROLE_STUDENT));
+                }}));
+
+        UserRef student = userRefRepository.findByUsername(studentName).get();
+
         module.setParticipants(new HashSet<>() {{
             add(teacher);
             add(student);
         }});
 
-        userRepository.save(student);
+        userRefRepository.save(student);
         Answer answer = new Answer(answerStr);
         answerRepository.save(answer);
         CodeRunner codeRunner = new CodeRunner(

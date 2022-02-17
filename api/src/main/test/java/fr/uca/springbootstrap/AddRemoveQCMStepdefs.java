@@ -9,12 +9,13 @@ import fr.uca.api.repository.question.QuestionRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AddRemoveQCMStepdefs extends SpringIntegration {
     private static final String PASSWORD = "password";
@@ -63,7 +64,9 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(arg3).get();
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg2);
 
-        String jwtTeacher = authController.generateJwt(arg0, PASSWORD);
+        UserRef user = userRefRepository.findByUsername(arg0).get();
+
+        String jwt = userToken.get(user.getUsername());
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
                 jwtTeacher);

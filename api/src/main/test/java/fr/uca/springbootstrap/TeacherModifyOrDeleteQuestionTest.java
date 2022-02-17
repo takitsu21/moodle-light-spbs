@@ -1,25 +1,24 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.questions.QCM;
-import fr.uca.springbootstrap.models.questions.Question;
-import fr.uca.springbootstrap.payload.request.QuestionRequest;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.QuestionnaireRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
-import fr.uca.springbootstrap.repository.question.QCMRepository;
-import fr.uca.springbootstrap.repository.question.QuestionRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.models.questions.QCM;
+import fr.uca.api.models.questions.Question;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.question.QCMRepository;
+import fr.uca.api.repository.question.QuestionRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import payload.request.QuestionRequest;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 

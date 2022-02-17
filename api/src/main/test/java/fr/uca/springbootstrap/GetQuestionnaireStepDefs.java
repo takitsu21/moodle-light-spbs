@@ -1,12 +1,12 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.Questionnaire;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.QuestionnaireRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.UserRefRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -24,16 +24,13 @@ public class GetQuestionnaireStepDefs extends SpringIntegration {
     private static final String PASSWORD = "password";
 
     @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     ModuleRepository moduleRepository;
 
     @Autowired
     QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     AuthController authController;

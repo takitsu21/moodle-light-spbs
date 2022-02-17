@@ -47,9 +47,18 @@ public class Questionnaire extends Ressource {
     public int getNbQuestions() {
         return questions.size();
     }
+
     public Question findQuestionByName(String arg1) {
         for(Question question: questions){
             if(Objects.equals(question.getName(), arg1)){
+                return question;
+            }
+        }
+        return null;
+    }
+    public Question findQuestionByNum(int arg1){
+        for(Question question: questions){
+            if(Objects.equals(question.getNumber(), arg1)){
                 return question;
             }
         }
@@ -80,4 +89,6 @@ public class Questionnaire extends Ressource {
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
+
+
 }

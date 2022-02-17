@@ -1,10 +1,10 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RessourceRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.RessourceRepository;
+import fr.uca.api.repository.UserRefRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 
@@ -28,10 +28,7 @@ public class GetModulesStepdefs extends SpringIntegration {
     ModuleRepository moduleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     RessourceRepository ressourceRepository;

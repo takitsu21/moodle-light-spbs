@@ -1,9 +1,12 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.repository.cours.CoursRepository;
-import fr.uca.springbootstrap.repository.cours.TextRepository;
-import fr.uca.springbootstrap.repository.question.*;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.RessourceRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.repository.cours.TextRepository;
+import fr.uca.api.repository.question.*;
 import io.cucumber.java.fr.Etantdonnéque;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,10 +18,7 @@ public class ClearRepositoriesStepdefs extends SpringIntegration {
     ModuleRepository moduleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     RessourceRepository ressourceRepository;
@@ -62,20 +62,21 @@ public class ClearRepositoriesStepdefs extends SpringIntegration {
 
     @Etantdonnéque("les tables sont videes")
     public void lesTablesSontVidees() {
-        moduleRepository.deleteAll();
-        ressourceRepository.deleteAll();
-        coursRepository.deleteAll();
-        textRepository.deleteAll();
-        questionnaireRepository.deleteAll();
-        gradesQuestionnaireRepository.deleteAll();
-        questionRepository.deleteAll();
-        qcmRepository.deleteAll();
-        answerQCMRepository.deleteAll();
-        openQuestionRepository.deleteAll();
-        answerOpenQuestionRepository.deleteAll();
-        codeRunnerRepository.deleteAll();
-        answerCodeRunnerRepository.deleteAll();
-        answerRepository.deleteAll();
-        userRepository.deleteAll();
+//        moduleRepository.deleteAll();
+//        ressourceRepository.deleteAll();
+//        coursRepository.deleteAll();
+//        textRepository.deleteAll();
+//        questionnaireRepository.deleteAll();
+//        gradesQuestionnaireRepository.deleteAll();
+//        questionRepository.deleteAll();
+//        qcmRepository.deleteAll();
+//        answerQCMRepository.deleteAll();
+//        openQuestionRepository.deleteAll();
+//        answerOpenQuestionRepository.deleteAll();
+//        codeRunnerRepository.deleteAll();
+//        answerCodeRunnerRepository.deleteAll();
+//        answerRepository.deleteAll();
+//        userRefRepository.deleteAll();
+//        userToken = new HashMap<>();
     }
 }

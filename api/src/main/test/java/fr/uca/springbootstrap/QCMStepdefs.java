@@ -1,20 +1,23 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.questions.Answer;
-import fr.uca.springbootstrap.models.questions.QCM;
-import fr.uca.springbootstrap.payload.request.AnswersRequest;
-import fr.uca.springbootstrap.payload.request.MyAnswer;
-import fr.uca.springbootstrap.repository.*;
-import fr.uca.springbootstrap.repository.question.AnswerRepository;
-import fr.uca.springbootstrap.repository.question.QCMRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Questionnaire;
+import fr.uca.api.models.Module;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.models.questions.Answer;
+import fr.uca.api.models.questions.QCM;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.QuestionnaireRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.repository.question.AnswerRepository;
+import fr.uca.api.repository.question.QCMRepository;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import payload.request.AnswersRequest;
+import payload.request.MyAnswer;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -29,10 +32,7 @@ public class QCMStepdefs extends SpringIntegration {
     ModuleRepository moduleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     QuestionnaireRepository questionnaireRepository;

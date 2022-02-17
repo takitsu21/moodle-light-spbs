@@ -1,12 +1,13 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.springbootstrap.controllers.AuthController;
-import fr.uca.springbootstrap.models.Module;
-import fr.uca.springbootstrap.models.*;
-import fr.uca.springbootstrap.repository.ModuleRepository;
-import fr.uca.springbootstrap.repository.RessourceRepository;
-import fr.uca.springbootstrap.repository.RoleRepository;
-import fr.uca.springbootstrap.repository.UserRepository;
+import fr.uca.api.controllers.AuthController;
+import fr.uca.api.models.Cours;
+import fr.uca.api.models.Ressource;
+import fr.uca.api.models.UserRef;
+import fr.uca.api.repository.ModuleRepository;
+import fr.uca.api.repository.RessourceRepository;
+import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.models.Module;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -29,10 +30,7 @@ public class GetRessourcesStepdefs extends SpringIntegration {
     ModuleRepository moduleRepository;
 
     @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    UserRefRepository userRefRepository;
 
     @Autowired
     RessourceRepository ressourceRepository;
