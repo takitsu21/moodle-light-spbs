@@ -176,6 +176,7 @@ public class QuestionnaireController {
             @RequestHeader Map<String, String> headers,
             @PathVariable("module_id") long moduleId,
             @PathVariable("questionnaire_id") long questionnaireId) {
+        System.out.println("headers de submit questionnaire = " + headers);
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_STUDENT.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {

@@ -103,7 +103,6 @@ public class AuthController {
         if (latestHttpResponse.getStatusLine().getStatusCode() == 400) {
             return ResponseEntity.badRequest().body(latestHttpResponse.getEntity());
         }
-        System.out.println(signUpRequest.getRole());
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
 
         GsonBuilder builder = new GsonBuilder();

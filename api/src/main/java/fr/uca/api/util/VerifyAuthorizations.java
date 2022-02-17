@@ -38,17 +38,18 @@ public class VerifyAuthorizations {
             List<String> lRoles = Arrays.asList(roles);
             for (JsonElement jsonElement : rolesArray) {
                 if (!lRoles.contains(jsonElement.getAsJsonObject().get("name").getAsString())) {
+                    System.out.println("Verify role false");
                     return false;
                 }
             }
         }
+        System.out.println("Verify role true");
         return true;
     }
 
     public static Map<String, Object> verify(Map<String, String> headers, String... roles) {
         Map<String, Object> ret = new HashMap<>();
         try {
-            System.out.println("Here verify autho");
             CloseableHttpResponse resp = executePost(
                     "http://localhost:8081/api/auth/verify",
                     null,
@@ -77,6 +78,7 @@ public class VerifyAuthorizations {
         } catch (IOException e) {
             ret.put("success", false);
             ret.put("error", e.toString());
+            ret.put("username", "default");
         }
         return ret;
     }

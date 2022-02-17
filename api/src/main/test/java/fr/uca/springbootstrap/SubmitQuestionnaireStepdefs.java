@@ -154,17 +154,11 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
     @Quand("{string} soumet le questionnaire {string} du module {string} sq")
     public void soumetLeQuestionnaireDuModuleSq(String arg0, String arg1, String arg2) throws IOException {
         Module module = moduleRepository.findByName(arg2).get();
-
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        Questionnaire questionnaire = null;
-        for (Ressource ressource : module.getRessources()) {
-            if (arg1.equalsIgnoreCase(ressource.getName())) {
-                questionnaire = (Questionnaire) ressource;
-                break;
-            }
-        }
+
+        Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
         executePost(String.format(
                 "http://localhost:8080/api/modules/%d/questionnaire/%d",
                 module.getId(),

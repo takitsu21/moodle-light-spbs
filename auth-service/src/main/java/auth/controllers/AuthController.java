@@ -133,7 +133,7 @@ public class AuthController {
 
     @PostMapping("/verify")
     public ResponseEntity verifyToken(@Valid @RequestHeader Map<String, String> headers) {
-        System.out.println("here verification token auth");
+        System.out.println("headers de verify token" + headers);
         String token = headers.get("authorization").substring(7);
         Optional<User> optionalUser = userRepository.findByToken(token);
         Map<String, Object> ret = new HashMap<>();

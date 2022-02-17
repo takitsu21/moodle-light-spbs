@@ -58,9 +58,9 @@ public class ModuleController {
 //    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> addUser(@RequestHeader Map<String, String> headers,
                                      @PathVariable long id, @PathVariable int userid) {
+        System.out.println("add User: "+headers);
         Map<String, Object> authVerif = VerifyAuthorizations
                 .verify(headers, ERole.ROLE_TEACHER.toString());
-        System.out.println("add User: "+headers);
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
             return ResponseEntity.
                     status(HttpStatus.UNAUTHORIZED).
