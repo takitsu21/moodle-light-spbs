@@ -28,8 +28,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QCMStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -106,12 +104,6 @@ public class QCMStepdefs extends SpringIntegration {
         String jwt = userToken.get(user.getUsername());
 
         executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
-    }
-
-    @Et("le dernier status de request est {int} qcm")
-    public void leDernierStatusDeRequestEstQcm(int arg0) throws IOException{
-        System.out.println(EntityUtils.toString(latestHttpResponse.getEntity()));
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Alors("la reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")

@@ -139,11 +139,6 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
                 questionnaire.getId()), jwt);
     }
 
-    @Alors("le dernier status de réponse est {int} sq")
-    public void leDernierStatusDeRéponseEstSq(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("la note est {int} sur {int} sq")
     public void laNoteEstSurSq(int arg0, int arg1) throws IOException {
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());

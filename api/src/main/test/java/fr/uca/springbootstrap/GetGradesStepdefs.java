@@ -33,8 +33,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GetGradesStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     UserRefRepository userRefRepository;
 

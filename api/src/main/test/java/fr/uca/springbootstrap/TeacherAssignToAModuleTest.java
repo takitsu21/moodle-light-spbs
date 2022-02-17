@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TeacherAssignToAModuleTest extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -45,11 +43,6 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
         String jwt = userToken.get(user.getUsername());
 
         executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
-    }
-
-    @Et("le dernier status de request est {int}")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Alors("le professeur {string} est assigner à {string}")

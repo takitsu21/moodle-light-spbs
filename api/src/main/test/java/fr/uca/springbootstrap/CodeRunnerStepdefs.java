@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CodeRunnerStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 

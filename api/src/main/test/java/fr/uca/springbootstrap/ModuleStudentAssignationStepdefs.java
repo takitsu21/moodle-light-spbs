@@ -17,8 +17,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ModuleStudentAssignationStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -48,11 +46,6 @@ public class ModuleStudentAssignationStepdefs extends SpringIntegration {
         executePost("http://localhost:8080/api/modules/"
                 + module.getId() + "/participants/" + student.getId(), jwt);
 
-    }
-
-    @Alors("le dernier status de réponse est {int} arm")
-    public void leDernierStatusDeRéponseEstArm(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("l'étudiant {string} est ajouter au module {string} arm")

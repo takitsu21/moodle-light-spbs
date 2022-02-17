@@ -11,7 +11,7 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les participants de
 
   Scénario: Le professeur "Paul" get les participants du module "Maths"
     Quand L'utilisateur "Paul" get les participants du module "Maths"
-    Et le dernier status de request est 200 gp
+    Et le code de retour est 200
     Alors les participants sont "Paul" et "Juliette"
     Et les tables sont videes
 
@@ -23,7 +23,7 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les participants de
 
   Scénario: L'élève "Juliette" get les participants du module "Maths"
     Quand L'utilisateur "Juliette" get les participants du module "Maths"
-    Et le dernier status de request est 200 gp
+    Et le code de retour est 200
     Alors les participants sont "Paul" et "Juliette"
     Et les tables sont videes
 

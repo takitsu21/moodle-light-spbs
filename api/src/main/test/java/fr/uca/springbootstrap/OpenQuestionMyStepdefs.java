@@ -154,11 +154,6 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
                 jwt);
     }
 
-    @Et("le dernier status de request est {int} oq")
-    public void leDernierStatusDeRequestEstQcm(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Alors("la reponse {string} est dans la question ouverte {string} du questionnaire {string} du module {string} oq")
     public void laReponseEstDansLeQCMDuQuestionnaireDuModule(String arg0, String arg1, String arg2, String arg3) {
         Module module = moduleRepository.findByName(arg3).get();

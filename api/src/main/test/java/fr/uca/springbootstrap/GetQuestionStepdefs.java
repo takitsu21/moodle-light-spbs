@@ -26,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetQuestionStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     UserRefRepository userRefRepository;
 

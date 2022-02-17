@@ -20,8 +20,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChangeVisibilityOfRessourceTest extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 

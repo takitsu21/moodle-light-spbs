@@ -16,8 +16,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -86,10 +84,5 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         Module module = moduleRepository.findByName(arg1).get();
         UserRef user = userRefRepository.findByUsername(arg0).get();
         assertFalse(module.getParticipants().contains(user));
-    }
-
-    @Et("le dernier status de request est {int} aru")
-    public void leDernierStatusDeRequestEst(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 }

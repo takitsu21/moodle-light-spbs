@@ -21,8 +21,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GetQuestionnaireStepDefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     UserRefRepository userRefRepository;
 

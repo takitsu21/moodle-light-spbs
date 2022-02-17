@@ -18,18 +18,18 @@ Fonctionnalité: En tant qu'utilisateur je veux pouvoir voir les modules ou je s
 
   Scénario: Le professeur "Jean" get ses modules
     Quand L'utilisateur "Jean2" get ses modules
-    Et le dernier status de request est 200 gm
+    Et le code de retour est 200
     Alors il n'y a pas de module
     Et les tables sont videes
 
   Scénario: L'élève "Juliette" get ses modules
     Quand L'utilisateur "Juliette" get ses modules
-    Et le dernier status de request est 200 gm
+    Et le code de retour est 200
     Alors le module est "Maths"
     Et les tables sont videes
 
   Scénario: L'élève "Mia" get ses modules
     Quand L'utilisateur "Mia" get ses modules
-    Et le dernier status de request est 200 gm
+    Et le code de retour est 200
     Alors il n'y a pas de module
     Et les tables sont videes

@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetRessourcesStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -79,11 +77,6 @@ public class GetRessourcesStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
         executeGet("http://localhost:8080/api/modules/" + module.getId() + "/ressources", jwt);
-    }
-
-    @Et("le dernier status de request est {int} gr")
-    public void leDernierStatusDeRequestEstGr(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Alors("le cours {string} est renvoyé")

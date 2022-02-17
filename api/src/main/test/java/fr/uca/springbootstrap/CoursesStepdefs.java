@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CoursesStepdefs extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     ModuleRepository moduleRepository;
 

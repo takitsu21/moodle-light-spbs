@@ -12,12 +12,12 @@ Fonctionnalité: En tant que API REST je veux pouvoir calculer la note d'un él�
 
   Scénario: Soumission du questionnaire bonne note
     Quand "Margaux" soumet le questionnaire "Questionnaire code runner" du module "Prog 2" sq
-    Alors le dernier status de réponse est 200 sq
+    Alors le code de retour est 200
     Et la note est 1 sur 1 sq
     Et les tables sont videes
 
   Scénario: Soumission du questionnaire avec QCM bonne note
     Quand "Margaux" soumet le questionnaire "Questionnaire QCM" du module "Prog 2" sq
-    Alors le dernier status de réponse est 200 sq
+    Alors le code de retour est 200
     Et la note est 1 sur 1 sq
     Et les tables sont videes

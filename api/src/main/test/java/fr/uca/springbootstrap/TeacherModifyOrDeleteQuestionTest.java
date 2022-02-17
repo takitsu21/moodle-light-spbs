@@ -23,8 +23,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
-    private static final String PASSWORD = "password";
-
     @Autowired
     AuthController authController;
 
@@ -140,11 +138,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
 
     }
 
-    @Alors("le status de la dernière requète est {int} tmdqr")
-    public void leStatusDeLaDernièreRequèteEstTmdqr(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("la question {string} possède la description {string} tmdqs")
     public void laQuestionPossèdeLaDescriptionTmdqs(String arg0, String arg1) {
         Question question = questionRepository.findByName(arg0).get();
@@ -164,11 +157,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/description", new QuestionRequest(question.getName() , arg4, question.getNumber()), jwTeacher);
-    }
-
-    @Alors("le dernier status de réponse est {int} tmdqu")
-    public void leDernierStatusDeRéponseEstTmdqu(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} possède toujours la description {string} tmdqv")
@@ -192,11 +180,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
     }
 
-    @Alors("le dernier status de réponse est {int} tmdqx")
-    public void leDernierStatusDeRéponseEstTmdqx(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
-    }
-
     @Et("le question {string} possède le numéro {int} tmdqy")
     public void leQuestionPossèdeLeNuméroTmdqy(String arg0, int arg1) {
         Question question = questionRepository.findByName(arg0).get();
@@ -216,11 +199,6 @@ public class TeacherModifyOrDeleteQuestionTest extends SpringIntegration {
         executePost("http://localhost:8080/api/modules/"+module.getId()
                 +"/questionnaire/"+questionnaire.getId()
                 +"/questions/"+question.getId()+"/number", new QuestionRequest(question.getName() , question.getDescription(), arg4), jwTeacher);
-    }
-
-    @Alors("le dernier status de réponse et {int} tmdqaa")
-    public void leDernierStatusDeRéponseEtTmdqaa(int arg0) {
-        assertEquals(arg0, latestHttpResponse.getStatusLine().getStatusCode());
     }
 
     @Et("la question {string} possède le numéro {int} tmdqab")

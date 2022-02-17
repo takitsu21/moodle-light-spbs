@@ -47,7 +47,7 @@ Fonctionnalité: En tant que enseignant je veux pouvoir modifier la visibilité 
 
   Scénario: Le professeur "Paul" rend visible la ressource "Poir" du module "Maths"
     Quand le professeur "Paul" essaie de rendre la ressource "Poir" du module "Maths" visible
-    Et le dernier status de request est 200 cv
+    Et le code de retour est 200
     Alors la ressource "Poir" du module "Maths" est visible
     Et les tables sont videes
 
