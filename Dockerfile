@@ -1,11 +1,9 @@
-FROM openjdk:11
-# command to run when building
-RUN groupadd -r spring && useradd -r spring -g spring
-# user name to run the image
-USER spring:spring
-# build time variable (with default value here)
-ARG JAR_FILE=auth-service/final-jar/*.jar
-# copy file from host to container
-COPY ${JAR_FILE} app.jar
-# command to run at start
-ENTRYPOINT java -jar /app.jar
+#FROM openjdk:11
+FROM maven:3.8.1-adoptopenjdk-11 AS MAVEN_TOOL_CHAIN
+RUN mkdir /home/spring
+RUN mkdir /home/spring/.m2
+RUN mkdir /home/spring/.m2/repository
+COPY pom.xml /tmp/
+COPY api/src/ /tmp/src/
+WORKDIR /tmp/
+RUN mvn package

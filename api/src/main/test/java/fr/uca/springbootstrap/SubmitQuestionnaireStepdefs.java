@@ -25,6 +25,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import payload.request.CodeRunnerRequest;
+import payload.request.LoginRequest;
 import payload.request.SignupRequest;
 
 import java.io.IOException;
@@ -80,7 +81,8 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
                 new SignupRequest(studentName, studentName + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_STUDENT));
                 }}));
-
+        executePost("http://localhost:8080/api/auth/signin",
+                new LoginRequest(studentName, PASSWORD));
         UserRef student = userRefRepository.findByUsername(studentName).get();
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
 

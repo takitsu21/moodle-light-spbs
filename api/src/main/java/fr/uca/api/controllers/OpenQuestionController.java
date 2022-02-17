@@ -346,8 +346,8 @@ public class OpenQuestionController {
             openQuestion.getStudentAnswers().add(answerOpenQuestion);
         }
 
-        openQuestionRepository.save(question);
-        return ResponseEntity.ok(new MessageResponse("New student answer created"));
+        openQuestionRepository.save(openQuestion);
+        return ResponseEntity.ok(new MessageResponse("Answer successfully added to the open question!"));
     }
 
     @PostMapping("/{module_id}/questionnaire/{questionnaire_id}/open_question/{question_id}/good_answer")

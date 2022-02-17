@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import payload.request.Grade;
 import payload.request.QCMRequest;
 import payload.response.MessageResponse;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -331,9 +333,9 @@ public class QuestionnaireController {
         }
 
         Map<String, String> grades = new HashMap<>();
-        Set<GradesQuestionnaire> gradesQuestionnaire =  questionnaire.getStudentsGrades();
+        Set<GradesQuestionnaire> gradesQuestionnaire = questionnaire.getStudentsGrades();
         for (GradesQuestionnaire grade : gradesQuestionnaire) {
-            grades.put(grade.getStudent().getUsername(),grade.getFinalGradeString());
+            grades.put(grade.getStudent().getUsername(), grade.getFinalGradeString());
         }
 
         return ResponseEntity.ok(grades);

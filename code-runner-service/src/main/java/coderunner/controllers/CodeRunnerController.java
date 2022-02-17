@@ -1,6 +1,6 @@
 package coderunner.controllers;
 
-import coderunner.executor.CodeRunnerExec;
+import executor.CodeRunnerExec;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import payload.request.CodeRunnerRequest;
