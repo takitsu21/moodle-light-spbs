@@ -140,6 +140,7 @@
     </dependencies>
 
     <build>
+        <testSourceDirectory>${project.basedir}/api/src/main/test</testSourceDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

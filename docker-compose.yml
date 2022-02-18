@@ -3,9 +3,6 @@ services:
   db_courses:
     image: postgres:14.1
     restart: always
-#    build:
-#      context: ./db_courses
-#      dockerfile: Dockerfile
     container_name: db_courses
     environment:
       - POSTGRES_USER=postgres
@@ -15,9 +12,6 @@ services:
   db_users:
     image: postgres:14.1
     restart: always
-#    build:
-#      context: ./db_users
-#      dockerfile: Dockerfile
     container_name: db_users
     ports:
       - '5435:5432'
@@ -42,16 +36,15 @@ services:
       - '8081:8081'
   api:
     image: maven:3.8.1-adoptopenjdk-11
-    restart: always
     build: .
     container_name: api
+    depends_on:
+      - db_courses
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=123
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    ports:
-      - '8080:8080'
 
   code-runner:
     image: coder-runner-service
@@ -62,13 +55,3 @@ services:
     container_name: code-runner-service
     ports:
       - '8082:8082'
-
-
-
-
-#networks:
-#  micro-service-network:
-#
-#volumes:
-#  database_data:
-#    driver: local
