@@ -25,7 +25,6 @@ public class CodeRunnerExec {
 
     public static void main(String[] args) {
         CodeRunnerExec codeRunnerExec = new CodeRunnerExec();
-        System.out.println(Arrays.toString(args));
 //        boolean status = (boolean) codeRunnerExec.execPy(args[0], args[1], args[2]).get("success");
         codeRunnerExec.execDockerContainer("print(1)", "print(1)", "1");
 //        if (status) {

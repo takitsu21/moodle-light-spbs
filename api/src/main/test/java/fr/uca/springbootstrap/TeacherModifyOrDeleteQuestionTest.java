@@ -11,6 +11,7 @@ import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.QCMRepository;
 import fr.uca.api.repository.question.QuestionRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;

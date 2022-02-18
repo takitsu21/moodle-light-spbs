@@ -16,6 +16,7 @@ import fr.uca.api.repository.question.CodeRunnerRepository;
 import fr.uca.api.models.Module;
 import fr.uca.api.repository.question.OpenQuestionRepository;
 import fr.uca.api.repository.question.QCMRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.bs.A;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
