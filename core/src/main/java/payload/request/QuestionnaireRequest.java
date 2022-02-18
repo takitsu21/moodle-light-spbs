@@ -16,6 +16,10 @@ public class QuestionnaireRequest {
     @NotNull
     private int num;
 
+
+    public QuestionnaireRequest() {
+    }
+
     public QuestionnaireRequest(String name, String description, int num) {
         this.name = name;
         this.description = description;

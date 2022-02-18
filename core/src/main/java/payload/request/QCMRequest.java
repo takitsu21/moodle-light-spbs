@@ -14,6 +14,9 @@ public class QCMRequest {
         this.description = description;
     }
 
+    public QCMRequest() {
+    }
+
     public Integer getNumber() {
         return number;
     }

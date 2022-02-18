@@ -155,7 +155,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 //        UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-//        File f = new File("./api/src/main/test/resources/" + arg1);
+//        File f = new File("src/main/test/resources/" + arg1);
 //        InputStream is = new FileInputStream(f);
         InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
 

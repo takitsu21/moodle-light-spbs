@@ -1,5 +1,7 @@
 package fr.uca.api.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fr.uca.api.models.Module;
 import fr.uca.api.models.*;
 import fr.uca.api.models.questions.*;
@@ -10,14 +12,18 @@ import fr.uca.api.repository.question.GradesQuestionnaireRepository;
 import fr.uca.api.repository.question.QuestionRepository;
 import fr.uca.api.util.CodeRunnerExec;
 import fr.uca.api.util.VerifyAuthorizations;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import payload.request.CodeRunnerRequest;
 import payload.request.QCMRequest;
 import payload.response.MessageResponse;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -131,7 +137,7 @@ public class QuestionnaireController {
     public ResponseEntity<?> submitQuestionnaire(
             @RequestHeader Map<String, String> headers,
             @PathVariable("module_id") long moduleId,
-            @PathVariable("questionnaire_id") long questionnaireId) {
+            @PathVariable("questionnaire_id") long questionnaireId) throws IOException {
         Map<String, Object> authVerif = VerifyAuthorizations.verify(headers,
                 ERole.ROLE_STUDENT.toString());
         if (!VerifyAuthorizations.isSuccess(authVerif)) {
@@ -188,12 +194,20 @@ public class QuestionnaireController {
                 for (AnswerCodeRunner answerCodeRunner : codeRunner.getStudentsAnswers()) {
                     currentStudent = answerCodeRunner.getStudent();
                     if (currentStudent.equals(user)) {
-                        CodeRunnerExec codeRunnerExec = new CodeRunnerExec();
-                        Map<String, Object> exec = codeRunnerExec.
-                                execPy(answerCodeRunner.getAnswer().getAnswer(), codeRunner);
+                        CloseableHttpResponse resp = VerifyAuthorizations.executePost(
+                                VerifyAuthorizations.codeRunnerHost + "api/coderunner/",
+                                new CodeRunnerRequest(
+                                        answerCodeRunner.getAnswer().getAnswer(),
+                                        codeRunner.getTest(),
+                                        codeRunner.getAnwser().getAnswer()), null);
+                        String jsonString = EntityUtils.toString(resp.getEntity());
+                        GsonBuilder builder = new GsonBuilder();
+                        builder.setPrettyPrinting();
 
-
-                        if ((Boolean) exec.get("success")) {
+                        Gson gson = builder.create();
+                        Map<String, Object> map = gson.fromJson(jsonString, Map.class);
+                        EntityUtils.consume(resp.getEntity());
+                        if ((Boolean) map.get("success")) {
                             note++;
                         }
                     }

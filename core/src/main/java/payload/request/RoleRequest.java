@@ -11,6 +11,9 @@ public class RoleRequest {
 
     private String roleName;
 
+    public RoleRequest() {
+    }
+
     public String getUsername() {
         return username;
     }

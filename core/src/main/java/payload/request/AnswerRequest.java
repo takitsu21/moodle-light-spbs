@@ -6,6 +6,9 @@ public class AnswerRequest {
 
     private Set<MyAnswer> answers;
 
+    public AnswerRequest() {
+    }
+
     public Set<MyAnswer> getAnswers() {
         return answers;
     }

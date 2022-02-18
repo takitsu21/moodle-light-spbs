@@ -17,6 +17,8 @@ public class RessourceRequest {
     @NotNull
     private Integer num;
 
+    public RessourceRequest() {
+    }
 
     public String getName() {
         return name;
