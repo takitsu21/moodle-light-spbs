@@ -100,7 +100,7 @@ public class AuthController {
                 "http://localhost:8081/api/auth/signup",
                 signUpRequest);
         if (latestHttpResponse.getStatusLine().getStatusCode() == 400) {
-            return ResponseEntity.badRequest().body(latestHttpResponse.getEntity());
+            return ResponseEntity.status(latestHttpResponse.getStatusLine().getStatusCode()).body(latestHttpResponse.getEntity());
         }
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
 

@@ -1,27 +1,23 @@
 package fr.uca.springbootstrap;
 
-import fr.uca.api.controllers.AuthController;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fr.uca.api.models.Module;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
 import fr.uca.api.repository.UserRefRepository;
-import fr.uca.api.models.Module;
 import io.cucumber.java.fr.Alors;
-import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
-import io.cucumber.messages.internal.com.google.gson.Gson;
-import io.cucumber.messages.internal.com.google.gson.GsonBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
-public class GetParticipantsStepdefs extends SpringIntegration {
+public class ParticipantsStepdefs extends SpringIntegration {
     @Autowired
     ModuleRepository moduleRepository;
 
@@ -30,9 +26,6 @@ public class GetParticipantsStepdefs extends SpringIntegration {
 
     @Autowired
     RessourceRepository ressourceRepository;
-
-    @Autowired
-    AuthController authController;
 
     @Quand("L'utilisateur {string} get les participants du module {string}")
     public void lUtilisateurGetLesParticipantsDuModule(String arg0, String arg1) throws IOException {
@@ -70,5 +63,4 @@ public class GetParticipantsStepdefs extends SpringIntegration {
 
         assertTrue(map.containsKey("message"));
     }
-
 }
