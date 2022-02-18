@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  db_courses:
+    image: postgres:14.1
+    restart: always
+    container_name: db_courses
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+    ports:
+      - '5434:5432'
+  db_users:
+    image: postgres:14.1
+    restart: always
+    container_name: db_users
+    ports:
+      - '5435:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+  auth:
+    image: auth-service
+    restart: always
+    build:
+      context: .
+      dockerfile: ./auth-service/Dockerfile
+    container_name: auth-service
+    depends_on:
+      - db_users
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_users:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - '8081:8081'
+  code-runner:
+    image: coder-runner-service
+    restart: always
+    build:
+      context: .
+      dockerfile: ./code-runner-service/Dockerfile
+    container_name: code-runner
+    ports:
+      - '8082:8082'
+  api:
+    image: maven:3.8.1-adoptopenjdk-11
+    build: .
+    container_name: api
+    depends_on:
+      - db_courses
+    environment:
+      - CODE_RUNNER_HOST=http://code-runner:8082/
+      - AUTH_HOST=http://auth:8081/
+      - API_HOST=http://api:8080/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - '8083:8080'
