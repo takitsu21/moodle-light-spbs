@@ -8,6 +8,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,6 +17,20 @@ import java.util.List;
 import java.util.Map;
 
 public class VerifyAuthorizations {
+
+
+    public static String codeRunnerHost =
+            System.getenv("CODE_RUNNER_HOST") != null ? System.getenv("CODE_RUNNER") :
+            "http://localhost:8082/";
+
+    public static String authHost =
+            System.getenv("AUTH_HOST") != null ?
+                    System.getenv("AUTH_HOST") :
+                    "http://localhost:8081/";
+
+    public static String apiHost =
+            System.getenv("API_HOST") != null ? System.getenv("API_HOST") :
+                    "http://localhost:8080/";
 
     private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -49,7 +64,7 @@ public class VerifyAuthorizations {
         Map<String, Object> ret = new HashMap<>();
         try {
             CloseableHttpResponse resp = executePost(
-                    "http://localhost:8081/api/auth/verify",
+                    VerifyAuthorizations.authHost+ "api/auth/verify",
                     null,
                     headers);
             String jsonString = EntityUtils.toString(resp.getEntity());

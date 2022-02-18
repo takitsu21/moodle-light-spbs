@@ -3,5 +3,5 @@ FROM maven:3.8.1-adoptopenjdk-11
 USER root
 RUN mkdir -p /home/spring/.m2/repository
 WORKDIR /app
-COPY . .
+COPY . /app
 ENTRYPOINT tail -f /dev/null

@@ -6,6 +6,7 @@ import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.models.Module;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -39,14 +40,14 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
 
     @Given("a teacher with login {string}")
     public void aTeacherWithLogin(String arg0) throws IOException {
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -76,7 +77,7 @@ public class RegisterTeacherStepDefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Then("last request status is {int}")

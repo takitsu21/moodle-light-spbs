@@ -100,7 +100,7 @@ public class QCMStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/possible_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
     }
 
     @Alors("la reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -122,7 +122,7 @@ public class QCMStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/good_answer", new MyAnswer(arg1), jwt);
     }
 
     @Alors("la bonne reponse {string} est dans le QCM {string} du questionnaire {string} du module {string}")
@@ -144,7 +144,7 @@ public class QCMStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/qcm/" + module.getId() + "/questionnaire/" + ressource.getId()+"/qcm/"+qcm.getId()+"/student_answer", new MyAnswer(arg1), jwt);
 
     }
 

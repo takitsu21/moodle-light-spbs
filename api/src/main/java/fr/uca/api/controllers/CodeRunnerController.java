@@ -256,7 +256,7 @@ public class CodeRunnerController {
         CodeRunnerExec codeRunnerExec = new CodeRunnerExec();
 //        Map<String, Object> exec = codeRunnerExec.execPy(codeRunnerRequest.getCode(), question);
         CloseableHttpResponse resp = VerifyAuthorizations.executePost(
-                "http://localhost:8082/api/coderunner/",
+                 VerifyAuthorizations.codeRunnerHost + "api/coderunner/",
                 new CodeRunnerRequest(
                         codeRunnerRequest.getCode(),
                         question.getTest(),
@@ -268,6 +268,7 @@ public class CodeRunnerController {
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
+
 
         return ResponseEntity.ok(map);
     }

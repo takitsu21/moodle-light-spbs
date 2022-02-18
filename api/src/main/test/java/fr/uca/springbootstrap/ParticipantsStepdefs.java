@@ -35,7 +35,7 @@ public class ParticipantsStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/participants", jwt);
+        executeGet(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants", jwt);
     }
 
     @Alors("les participants sont {string} et {string}")

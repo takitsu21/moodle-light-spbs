@@ -11,6 +11,7 @@ import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
 import fr.uca.api.repository.question.*;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Etantdonnéque;
@@ -79,7 +80,7 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string}")
     public void leProfesseur(String arg0) throws IOException {
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
@@ -87,7 +88,7 @@ public class UtilsStepdefs extends SpringIntegration {
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -103,14 +104,14 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Et("l'etudiant {string}")
     public void lEtudiant(String arg0) throws IOException {
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_STUDENT));
                 }}));
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -127,12 +128,12 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Et("le professeur {string} assigne au module {string}")
     public void leProfesseurAssigneAuModule(String arg0, String arg1) throws IOException {
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
         UserRef user = userRefRepository.findByUsername(arg0).get();
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -154,14 +155,14 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Et("l'etudiant {string} assigne au module {string}")
     public void lEtudiantAssigneAuModule(String arg0, String arg1) throws IOException {
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_STUDENT));
                 }}));
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -202,11 +203,11 @@ public class UtilsStepdefs extends SpringIntegration {
 
     @Etantdonnéque("les tables sont videes")
     public void lesTablesSontVidees() throws IOException {
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest("superUser", "superUser@test.fr", "password", new HashSet<>() {{
                     add(String.valueOf(auth.models.ERole.ROLE_ADMIN));
                 }}));
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest("superUser", "password"));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -216,7 +217,7 @@ public class UtilsStepdefs extends SpringIntegration {
 
         Gson gson = builder.create();
         Map<String, Object> map = gson.fromJson(jsonString, Map.class);
-        executePost("http://localhost:8081/api/auth/clear",
+        executePost(VerifyAuthorizations.authHost+ "api/auth/clear",
                 (String) map.get("accessToken"));
 
         moduleRepository.deleteAll();

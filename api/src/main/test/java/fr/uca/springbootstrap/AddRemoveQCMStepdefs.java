@@ -10,6 +10,7 @@ import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.QuestionRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -70,7 +71,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/qcm",
                 new QCMRequest(2, arg1, "Deuxieme question"),
                 jwt);
     }
@@ -86,7 +87,7 @@ public class AddRemoveQCMStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwt);
+        executeDelete(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(), jwt);
     }
 
     @Et("la question {string} existe dans le questionnaire {string} du module {string} arqqq")

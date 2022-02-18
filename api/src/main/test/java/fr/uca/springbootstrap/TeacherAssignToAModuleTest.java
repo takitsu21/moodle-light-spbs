@@ -43,7 +43,7 @@ public class TeacherAssignToAModuleTest extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
     @Alors("le professeur {string} est assigner à {string}")

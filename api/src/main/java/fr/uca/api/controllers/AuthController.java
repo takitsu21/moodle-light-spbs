@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -13,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import payload.request.LoginRequest;
@@ -46,7 +48,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws IOException {
-        executePost("http://localhost:8081/api/auth/signin", loginRequest);
+        executePost(VerifyAuthorizations.authHost+ "api/auth/signin", loginRequest);
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
 
         GsonBuilder builder = new GsonBuilder();
@@ -97,7 +99,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws IOException {
         executePost(
-                "http://localhost:8081/api/auth/signup",
+                VerifyAuthorizations.authHost+ "api/auth/signup",
                 signUpRequest);
         if (latestHttpResponse.getStatusLine().getStatusCode() == 400) {
             return ResponseEntity.status(latestHttpResponse.getStatusLine().getStatusCode()).body(latestHttpResponse.getEntity());

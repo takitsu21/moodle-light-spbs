@@ -10,6 +10,7 @@ import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.QuestionRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -63,7 +64,7 @@ public class GetQuestionStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(),
+        executeGet(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/" + question.getId(),
                 jwt);
     }
 
@@ -75,7 +76,7 @@ public class GetQuestionStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executeGet("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/",
+        executeGet(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/questions/",
                 jwt);
     }
 

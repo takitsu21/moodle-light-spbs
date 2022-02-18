@@ -35,7 +35,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + prof2.getId(), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants/" + prof2.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie de retirer le professeur {string} au module {string}")
@@ -47,7 +47,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
+        executeDelete(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
     }
 
     @Quand("le professeur {string} essaie d assigner l élève {string} au module {string}")
@@ -57,7 +57,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
         UserRef user1 = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user1.getUsername());
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants/" + user.getId(), jwt);
     }
 
 
@@ -70,7 +70,7 @@ public class TeacherAddAndRemoveUserFromAModuleTest extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
+        executeDelete(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/participants/" + student.getId(), jwt);
     }
 
     @Alors("{string} est assigner à {string}")

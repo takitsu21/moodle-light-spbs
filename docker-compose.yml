@@ -34,6 +34,15 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - '8081:8081'
+  code-runner:
+    image: coder-runner-service
+    restart: always
+    build:
+      context: .
+      dockerfile: ./code-runner-service/Dockerfile
+    container_name: code-runner
+    ports:
+      - '8082:8082'
   api:
     image: maven:3.8.1-adoptopenjdk-11
     build: .
@@ -41,17 +50,12 @@ services:
     depends_on:
       - db_courses
     environment:
+      - CODE_RUNNER_HOST=http://code-runner:8082/
+      - AUTH_HOST=http://auth:8081/
+      - API_HOST=http://api:8080/
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db_courses:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=123
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-
-  code-runner:
-    image: coder-runner-service
-    restart: always
-    build:
-      context: .
-      dockerfile: ./code-runner-service/Dockerfile
-    container_name: code-runner-service
     ports:
-      - '8082:8082'
+      - '8083:8080'

@@ -81,7 +81,7 @@ public class GetGradesStepdefs extends SpringIntegration {
             sb.append((char) ch);
         }
         executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d",
+                        VerifyAuthorizations.apiHost + "api/modules/%d/questionnaire/%d/code_runner/%d",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
@@ -101,7 +101,7 @@ public class GetGradesStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
         String jwt = userToken.get(user.getUsername());
         executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d",
+                        VerifyAuthorizations.apiHost + "api/modules/%d/questionnaire/%d",
                         module.getId(),
                         questionnaire.getId()),
                 jwt
@@ -116,7 +116,7 @@ public class GetGradesStepdefs extends SpringIntegration {
         String jwt = userToken.get(user.getUsername());
 
         executeGet(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/grades",
+                        VerifyAuthorizations.apiHost + "api/modules/%d/questionnaire/%d/grades",
                         module.getId(),
                         questionnaire.getId()),
                 jwt

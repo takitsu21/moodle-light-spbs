@@ -9,6 +9,7 @@ import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.cours.TextRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -74,7 +75,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
+        executeDelete(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/" + text.getId(), jwt);
     }
 
     @Quand("Le professeur {string} ajoute un text {int} de contenu {string} a la ressource {string} du module {string}")
@@ -86,7 +87,7 @@ public class AddTextToCourseStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/",
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/cours/" + cours.getId() + "/texts/",
                 new TextRequest(text), jwt);
     }
 

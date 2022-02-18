@@ -8,6 +8,7 @@ import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.RessourceRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.cours.CoursRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.bs.I;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
@@ -61,7 +62,7 @@ public class CoursesStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, arg2, arg3),
                 jwt);
     }
@@ -84,10 +85,10 @@ public class CoursesStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
         if (cours == null) {
-            executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/-1",
+            executeDelete(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/cours/-1",
                     jwt);
         } else {
-            executeDelete("http://localhost:8080/api/modules/" + module.getId() + "/cours/" + cours.getId(),
+            executeDelete(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/cours/" + cours.getId(),
                     jwt);
         }
 
@@ -109,7 +110,7 @@ public class CoursesStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/cours",
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/cours",
                 new CoursRequest(arg1, "descript", arg2),
                 jwt);
     }

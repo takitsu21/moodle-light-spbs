@@ -12,6 +12,7 @@ import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.OpenQuestionRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Etantdonné;
@@ -53,14 +54,14 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
     @Etantdonné("le professeur {string} assigné au module de {string} avec un questionnaire {string} visible oq")
     public void leProfesseurAssignéAuModuleDeAvecUnQuestionnaireQcm(String arg0, String arg1, String arg2) throws IOException{
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(arg0, arg0 + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_TEACHER));
                 }}));
 
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(arg0, PASSWORD));
 
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -147,7 +148,7 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/open_question/" + openQuestion.getId() + "/possible_answer",
+        executePost(VerifyAuthorizations.apiHost + "api/open_question/" + module.getId() + "/questionnaire/" + questionnaire.getId() + "/open_question/" + openQuestion.getId() + "/possible_answer",
                 new AnswersRequest(new HashSet<>(){{
                     add(new MyAnswer(arg1));
                 }}),
@@ -174,7 +175,7 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()
+        executePost(VerifyAuthorizations.apiHost + "api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()
                         + "/open_question/" + openQuestion.getId() + "/good_answer",
                 new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1)); add(new MyAnswer(arg2));}}), jwt);
     }
@@ -199,7 +200,7 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()+"/open_question/"+openQuestion.getId()+"/student_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
+        executePost(VerifyAuthorizations.apiHost + "api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()+"/open_question/"+openQuestion.getId()+"/student_answer", new AnswersRequest(new HashSet<>(){{add(new MyAnswer(arg1));}}), jwt);
 
     }
 
@@ -212,7 +213,7 @@ public class OpenQuestionMyStepdefs extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executePost("http://localhost:8080/api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()
+        executePost(VerifyAuthorizations.apiHost + "api/open_question/" + module.getId() + "/questionnaire/" + ressource.getId()
                 + "/open_question/" + openQuestion.getId() + "/student_answer",
                 new AnswersRequest(new HashSet<>() {{
                     add(new MyAnswer(arg1));

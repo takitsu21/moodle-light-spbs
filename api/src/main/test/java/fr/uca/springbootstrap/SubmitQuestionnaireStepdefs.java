@@ -85,11 +85,11 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
         Module module = moduleRepository.findByName(moduleName).orElse(new Module(moduleName));
         UserRef teacher = userRefRepository.findByUsername(teacherName).get();
 
-        executePost("http://localhost:8080/api/auth/signup",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signup",
                 new SignupRequest(studentName, studentName + "@test.fr", PASSWORD, new HashSet<>() {{
                     add(String.valueOf(ERole.ROLE_STUDENT));
                 }}));
-        executePost("http://localhost:8080/api/auth/signin",
+        executePost(VerifyAuthorizations.apiHost + "api/auth/signin",
                 new LoginRequest(studentName, PASSWORD));
         UserRef student = userRefRepository.findByUsername(studentName).get();
         String jsonString = EntityUtils.toString(latestHttpResponse.getEntity());
@@ -203,7 +203,7 @@ public class SubmitQuestionnaireStepdefs extends SpringIntegration {
 
         Questionnaire questionnaire = (Questionnaire) module.findRessourceByName(arg1);
         executePost(String.format(
-                "http://localhost:8080/api/modules/%d/questionnaire/%d",
+                VerifyAuthorizations.apiHost + "api/modules/%d/questionnaire/%d",
                 module.getId(),
                 questionnaire.getId()), jwt);
     }

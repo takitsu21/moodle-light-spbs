@@ -7,6 +7,7 @@ import fr.uca.api.models.UserRef;
 import fr.uca.api.repository.ModuleRepository;
 import fr.uca.api.repository.QuestionnaireRepository;
 import fr.uca.api.repository.UserRefRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -48,7 +49,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executePost("http://localhost:8080/api/modules/" + module.getId() + "/questionnaire",
+        executePost(VerifyAuthorizations.apiHost + "api/modules/" + module.getId() + "/questionnaire",
                 new QuestionnaireRequest(arg1, "Plein de questions", 5),
                 jwt);
     }
@@ -79,7 +80,7 @@ public class AddRemoveModifyQuestionnaire extends SpringIntegration {
 
         String jwt = userToken.get(user.getUsername());
 
-        executeDelete("http://localhost:8080/api/modules/"
+        executeDelete(VerifyAuthorizations.apiHost + "api/modules/"
                         + module.getId() + "/questionnaire/" + questionnaire.getId(),
                 jwt);
     }

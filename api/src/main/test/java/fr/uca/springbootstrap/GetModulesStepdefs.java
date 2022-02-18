@@ -42,7 +42,7 @@ public class GetModulesStepdefs extends SpringIntegration {
         UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        executeGet("http://localhost:8080/api/modules/", jwt);
+        executeGet(VerifyAuthorizations.apiHost + "api/modules/", jwt);
     }
 
     @Alors("les modules sont {string} et {string}")

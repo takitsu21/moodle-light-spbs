@@ -16,6 +16,7 @@ import fr.uca.api.repository.cours.CoursRepository;
 import fr.uca.api.repository.question.AnswerCodeRunnerRepository;
 import fr.uca.api.repository.question.AnswerRepository;
 import fr.uca.api.repository.question.CodeRunnerRepository;
+import fr.uca.api.util.VerifyAuthorizations;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
@@ -26,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import payload.request.CodeRunnerRequest;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -106,7 +109,7 @@ public class CodeRunnerStepdefs extends SpringIntegration {
         module.addRessource(questionnaire);
         moduleRepository.save(module);
         executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/",
+                        VerifyAuthorizations.apiHost + "api/modules/%d/questionnaire/%d/code_runner/",
                         module.getId(),
                         questionnaire.getId()),
                 new CodeRunnerRequest(1, arg1, arg2, arg3, arg4),
@@ -152,14 +155,15 @@ public class CodeRunnerStepdefs extends SpringIntegration {
 //        UserRef user = userRefRepository.findByUsername(arg0).get();
 
         String jwt = userToken.get(user.getUsername());
-        InputStream is = getClass().getClassLoader().getResourceAsStream(arg1);
+        File f = new File("./api/src/main/test/resources/" + arg1);
+        InputStream is = new FileInputStream(f);
 
         StringBuilder sb = new StringBuilder();
         for (int ch; (ch = is.read()) != -1; ) {
             sb.append((char) ch);
         }
         executePost(String.format(
-                        "http://localhost:8080/api/modules/%d/questionnaire/%d/code_runner/%d/test",
+                        VerifyAuthorizations.apiHost + "api/modules/%d/questionnaire/%d/code_runner/%d/test",
                         module.getId(),
                         questionnaire.getId(),
                         codeRunner.getId()),
